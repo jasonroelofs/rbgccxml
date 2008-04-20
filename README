@@ -1,0 +1,135 @@
+== What is rbgccxml?
+
+RbGCCXML allows one to easily parse out and query C++ code. This library uses GCC-XML to parse out 
+the C++ code into XML, and then Hpricot to parse and query that XML.
+
+GCC-XML (http://www.gccxml.org) is an application that takes takes the parse tree of G++ and 
+constructs a very parsable and queryable XML file with all related information. GCC-XML currently 
+only works with code declarations; there currently are no plans to support code bodies.
+
+== Requirements
+
+* hpricot
+* GCC-XML
+
+== Installation
+
+First things first is to get GCC-XML installed on your system. As the last official release is very
+old, installation is slightly more complicated.
+
+=== GCC-XML
+
+TODO INSTALLATION OF GCCXML
+
+=== RbGCCXML
+
+Once GCC-XML is installed and working, simply install the rbgccxml gem:
+
+  gem install rbgccxml
+
+RbGCCXML will work on all platforms that GCC-XML supports, which is currently all the major platforms
+of Linux, Mac and Windows. 
+ 
+== The Project
+
+For bug reports, patch submissions, project annoucements and downloads, visit RbGCCXML's rubyforge
+project page at:
+
+http://www.rubyforge.org/projects/rbplusplus
+
+Feel free to post help request, hints, or general ideas on the forums
+
+== Usage
+
+=== Parsing
+
+The entry point of an RbGCCXML project is as follows:
+
+  # Parse a single header file
+  RbGCCXML.parse("/path/to/header/file.h")
+
+  # Parse out all files that match a given glob
+  RbGCCXML.parse("/my/headers/**/*.h")
+
+  # Parse out a specified set of files"
+  RbGCCXML.parse(["/path/to/file1.h", "/path/to/file2.h", ...])
+
+  # Parse out multiple globs
+  RbGCCXML.parse(["/my/headers/**/*.h", "/other/headers/*.hpp"])
+
+=== Configuration
+
+As GCC-XML runs on top of GCC, it will need to know about locations of other header files
+that may be included by the header files being parsed out. Adding these directories is very easy.
+
+  RbGCCXML.add_include_paths *directories
+
++directories+ can be a single directory string or an array of directories, just like RbGCCXML.parse.
+This must be called *before* RbGCCXML.parse if it is to be used.
+
+As for knowing where GCC-XML itself is installed, RbGCCXML assumes that the executable is
+available in the system's $PATH, but if not, there is a method to specify exactly where to
+find this executable. Again, like #add_include_paths, this needs to be called *before* RbGCCXML.parse.
+
+  RbGCCXML.gccxml_path = "/path/to/gccxml"  # or "C:/Program Files/gccxml/gccxml.exe"
+
+=== Querying By Name
+
+Once the header files have been parsed, RbGCCXML.parse returns a Namespace node that references the 
+global namespace of "::". From here, all the function, class, etc declarations are easily queryable.
+
+  source = RbGCCXML.parse("header.h")  #=> <Namespace ...>
+
+Each major C++ part (class, struct, function, method (class functions), argument (of functions, methods, and constructors) have a related query method that can be called in one of two ways:
+
+  # Grab all the classes and search from there
+  source.classes.find(...)
+
+  # Or just get a class of a given name, or that matches a regex. These calls are the same as
+  # source.classes.find(:name => ...)
+
+  # Find all classes with the name "ClassName"
+  source.classes("ClassName")  
+
+  # Find all classes that match ...Manager
+  source.classes(/Manager$/)
+
+For finding all classes in a namespace:
+
+  source.classes
+
+Or finding all namespaces:
+
+  source.namespaces 
+
+These queries are also infinitely nestable. To find the class "Math" inside the namespace 
+"core::utils", you can do:
+
+  source.namespaces("core").namespaces("utils").classes("Math")
+
+RbGCCXML will eventually allow automatic jumping through layers, so namespaces("core::utils") would 
+work, but for now the library only supports the long-hand form above.
+
+=== Querying with #find
+
+Of course, querying for names is only the tip of the kind of querying that RbGCCXML does on the
+code. 
+
+What if you wanted to find all methods on a class that return an int value and have three arguments?
+This is easy with RbGCCXML:
+
+  source.classes("yourclass").methods.find(:returns => :int, :arguments => [nil, nil, nil])
+
+The keys +returns+ and +arguments+ can be used on their own, or at the same time as seen above. 
+The +arguments+ option must be an array, and if the type of the argument doesn't matter, placing
+'nil' in it's place acts as a wildcard. QueryResult.find is also chainable, provided that there
+are always more than one result. Otherwise, if there is just one result, only that Node will
+be returned and any further chained QueryResult.find methods will fail with "NoMethodError".
+
+For full details on using this method, please see it's documentation at QueryResult.find.
+
+=== The Next Step
+
+To learn more about RbGCCXML, please start looking through the Node class; most of the query
+API starts there, and following with that head to QueryResult.
+

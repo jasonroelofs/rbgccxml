@@ -1,0 +1,31 @@
+The parts that need to be implemented, to be sorted by release and importance of feature
+
+*? Name searching of namespaces / classes / functions by regex
+* Proper handling of all possible types, including pointers and references
+* Removing nodes from the tree (#remove)
+* Proper handling of inheritance searching
+
+* Template handling
+
+Following GCCXML types
+
+* ReferenceType
+* CvQualifiedType
+* Field
+* Destructor
+* Variable
+* OperatorFunction
+
+Done:
+
+* Searching functions by return type
+* Searching functions by argument type(s)
+  * :args => [nil, "int", nil] # => 3 arguments, 2nd is an int the other two can be anything
+
+* Constructor
+* FundamentalType
+*? File
+* Function::Argument
+* Struct
+* PointerType
+* Typedef
