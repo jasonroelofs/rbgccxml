@@ -122,8 +122,7 @@ work, but for now the library only supports the long-hand form above.
 
 === Querying with #find
 
-Of course, querying for names is only the tip of the kind of querying that RbGCCXML does on the
-code. 
+Of course, querying for names is only the tip of the powerful querying that RbGCCXML supports.
 
 What if you wanted to find all methods on a class that return an int value and have three arguments?
 This is easy with RbGCCXML:
