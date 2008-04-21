@@ -7,6 +7,10 @@ GCC-XML (http://www.gccxml.org) is an application that takes takes the parse tre
 constructs a very parsable and queryable XML file with all related information. GCC-XML currently 
 only works with code declarations; there currently are no plans to support code bodies.
 
+Note: For those familiary with pygccxml, the similarities are minimal. Outside of the purpose
+of both libraries, rbgccxml was built from scratch to provide a Ruby-esque query API instead of
+being a port. However, many thanks to Roman for his work, the major inspiration for this library.
+
 == Requirements
 
 * hpricot
