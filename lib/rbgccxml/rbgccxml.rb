@@ -15,8 +15,7 @@ module RbGCCXML
     #
     # +options+ can be any of:
     #
-    #   +includes+:: A single string, or an array of strings of directory includes 
-    #               (-I directives)
+    #   includes:: A single string, or an array of strings of directory includes (-I directives)
     #
     # Returns the Namespace Node linked to the global namespace "::".
     #

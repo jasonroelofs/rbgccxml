@@ -9,30 +9,21 @@ only works with code declarations; there currently are no plans to support code 
 
 Note: For those familiary with pygccxml, the similarities are minimal. Outside of the purpose
 of both libraries, rbgccxml was built from scratch to provide a Ruby-esque query API instead of
-being a port. However, many thanks to Roman for his work, the major inspiration for this library.
+being a port. However, many thanks to Roman for his work, without which this library would also
+not exist.
 
 == Requirements
 
 * hpricot
-* GCC-XML
+* gccxml_gem (binary gem, choose proper platform)
 
 == Installation
-
-First things first is to get GCC-XML installed on your system. As the last official release is very
-old, installation is slightly more complicated.
-
-=== GCC-XML
-
-TODO INSTALLATION OF GCCXML
-
-=== RbGCCXML
-
-Once GCC-XML is installed and working, simply install the rbgccxml gem:
 
   gem install rbgccxml
 
 RbGCCXML will work on all platforms that GCC-XML supports, which is currently all the major platforms
-of Linux, Mac and Windows. 
+of Linux, Mac and Windows. If you're on a platform for which there isn't a current gccxml_gem build, 
+please open a ticket on this project's tracker.
  
 == The Project
 
@@ -76,16 +67,9 @@ The entry point of an RbGCCXML project is as follows:
 As GCC-XML runs on top of GCC, it will need to know about locations of other header files
 that may be included by the header files being parsed out. Adding these directories is very easy.
 
-  RbGCCXML.add_include_paths *directories
+  RbGCCXML.parse(..., :includes => *directories)
 
 +directories+ can be a single directory string or an array of directories, just like RbGCCXML.parse.
-This must be called *before* RbGCCXML.parse if it is to be used.
-
-As for knowing where GCC-XML itself is installed, RbGCCXML assumes that the executable is
-available in the system's $PATH, but if not, there is a method to specify exactly where to
-find this executable. Again, like #add_include_paths, this needs to be called *before* RbGCCXML.parse.
-
-  RbGCCXML.gccxml_path = "/path/to/gccxml"  # or "C:/Program Files/gccxml/gccxml.exe"
 
 === Querying By Name
 
