@@ -3,20 +3,6 @@ module RbGCCXML
 
   class << self
 
-    # Specify where the GCC-XML executable is located.
-    # This is only needed when the executable is not in the
-    # system's path. Should be a full directory path.
-    def gccxml_path=(path)
-      GCCXML.path = path
-    end
-
-    # Add include paths for GCC-XML's parsing. (-I parameter).
-    # This can be a single path or an array of paths
-    def add_include_paths(path)
-      GCCXML.add_include(path)
-    end
-    alias_method :add_include_path, :add_include_paths
-
     # This is where it all happens. This method must be after any calls
     # to RbGCCXML.gccxml_path= or RbGCCXML.add_include_paths. 
     # Files can be one of many formats (and should always be full directory paths):
@@ -26,6 +12,11 @@ module RbGCCXML
     # <tt>"/dir/glob/**/*.h"</tt>
     #
     # An array of either of the above.
+    #
+    # +options+ can be any of:
+    #
+    #   +includes+:: A single string, or an array of strings of directory includes 
+    #               (-I directives)
     #
     # Returns the Namespace Node linked to the global namespace "::".
     #
@@ -41,7 +32,7 @@ module RbGCCXML
       #     Run gccxml on the expected file
       # 5. Parse out XML into class tree
 
-      @parser = Parser.new :files => files
+      @parser = Parser.new :files => files, :includes => options[:includes]
       @parser.parse
     end
 

@@ -1,4 +1,7 @@
 require 'hpricot'
+gem 'gccxml_gem'
+require 'gccxml'
+
 require 'rbgccxml/rbgccxml'
 
 module RbGCCXML
@@ -6,7 +9,6 @@ module RbGCCXML
   # Core classes
   autoload :Parser, "rbgccxml/parser"
   autoload :Node, "rbgccxml/node"
-  autoload :GCCXML, "rbgccxml/gccxml"
   autoload :QueryResult, "rbgccxml/query_result"
   autoload :XMLParsing, "rbgccxml/xml_parsing"
 

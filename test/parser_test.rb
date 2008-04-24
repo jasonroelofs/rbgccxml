@@ -16,8 +16,8 @@ context "Default parsing configuration" do
 
   specify "can parse all files in a directory" do
     should.not.raise do
-      RbGCCXML.add_include_paths full_dir("headers/include")
-      RbGCCXML.parse(full_dir("headers"))
+      RbGCCXML.parse(full_dir("headers"),
+                    :includes => full_dir("headers/include"))
     end
   end
 
@@ -33,7 +33,7 @@ context "Default parsing configuration" do
     files = [full_dir("headers/*.h"),
               full_dir("headers/*.hpp")]
     should.not.raise do
-      RbGCCXML.parse(files)
+      RbGCCXML.parse(files, :includes => full_dir("headers/include"))
     end
   end
 
@@ -57,21 +57,9 @@ context "Default parsing configuration" do
 end
 
 context "Configurable parsing configuration" do
-  specify "can specify where gccxml is installed" do
-    should.raise RbGCCXML::ConfigurationError do
-      RbGCCXML.gccxml_path = "/some/other/place/gccxml"
-      RbGCCXML.parse(full_dir("headers/Adder.h"))
-    end
-
-    should.not.raise RbGCCXML::ConfigurationError do
-      RbGCCXML.gccxml_path = `which gccxml`
-      RbGCCXML.parse(full_dir("headers/Adder.h"))
-    end
-  end
-
   specify "can give extra include directories for parsing" do
-    RbGCCXML.add_include_path full_dir("headers/include")
-    found = RbGCCXML.parse full_dir("headers/with_includes.h")
+    found = RbGCCXML.parse full_dir("headers/with_includes.h"),
+      :includes => full_dir("headers/include")
     found.namespaces("code").should.not.be.nil
   end
 end
