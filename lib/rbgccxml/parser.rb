@@ -7,13 +7,7 @@ module RbGCCXML
   class Parser
 
     def initialize(config = {}) 
-      begin
-        @gccxml = GCCXML.new
-      rescue
-        puts "Because of a bug in Rubygems <= 1.1.1, certain executables are not set as such."
-        puts "This needs to be manually set before rbgccxml can run."
-        puts "Please `sudo chmod a+x -R /path/to/gccxml_gem` and then try this again."
-      end
+      @gccxml = GCCXML.new
 
       if includes = config.delete(:includes)
         @gccxml.add_include includes
