@@ -71,6 +71,11 @@ that may be included by the header files being parsed out. Adding these director
 
 +directories+ can be a single directory string or an array of directories, just like RbGCCXML.parse.
 
+Also, if there are other CXXFLAGS that need to be added to the command line for GCC-XML to properly
+parse the source headers, add those via the :cxxflags option.
+
+  RbGCCXML.parse(..., :cxxflags => *flags)
+
 === Querying By Name
 
 Once the header files have been parsed, RbGCCXML.parse returns a Namespace node that references the 
