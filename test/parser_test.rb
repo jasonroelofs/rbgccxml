@@ -17,7 +17,8 @@ context "Default parsing configuration" do
   specify "can parse all files in a directory" do
     should.not.raise do
       RbGCCXML.parse(full_dir("headers"),
-                    :includes => full_dir("headers/include"))
+                    :includes => full_dir("headers/include"),
+                    :cxxflags => "-DMUST_BE_DEFINED")
     end
   end
 
@@ -61,5 +62,12 @@ context "Configurable parsing configuration" do
     found = RbGCCXML.parse full_dir("headers/with_includes.h"),
       :includes => full_dir("headers/include")
     found.namespaces("code").should.not.be.nil
+  end
+
+  specify "can be given extra cxxflags for parsing" do
+    should.not.raise do
+      RbGCCXML.parse full_dir("headers/requires_define.hxx"),
+        :cxxflags => "-DMUST_BE_DEFINED"
+    end
   end
 end

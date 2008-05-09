@@ -13,6 +13,10 @@ module RbGCCXML
         @gccxml.add_include includes
       end
 
+      if flags = config.delete(:cxxflags)
+        @gccxml.add_cxxflags flags
+      end
+
       validate_glob(config[:files])
     end
 

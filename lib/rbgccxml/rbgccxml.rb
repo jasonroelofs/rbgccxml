@@ -31,7 +31,8 @@ module RbGCCXML
       #     Run gccxml on the expected file
       # 5. Parse out XML into class tree
 
-      @parser = Parser.new :files => files, :includes => options[:includes]
+      options.merge!(:files => files)
+      @parser = Parser.new options
       @parser.parse
     end
 
