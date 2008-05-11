@@ -49,7 +49,7 @@ module RbGCCXML
       name = options.delete(:name)
       returns = options.delete(:returns)
       arguments = options.delete(:arguments)
-
+      
       raise ":arguments must be an array" if arguments && !arguments.is_a?(Array)
       raise "Unknown keys #{option.keys.join(", ")}. " +
         "Expected are: :name, :arguments, and :returns" unless options.empty?
