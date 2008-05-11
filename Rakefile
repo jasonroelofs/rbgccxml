@@ -46,7 +46,7 @@ spec = Gem::Specification.new do |s|
   s.email = 'jameskilton@gmail.com'
   
   s.add_dependency "hpricot", "0.6"
-  s.add_dependency "gccxml_gem", "0.9"
+  s.add_dependency "gccxml_gem", "0.9.1"
 
   s.description = <<-END
 Rbgccxml is a library that parses out GCCXML (http://www.gccxml.org) output
