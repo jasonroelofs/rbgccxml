@@ -47,6 +47,17 @@ module RbGCCXML
       end
     end
     
+    # Generic finding of nodes according to attributes.
+    # Special options:
+    #
+    # <tt>:type</tt>:: Specify a certain node type to search by
+    #
+    # Any other options is directly mapped to attributes on the node. For example, to find all
+    # Function nodes:
+    #
+    #   XMLParsing.find_all(:type => "Function")
+    #
+    # Returns all matching nodes
     def self.find_all(options = {})
       return nil if options.empty?
 
@@ -112,6 +123,10 @@ module RbGCCXML
       return nil
     end
     
+    #
+    # Returns the element in cache for type at id.
+    # Used internally.
+    #
     def self.cache(type, id)
       @@types_cache ||= {}
       @@types_cache[type] ||= {}
@@ -119,12 +134,20 @@ module RbGCCXML
       return @@types_cache[type][id]
     end
     
+    #
+    # Creates a cache to work off of.
+    # Used internally
+    #
     def self.build_cache(type) 
       XMLParsing.find_all(:type => type).each do |result|
         @@types_cache[type][result[:id]] = result
       end
     end
     
+    #
+    # Returns the element in cache for type at id
+    # Used internally
+    #
     def self.nested_cache(type, context)
       @@nested_cache ||= {}
       @@nested_cache[type] ||= {}
@@ -132,13 +155,21 @@ module RbGCCXML
       return @@nested_cache[type][context] || QueryResult.new
     end
     
+    #
+    # Creates a nested cache to work off of.
+    # Used internally
+    #
     def self.build_nested_cache(type) 
       XMLParsing.find_all(:type => type).each do |result|
         @@nested_cache[type][result[:context]] ||= QueryResult.new
         @@nested_cache[type][result[:context]] << result
       end
     end
-    
+   
+   
+    #
+    # Clears the cache.  Use this if you are querying two seperate libraries.
+    #  
     def self.clear_cache
       @@nested_cache = nil
       @@types_cache = nil
