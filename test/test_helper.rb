@@ -9,6 +9,10 @@ class Test::Unit::TestCase
   def full_dir(path)
     File.expand_path(File.join(File.dirname(__FILE__), path))
   end
+  
+  def teardown
+    RbGCCXML::XMLParsing.clear_cache
+  end
 
 end
 

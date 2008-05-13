@@ -20,3 +20,8 @@ namespace upper {
   }
 
 }
+
+/* Include the ability to look into the default namespace */
+int not_in_namespace() {
+  return -1;
+}

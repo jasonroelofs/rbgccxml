@@ -27,5 +27,8 @@ module RbGCCXML
   autoload :FundamentalType, "rbgccxml/nodes/types/fundamental_type" 
   autoload :PointerType, "rbgccxml/nodes/types/pointer_type" 
   autoload :Typedef, "rbgccxml/nodes/types/typedef" 
+  autoload :ReferenceType, "rbgccxml/nodes/types/reference_type"
+  autoload :Enumeration, "rbgccxml/nodes/types/enumeration"  
+  autoload :CvQualifiedType, "rbgccxml/nodes/types/cv_qualified_type"  
 
 end
