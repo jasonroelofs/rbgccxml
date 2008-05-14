@@ -27,8 +27,8 @@ context "Querying for functions" do
     bool.name.should == "bool_method"
   end
 
-  xspecify "can find names by fully qualified name" do
-    nested = @@functions_source.functions.find(:name => "nested1::nested2::nestedFunction")
+  specify "can find names by fully qualified name" do
+    nested = @@functions_source.functions("nested1::nested2::nestedFunction")
     nested.should.be.a.kind_of RbGCCXML::Function
     nested.name.should == "nestedFunction"
   end

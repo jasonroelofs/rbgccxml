@@ -75,6 +75,7 @@ context "Printing types" do
 
     # references
     @@types_source.functions.find(:returns => "struct_type&").return_type.to_s.should == "struct_type&"
+    @@types_source.functions.find(:returns => "struct_type&").return_type.to_s(true).should == "types::struct_type&"
 
     # const
     @@types_source.functions.find(:returns => "const int").return_type.to_s.should == "const int"
@@ -84,6 +85,7 @@ context "Printing types" do
 
     # const references
     @@types_source.functions.find(:returns => "const user_type&").return_type.to_s.should == "const user_type&"
+    @@types_source.functions.find(:returns => "const user_type&").return_type.to_s(true).should == "const types::user_type&"
   end
 
 end

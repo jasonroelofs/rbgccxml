@@ -49,6 +49,10 @@ module RbGCCXML
       name = options.delete(:name)
       returns = options.delete(:returns)
       arguments = options.delete(:arguments)
+
+      # For fully qualified name searching
+      # There must be a better way to handle fully qualified name searching
+      new_hits = []
       
       raise ":arguments must be an array" if arguments && !arguments.is_a?(Array)
       raise "Unknown keys #{option.keys.join(", ")}. " +
@@ -60,6 +64,19 @@ module RbGCCXML
           found[:name] ||= []
           if name.is_a?(Regexp)
             found_name = (node.attributes["name"] =~ name)
+          elsif name =~ /::/ && new_hits.empty?
+            # Special case for fully qualified testing. We now need to look through
+            # the entire list looking for a node who's demangled name matches the given
+            # name
+            node_type = node.class.to_s.split(/::/)[-1]
+            XMLParsing.find_all(:type => node_type).each do |n|
+              if n.qualified_name =~ /#{name}/
+                node = n
+                new_hits << n
+                found_name = true
+                break
+              end
+            end
           else
             found_name = (node.attributes["name"] == name)
           end
@@ -97,7 +114,7 @@ module RbGCCXML
       # Now we do an intersection of all the found nodes,
       # which ensures that we AND together all the parts
       # the user is looking for
-      tmp = self
+      tmp = (self << new_hits).flatten
       found.each_value do |value|
         tmp = (tmp & value)
       end

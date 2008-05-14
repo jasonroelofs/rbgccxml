@@ -8,9 +8,9 @@ module RbGCCXML
       check_sub_type_without(val, /\*/)
     end
 
-    def to_s
+    def to_s(full = false)
       type = XMLParsing.find_type_of(self.node, "type")
-      "#{type}*"
+      "#{type.to_s(full)}*"
     end
   end
 

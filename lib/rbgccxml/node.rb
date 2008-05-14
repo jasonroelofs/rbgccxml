@@ -119,8 +119,8 @@ module RbGCCXML
     end
 
     # Make it easy to print out the name of this node
-    def to_s
-      @node.attributes["name"]
+    def to_s(full = false)
+      full ? self.qualified_name : @node.attributes["name"]
     end
   end
 
