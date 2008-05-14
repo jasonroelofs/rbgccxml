@@ -41,6 +41,17 @@ namespace types {
 
   struct_type returnsStructType();
   struct_type* returnsStructTypePointer();
+
+  struct_type& returnStructReference();
+
+  /**
+   * Const declarations
+   */
+  const int returnConstInt();
+  const struct_type returnConstStruct();
+
+  const int* returnConstIntPointer();
+  const user_type& returnConstUserTypeRef();
 }
 
 #endif

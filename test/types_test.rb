@@ -38,4 +38,52 @@ context "Proper Type handling" do
     assert @@types_source.functions.find(:returns => "myLongType*") == "returnsLongTypePointer"
   end
 
+  specify "reference types" do
+    assert @@types_source.functions.find(:returns => "struct_type&") == "returnStructReference"
+  end
+
+  specify "const definitions (fundamental types)" do
+    assert @@types_source.functions.find(:returns => "const int") == "returnConstInt"
+  end
+
+  specify "const definitions (defined types)" do
+    assert @@types_source.functions.find(:returns => "const struct_type") == "returnConstStruct"
+  end
+
+  specify "const references" do
+    assert @@types_source.functions.find(:returns => "const user_type&") == "returnConstUserTypeRef"
+  end
+
+  specify "const pointers" do
+    assert @@types_source.functions.find(:returns => "const int*") == "returnConstIntPointer"
+  end
+
+end
+
+context "Printing types" do
+  
+  setup do
+    @@types_source ||= RbGCCXML.parse(full_dir("headers/types.h")).namespaces("types")
+  end
+
+  specify "types should print back properly into string format" do
+    @@types_source.functions.find(:returns => "int").return_type.to_s.should == "int"
+    @@types_source.functions.find(:returns => "float").return_type.to_s.should == "float"
+
+    # pointers
+    @@types_source.functions.find(:returns => "int*").return_type.to_s.should == "int*"
+
+    # references
+    @@types_source.functions.find(:returns => "struct_type&").return_type.to_s.should == "struct_type&"
+
+    # const
+    @@types_source.functions.find(:returns => "const int").return_type.to_s.should == "const int"
+    
+    # const pointers
+    @@types_source.functions.find(:returns => "const int*").return_type.to_s.should == "const int*"
+
+    # const references
+    @@types_source.functions.find(:returns => "const user_type&").return_type.to_s.should == "const user_type&"
+  end
+
 end

@@ -5,12 +5,12 @@ module RbGCCXML
 
     # Does this type match the given name string? 
     def ==(val)
-      # Look for the '*' denoting a pointer type.
-      # Assuming we find one, drop it and look for the
-      # base type.
-      return false unless val =~ /\*/
-      new_val = val.gsub("*", "").strip
-      XMLParsing.find_type_of(self.node, "type") == new_val
+      check_sub_type_without(val, /\*/)
+    end
+
+    def to_s
+      type = XMLParsing.find_type_of(self.node, "type")
+      "#{type}*"
     end
   end
 

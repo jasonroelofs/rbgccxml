@@ -117,6 +117,11 @@ module RbGCCXML
         super
       end
     end
+
+    # Make it easy to print out the name of this node
+    def to_s
+      @node.attributes["name"]
+    end
   end
 
 end

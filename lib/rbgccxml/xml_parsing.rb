@@ -35,10 +35,7 @@ module RbGCCXML
       attrs = options.map {|key, value| "[@#{key}='#{value}']"}.join
       xpath = "//#{type}#{attrs}"
       
-      #start = Time.now
       got = @@doc_root.at(xpath)
-      #puts "find #{xpath} #{Time.now - start}"
-      
       
       if got
         RbGCCXML.const_get(type || got.name).new(got) 
@@ -66,9 +63,7 @@ module RbGCCXML
 
       xpath = "//#{type}#{attrs}"
       
-      #start = Time.now
       results = @@doc_root.search(xpath)
-      #puts "find_all #{xpath} #{Time.now - start}"
       
       if results
         results.collect do |got|
