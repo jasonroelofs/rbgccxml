@@ -1,6 +1,10 @@
 #ifndef __TYPES_H__
 #define __TYPES_H__
 
+namespace others {
+  typedef char* string;
+}
+
 /**
  * Header for testing the type management system of
  * rbgccxml
@@ -26,6 +30,11 @@ namespace types {
 
   int* returnsIntPointer();
   myLongType* returnsLongTypePointer();
+
+  /**
+   * Included types
+   */
+  others::string returnsString();
 
   /**
    * User defined types 

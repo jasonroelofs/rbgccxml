@@ -68,6 +68,8 @@ context "Printing types" do
 
   specify "types should print back properly into string format" do
     @@types_source.functions.find(:returns => "int").return_type.to_s.should == "int"
+    @@types_source.functions.find(:returns => "int").return_type.to_s(true).should == "int"
+
     @@types_source.functions.find(:returns => "float").return_type.to_s.should == "float"
 
     # pointers
@@ -76,6 +78,9 @@ context "Printing types" do
     # references
     @@types_source.functions.find(:returns => "struct_type&").return_type.to_s.should == "struct_type&"
     @@types_source.functions.find(:returns => "struct_type&").return_type.to_s(true).should == "types::struct_type&"
+    
+    # printout full from the global namespace
+    @@types_source.functions.find(:returns => "string").return_type.to_s(true).should == "others::string"
 
     # const
     @@types_source.functions.find(:returns => "const int").return_type.to_s.should == "const int"

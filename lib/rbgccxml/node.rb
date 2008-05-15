@@ -47,7 +47,7 @@ module RbGCCXML
     # Get the file name of the file this node is found in. 
     def file_name(basename = true)
       file_id = @node.attributes["file"]
-      file_node = XMLParsing::find(:type => "File", :id => file_id)
+      file_node = XMLParsing.find(:type => "File", :id => file_id)
       name = file_node.attributes["name"]
       basename ? ::File.basename(name) : name
     end
@@ -56,7 +56,7 @@ module RbGCCXML
     # the function is contained in.
     def parent
       return nil if @node.attributes["context"] == "_1"
-      XMLParsing::find(:id => @node.attributes["context"])
+      XMLParsing.find(:id => @node.attributes["context"])
     end
 
     # Find all namespaces. There are two ways of calling this method:
@@ -66,7 +66,7 @@ module RbGCCXML
       if name
         namespaces.find(:name => name)
       else
-        XMLParsing::find_nested_nodes_of_type(@node, "Namespace")
+        XMLParsing.find_nested_nodes_of_type(@node, "Namespace")
       end
     end
 
@@ -76,7 +76,7 @@ module RbGCCXML
       if name
         classes.find(:name => name)
       else
-        XMLParsing::find_nested_nodes_of_type(@node, "Class")
+        XMLParsing.find_nested_nodes_of_type(@node, "Class")
       end
     end
 
@@ -86,7 +86,7 @@ module RbGCCXML
       if name
         structs.find(:name => name)
       else
-        XMLParsing::find_nested_nodes_of_type(@node, "Struct")
+        XMLParsing.find_nested_nodes_of_type(@node, "Struct")
       end
     end
 
@@ -98,7 +98,7 @@ module RbGCCXML
       if name
         functions.find(:name => name)
       else
-        XMLParsing::find_nested_nodes_of_type(@node, "Function")
+        XMLParsing.find_nested_nodes_of_type(@node, "Function")
       end
     end
 
@@ -120,6 +120,7 @@ module RbGCCXML
 
     # Make it easy to print out the name of this node
     def to_s(full = false)
+#      puts "In Node#to_s for #{self.inspect}"
       full ? self.qualified_name : @node.attributes["name"]
     end
   end

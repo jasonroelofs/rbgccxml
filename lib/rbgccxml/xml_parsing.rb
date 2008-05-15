@@ -27,16 +27,16 @@ module RbGCCXML
       return nil if options.empty?
       type = options.delete(:type)
       
-      # Look value up in the cache for common operations
-      if(options.length == 1 && options.keys[0] == :id)
+      # Look value up in the cache for common operations if a type was given
+      if(type && options.length == 1 && options.keys[0] == :id)
         return cache(type, options[:id])
       end
 
       attrs = options.map {|key, value| "[@#{key}='#{value}']"}.join
       xpath = "//#{type}#{attrs}"
-      
+
       got = @@doc_root.at(xpath)
-      
+
       if got
         RbGCCXML.const_get(type || got.name).new(got) 
       else
