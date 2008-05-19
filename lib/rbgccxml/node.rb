@@ -30,18 +30,14 @@ module RbGCCXML
       if @node.attributes["demangled"]
         @node.attributes["demangled"].split(/\(/)[0]
       else
-        self.name
+        parent ? "#{parent.qualified_name}::#{name}" : name
       end
     end
 
-    # Any unknown methods get sent to the XML node
-    def method_missing(name, *args)
-      if @node.respond_to?(name)
-        @node.send(name, *args) 
-      else
-        # Make sure we still throw NoMethodErrors
-        super
-      end
+    # Forward up attribute array for easy access to the
+    # underlying XML node
+    def attributes
+      @node.attributes
     end
 
     # Get the file name of the file this node is found in. 
@@ -55,7 +51,7 @@ module RbGCCXML
     # Get the parent node of this node. e.g. function.parent will get the class
     # the function is contained in.
     def parent
-      return nil if @node.attributes["context"] == "_1"
+      return nil if @node.attributes["context"].nil? || @node.attributes["context"] == "_1"
       XMLParsing.find(:id => @node.attributes["context"])
     end
 
@@ -120,7 +116,7 @@ module RbGCCXML
 
     # Make it easy to print out the name of this node
     def to_s(full = false)
-      full ? self.qualified_name : @node.attributes["name"]
+      full ? self.qualified_name : self.name
     end
   end
 

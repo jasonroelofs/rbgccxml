@@ -135,7 +135,7 @@ module RbGCCXML
     #
     def self.build_cache(type) 
       XMLParsing.find_all(:type => type).each do |result|
-        @@types_cache[type][result[:id]] = result
+        @@types_cache[type][result.attributes["id"]] = result
       end
     end
     
@@ -156,8 +156,8 @@ module RbGCCXML
     #
     def self.build_nested_cache(type) 
       XMLParsing.find_all(:type => type).each do |result|
-        @@nested_cache[type][result[:context]] ||= QueryResult.new
-        @@nested_cache[type][result[:context]] << result
+        @@nested_cache[type][result.attributes["context"]] ||= QueryResult.new
+        @@nested_cache[type][result.attributes["context"]] << result
       end
     end
    
