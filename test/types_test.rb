@@ -58,6 +58,10 @@ context "Proper Type handling" do
     assert @@types_source.functions.find(:returns => "const int*") == "returnConstIntPointer"
   end
 
+  specify "enumerations" do
+    assert @@types_source.functions.find(:returns => "myEnum") == "returnMyEnum"
+  end
+
 end
 
 context "Printing types" do
@@ -91,6 +95,10 @@ context "Printing types" do
     # const references
     @@types_source.functions.find(:returns => "const user_type&").return_type.to_s.should == "const user_type&"
     @@types_source.functions.find(:returns => "const user_type&").return_type.to_s(true).should == "const types::user_type&"
+
+    # Enumerations
+    @@types_source.functions.find(:returns => "myEnum").return_type.to_s.should == "myEnum"
+    @@types_source.functions.find(:returns => "myEnum").return_type.to_s(true).should == "types::myEnum"
   end
 
 end

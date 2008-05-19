@@ -32,7 +32,7 @@ namespace types {
   myLongType* returnsLongTypePointer();
 
   /**
-   * Included types
+   * Elsewhere defined types
    */
   others::string returnsString();
 
@@ -45,6 +45,12 @@ namespace types {
   struct struct_type {
   };
 
+  enum myEnum {
+    VALUE_1,
+    VALUE_2,
+    VALUE_3
+  };
+
   user_type returnsUserType();
   user_type* returnsUserTypePointer();
 
@@ -52,6 +58,8 @@ namespace types {
   struct_type* returnsStructTypePointer();
 
   struct_type& returnStructReference();
+  
+  myEnum returnMyEnum();
 
   /**
    * Const declarations

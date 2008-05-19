@@ -120,7 +120,6 @@ module RbGCCXML
 
     # Make it easy to print out the name of this node
     def to_s(full = false)
-#      puts "In Node#to_s for #{self.inspect}"
       full ? self.qualified_name : @node.attributes["name"]
     end
   end
