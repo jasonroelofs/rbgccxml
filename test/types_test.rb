@@ -102,3 +102,12 @@ context "Printing types" do
   end
 
 end
+
+context "Type comparitors" do
+  specify "can tell of a given type is a const" do
+    assert @@types_source.functions.find(:returns => "const user_type&").return_type.const?
+    assert @@types_source.functions.find(:returns => "const int*").return_type.const?
+    assert !@@types_source.functions.find(:returns => "string").return_type.const?
+    assert !@@types_source.functions.find(:returns => "int").return_type.const?
+  end
+end

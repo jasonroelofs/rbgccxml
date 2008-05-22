@@ -13,6 +13,12 @@ module RbGCCXML
       XMLParsing.find_type_of(self.node, "type") == new_val
     end
 
+    # Is this type a const?
+    def const?
+      found = XMLParsing.find_type_of(self.node, "type")
+      found ? found.const? : false
+    end
+
   end
 
 end

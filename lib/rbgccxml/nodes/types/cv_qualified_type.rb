@@ -10,5 +10,9 @@ module RbGCCXML
       "const #{type.to_s(full)}"
     end
 
+    # Yes, we are a constant type
+    def const?
+      self.node.attributes["const"].to_i == 1
+    end
   end
 end
