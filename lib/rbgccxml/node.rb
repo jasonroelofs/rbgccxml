@@ -23,6 +23,11 @@ module RbGCCXML
       @node.attributes['name']
     end
 
+    # Nodes are not const by default
+    def const?
+      false
+    end
+
     # Get the fully qualified (demangled) C++ name of this node.
     # The 'demangled' attribute of the node for methods / functions is the 
     # full signature, so cut that out.
