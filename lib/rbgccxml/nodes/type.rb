@@ -13,6 +13,16 @@ module RbGCCXML
       XMLParsing.find_type_of(self.node, "type") == new_val
     end
 
+    # Get the base type without any qualifiers. E.g, if you've
+    # got the CVQualified type "const my_space::MyClass&, this 
+    # will return the node for "my_space::MyClass"
+    #
+    # returns: Node related to the base C++ construct of this type
+    def base_type
+      n = XMLParsing.find_type_of(self.node, "type")
+      n.is_a?(Type) ? n.base_type : n
+    end
+
     # Is this type a const?
     def const?
       found = XMLParsing.find_type_of(self.node, "type")

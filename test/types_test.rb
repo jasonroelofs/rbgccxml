@@ -101,6 +101,11 @@ context "Printing types" do
     @@types_source.functions.find(:returns => "myEnum").return_type.to_s(true).should == "types::myEnum"
   end
 
+  specify "can get to the base C++ construct of given types" do
+    @@types_source.functions.find(:returns => "const user_type&").return_type.base_type.to_s.should == "user_type"
+    @@types_source.functions.find(:returns => "const int*").return_type.base_type.to_s.should == "int"
+  end
+
 end
 
 context "Type comparitors" do
