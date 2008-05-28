@@ -103,6 +103,17 @@ module RbGCCXML
       end
     end
 
+    # Find all enumerations in this scope. 
+    #
+    # This method functions like the others
+    def enumerations(name = nil)
+      if name
+        enumerations.find(:name => name)
+      else
+        XMLParsing.find_nested_nodes_of_type(@node, "Enumeration")
+      end
+    end
+
     # Special equality testing. A given node can be tested against
     # a String to test against the name of the node. For example
     #

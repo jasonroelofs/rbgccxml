@@ -96,10 +96,21 @@ module RbGCCXML
     # Arguments are a special case in gccxml as they are actual children of
     # the functions / methods they are a part of. 
     def self.find_arguments_for(node)
+      get_children_nodes_of_type(node, "Argument")
+    end
+
+    # Enumeration values are children of the Enumeration element
+    def self.get_values_of(enum)
+      get_children_nodes_of_type(enum.node, "EnumValue")
+    end
+
+    # Generic lookup method for nodes that are XML children of the passed in node.
+    # See find_arguments_for and get_values_of for example usage
+    def self.get_children_nodes_of_type(node, type)
       results = QueryResult.new
 
-      node.get_elements_by_tag_name("Argument").each do |argument|
-        results << Argument.new(argument)
+      node.get_elements_by_tag_name(type).each do |found|
+        results << RbGCCXML.const_get(type).new(found) 
       end
       
       results.flatten

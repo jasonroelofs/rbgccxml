@@ -21,6 +21,8 @@ module RbGCCXML
   autoload :Method, "rbgccxml/nodes/method" 
   autoload :Namespace, "rbgccxml/nodes/namespace" 
   autoload :Struct, "rbgccxml/nodes/struct" 
+  autoload :Enumeration, "rbgccxml/nodes/enumeration"  
+  autoload :EnumValue, "rbgccxml/nodes/enum_value"  
 
   # Type Management
   autoload :Type, "rbgccxml/nodes/type"
@@ -28,7 +30,6 @@ module RbGCCXML
   autoload :PointerType, "rbgccxml/nodes/types/pointer_type" 
   autoload :Typedef, "rbgccxml/nodes/types/typedef" 
   autoload :ReferenceType, "rbgccxml/nodes/types/reference_type"
-  autoload :Enumeration, "rbgccxml/nodes/types/enumeration"  
   autoload :CvQualifiedType, "rbgccxml/nodes/types/cv_qualified_type"  
 
 end
