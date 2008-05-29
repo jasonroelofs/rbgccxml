@@ -28,5 +28,17 @@ context "Querying for enumerations" do
     enum.values[1].value.should == 4
     enum.values[2].value.should == 7
   end
+
+  specify "properly prints out fully qualified C++ identifier for enum values" do
+    enum = @@enum_source.enumerations("TestEnum")
+    enum.values.length.should == 3
+    assert enum.values[0].qualified_name == "enums::VALUE1"
+    assert enum.values[1].qualified_name == "enums::VALUE2"
+    assert enum.values[2].qualified_name == "enums::VALUE3"
+
+    enum = @@enum_source.classes("Inner").enumerations("InnerEnum")
+    assert enum.values[0].qualified_name == "enums::Inner::INNER_1"
+    assert enum.values[1].qualified_name == "enums::Inner::INNER_2"
+  end
 end
 

@@ -19,6 +19,14 @@ namespace enums {
     YOU_LIKE_MONEY_TOO,
     I_LIKE_YOU = 7
   };
+
+  class Inner {
+    public:
+      enum InnerEnum {
+        INNER_1,
+        INNER_2,
+      };
+  };
 }
 
 #endif

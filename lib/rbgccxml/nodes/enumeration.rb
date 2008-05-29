@@ -3,7 +3,7 @@ module RbGCCXML
 
     # Get the list of Values for this enumeration
     def values
-      XMLParsing.get_values_of(self)
+      XMLParsing.get_values_of(self).each {|v| v.parent = self }
     end
 
   end
