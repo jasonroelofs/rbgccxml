@@ -26,4 +26,10 @@ namespace classes {
   class Test3 {
 
   };
+  
+  class Test4 {
+    public:
+      virtual int func1() = 0;
+      virtual Test1 func2() = 0;
+  };
 }
