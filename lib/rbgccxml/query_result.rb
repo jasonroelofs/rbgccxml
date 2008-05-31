@@ -5,6 +5,19 @@ module RbGCCXML
   # hash.
   class QueryResult < Array
 
+    # To facilitate the management of what could be many nodes found by a single query,
+    # we forward off any unknown methods to each node in the results query.
+    # We assume that if one node accepts the method, then all of them will.
+    def method_missing(name, *args)
+      if self[0].respond_to?(name)
+        self.each do |node|
+          node.send(name, *args) 
+        end
+      else
+        super
+      end
+    end
+
     # Find within this result set any nodes that match the given options
     # Options can be any or all of the following, based on the type of node:
     # 
