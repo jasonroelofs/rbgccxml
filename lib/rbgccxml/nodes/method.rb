@@ -7,5 +7,10 @@ module RbGCCXML
     def static?
       @node.attributes["static"] == "1"
     end
+    
+    # Is this a virtual method?
+    def virtual?
+      @node.attributes["virtual"] == "1"
+    end
   end
 end
