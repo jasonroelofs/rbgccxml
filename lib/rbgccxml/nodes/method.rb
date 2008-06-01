@@ -12,5 +12,10 @@ module RbGCCXML
     def virtual?
       @node.attributes["virtual"] == "1"
     end
+    
+    # A purely virtual method has no body.
+    def purely_virtual?
+      @node.attributes["pure_virtual"] == "1"
+    end
   end
 end

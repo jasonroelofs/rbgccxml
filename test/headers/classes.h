@@ -29,7 +29,12 @@ namespace classes {
   
   class Test4 {
     public:
-      virtual int func1() = 0;
-      virtual Test1 func2() = 0;
+      virtual int func1() {
+        return -1;
+      }
+      virtual Test1 func2() {
+        return Test1();
+      }
+      virtual int func3() = 0;
   };
 }

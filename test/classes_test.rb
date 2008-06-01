@@ -7,7 +7,7 @@ context "Querying for classes" do
 
   specify "can find all classes in a given namespace" do
     classes = @@source.classes
-    classes.size.should == 3 
+    classes.size.should == 4
 
     %w(Test1 Test2 Test3).each do |t|
       assert classes.detect {|c| c.node == @@source.classes(t).node }, 

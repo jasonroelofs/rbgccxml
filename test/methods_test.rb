@@ -59,7 +59,12 @@ context "Properties on Methods" do
   specify "should be able to tell if a given method is virtual or not" do
     test4 = @@classes_source.classes("Test4")
     assert test4.methods("func1").virtual?
+    assert !test4.methods("func1").purely_virtual?
     
     assert test4.methods("func2").virtual?
+    assert !test4.methods("func2").purely_virtual?
+    
+    assert test4.methods("func3").virtual?
+    assert test4.methods("func3").purely_virtual?
   end
 end
