@@ -39,7 +39,7 @@ context "Querying for class constructors" do
 
   specify "should have a list of constructors" do
     test1 = @@source.classes.find(:name => "Test1")
-    test1.constructors.size.should == 1
+    test1.constructors.size.should == 2
 
     test2 = @@source.classes.find(:name => "Test2")
     test2.constructors.size.should == 2
