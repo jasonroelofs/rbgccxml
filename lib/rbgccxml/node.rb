@@ -25,7 +25,27 @@ module RbGCCXML
 
     # Nodes are not const by default
     def const?
-      false
+      if @node.attributes["const"]
+        @node.attributes["const"] == "1"
+      else 
+        false
+      end
+    end
+
+    # Is this node public access?
+    # All nodes default to public access unless otherwise specified
+    def public?
+     @node.attributes["access"] ? @node.attributes["access"] == "public" : true
+    end
+
+    # Is this node protected access?
+    def protected?
+     @node.attributes["access"] ? @node.attributes["access"] == "protected" : false
+    end
+
+    # Is this node private access?
+    def private?
+     @node.attributes["access"] ? @node.attributes["access"] == "private" : false
     end
 
     # Get the fully qualified (demangled) C++ name of this node.

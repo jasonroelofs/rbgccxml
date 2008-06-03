@@ -64,3 +64,16 @@ context "Equality testing" do
     assert !(upper == inner)
   end
 end
+
+context "Misc access methods" do
+
+  specify "can tell if something is public, protected, and private" do
+    source = RbGCCXML.parse(full_dir("headers/misc.h"))
+    access = source.namespaces("misc").classes("AccessSettings")
+
+    assert access.methods("privateMethod").private?
+    assert access.methods("protectedMethod").protected?
+    assert access.methods("publicMethod").public?
+  end
+
+end
