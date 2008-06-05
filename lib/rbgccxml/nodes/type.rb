@@ -2,6 +2,12 @@ module RbGCCXML
 
   # The base class for all type management classes.
   class Type < Node
+    
+    # True if the type is equal to the passed in string.
+    # ex: function.is_type?("void*")
+    def is_type?(type_name)
+      !to_s.index(type_name).nil?
+    end
 
     # For types like pointers or references, we recursively track down
     # the base type when doing comparisons.
