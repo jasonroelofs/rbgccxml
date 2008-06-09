@@ -147,6 +147,15 @@ module RbGCCXML
 
         false
       elsif val.is_a?(Regexp)
+        self =~ val
+      else
+        super
+      end
+    end
+
+    # Regexp comparison operator, fits in with #== above
+    def =~(val)
+      if val.is_a?(Regexp)
         self.name =~ val || self.qualified_name =~ val
       else
         super
