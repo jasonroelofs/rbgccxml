@@ -56,8 +56,17 @@ module RbGCCXML
     #
     # Returns: A new QueryResult containing the results, allowing for nested +finds+. 
     # However, If there is only one result, returns that single Node instead.
-    def find(options = {})
+    def find(*options)
       result = QueryResult.new
+      query_set = self
+
+      if options[0] == :all
+        node_type = self[0].class.to_s.split(/::/)[-1]
+        query_set = XMLParsing.find_all(:type => node_type)
+        options = options[1]
+      else
+        options = options[0]
+      end
 
       name = options.delete(:name)
       returns = options.delete(:returns)
@@ -68,10 +77,9 @@ module RbGCCXML
       raise "Unknown keys #{options.keys.join(", ")}. " +
         "Expected are: #{EXPECTED_OPTIONS.join(",")}" unless options.empty?
 
-      query_set = self
       found = {}
 
-      self.each do |node|
+      query_set.each do |node|
         # C++ name
         if name
           found[:name] ||= []
@@ -118,7 +126,7 @@ module RbGCCXML
       # Now we do an intersection of all the found nodes,
       # which ensures that we AND together all the parts
       # the user is looking for
-      tmp = self
+      tmp = query_set
       found.each_value do |value|
         tmp = (tmp & value)
       end

@@ -57,6 +57,12 @@ context "QueryResult#find :name" do
     @@query_source ||= RbGCCXML.parse(full_dir("headers/queryable.h")).namespaces("query")
   end
 
+  specify "can find by regular name" do
+    func = @@query_source.functions.find(:name => "test4")
+    func.should.be.a.kind_of RbGCCXML::Function
+    func.name.should == "test4"
+  end
+
   specify "can find names by regex" do
     bool = @@query_source.functions.find(:name => /bool/)
     bool.should.be.a.kind_of RbGCCXML::Function
@@ -73,8 +79,8 @@ context "QueryResult#find :arguments" do
 
   specify "no arguments" do
     funcs = @@query_source.functions.find(:arguments => [])
-    assert funcs.find {|f| f.name == "test1" }
-    assert funcs.find {|f| f.name == "bool_method" }
+    assert funcs.detect {|f| f.name == "test1" }
+    assert funcs.detect {|f| f.name == "bool_method" }
   end
 
   specify "multiple arguments" do
@@ -91,8 +97,8 @@ context "QueryResult#find :arguments" do
   specify "when searching arguments, can specify catch-all" do
     funcs = @@query_source.functions.find(:arguments => [:int, nil])
     funcs.size.should == 2
-    assert funcs.find {|f| f.name == "test3" }
-    assert funcs.find {|f| f.name == "test4" }
+    assert funcs.detect {|f| f.name == "test3" }
+    assert funcs.detect {|f| f.name == "test4" }
   end
 
   specify "works when using custom defined types" do
@@ -130,9 +136,9 @@ context "QueryResult#find :returns" do
 
   specify "by return type" do
     funcs = @@query_source.functions.find(:returns => :void)
-    assert funcs.find {|f| f.name == "test1" }
-    assert funcs.find {|f| f.name == "test2" }
-    assert funcs.find {|f| f.name == "test3" }
+    assert funcs.detect {|f| f.name == "test1" }
+    assert funcs.detect {|f| f.name == "test2" }
+    assert funcs.detect {|f| f.name == "test3" }
   end
 
   specify "works with custom defined types" do
@@ -202,16 +208,21 @@ context "QueryResult#find :all - Flag full source search" do
     @@query_source ||= RbGCCXML.parse(full_dir("headers/queryable.h")).namespaces("query")
   end
 
-  xspecify "can find all :names regardless of nesting" do
-
+  specify "can find all :names regardless of nesting" do
+    func = @@query_source.functions.find(:all, :name => "nestedFunction")
+    func.name.should == "nestedFunction"
   end
 
-  xspecify "can find according to :arguments" do
-
+  specify "can find according to :arguments" do
+    func = @@query_source.functions.find(:all, :arguments => ["MyType", "MyType"])
+    func.name.should == "nestedMyTypeArg"
   end
   
-  xspecify "can find according to :returns " do
-
+  specify "can find according to :returns " do
+    funcs = @@query_source.functions.find(:all, :returns => ["MyType"])
+    funcs.size.should == 2
+    assert funcs.detect {|f| f.name == "nestedMyTypeReturns"}
+    assert funcs.detect {|f| f.name == "testMyType"}
   end
 
 end

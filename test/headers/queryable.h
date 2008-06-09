@@ -51,6 +51,10 @@ namespace query {
   namespace nested1 {
     namespace nested2 {
       void nestedFunction();
+
+      MyType nestedMyTypeReturns();
     }
+
+    void nestedMyTypeArg(MyType arg1, MyType arg2);
   }
 }
