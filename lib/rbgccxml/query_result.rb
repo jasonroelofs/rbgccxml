@@ -18,16 +18,19 @@ module RbGCCXML
       end
     end
 
+    EXPECTED_OPTIONS = [:name, :returns, :arguments, :access] unless defined?(EXPECTED_OPTIONS)
+
     # Find within this result set any nodes that match the given options
     # Options can be any or all of the following, based on the type of node:
     # 
-    # All nodes:
     # <tt>:name</tt>::        The unmangled name of the node. Can be a string or Regexp. Works on all nodes.
     # <tt>:arguments</tt>::   Search according to argument types. 
     #                         This needs to be an array of strings or symbols. nil can be
     #                         used as a "any" flag. Only works on Functions, Methods, and Constructors
     # <tt>:returns</tt>::     Search according to the return type. Can be a string or symbol.
     #                         Only works on Functions and Methods
+    # <tt>:access</tt>::      Search according to access properties. Can be :public, :protected, or :private.
+    #                         Only works on Classes and Methods
     #
     # All arguments added to the options are processed in an AND format. If you
     # are looking for 3 random arguments with a return type of int:
@@ -56,45 +59,27 @@ module RbGCCXML
     def find(options = {})
       result = QueryResult.new
 
-      # Handler hash for doing AND intersection checking
-      found = {}
-
       name = options.delete(:name)
       returns = options.delete(:returns)
       arguments = options.delete(:arguments)
+      access = options.delete(:access)
 
-      # For fully qualified name searching
-      # There must be a better way to handle fully qualified name searching
-      new_hits = []
-      
       raise ":arguments must be an array" if arguments && !arguments.is_a?(Array)
-      raise "Unknown keys #{option.keys.join(", ")}. " +
-        "Expected are: :name, :arguments, and :returns" unless options.empty?
+      raise "Unknown keys #{options.keys.join(", ")}. " +
+        "Expected are: #{EXPECTED_OPTIONS.join(",")}" unless options.empty?
+
+      query_set = self
+      found = {}
 
       self.each do |node|
         # C++ name
         if name
           found[:name] ||= []
-          if name.is_a?(Regexp)
-            found_name = (node.attributes["name"] =~ name)
-          elsif name =~ /::/ && new_hits.empty?
-            # Special case for fully qualified testing. We now need to look through
-            # the entire list looking for a node who's demangled name matches the given
-            # name
-            node_type = node.class.to_s.split(/::/)[-1]
-            XMLParsing.find_all(:type => node_type).each do |n|
-              if n.qualified_name =~ /#{name}/
-                node = n
-                new_hits << n
-                found_name = true
-                break
-              end
-            end
-          else
-            found_name = (node.attributes["name"] == name)
+          if name.is_a?(String)
+            found[:name] << node if node == name
+          elsif name.is_a?(Regexp)
+            found[:name] << node if node.name =~ name || node == name
           end
-
-          found[:name] << node if found_name
         end
 
         # Return type
@@ -122,12 +107,18 @@ module RbGCCXML
 
           found[:arguments] << node if keep
         end
+
+        # Access type
+        if access
+          found[:access] ||= []
+          found[:access] << node if node.attributes["access"] == access.to_s
+        end
       end
 
       # Now we do an intersection of all the found nodes,
       # which ensures that we AND together all the parts
       # the user is looking for
-      tmp = (self << new_hits).flatten
+      tmp = self
       found.each_value do |value|
         tmp = (tmp & value)
       end

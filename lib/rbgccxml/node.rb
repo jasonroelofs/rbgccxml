@@ -143,7 +143,9 @@ module RbGCCXML
     def ==(val)
       if val.is_a?(String)
         return true if self.name == val
-        return true if self.qualified_name =~ /#{val.gsub("*", "\\*")}/
+        # Need to take care of '*' which is a regex character, and any leading ::,
+        # which are redundant in our case.
+        return true if self.qualified_name =~ /#{val.gsub("*", "\\*").gsub(/^::/, "")}/
         false
       else
         super
