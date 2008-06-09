@@ -63,6 +63,12 @@ context "Equality testing" do
     inner = upper.namespaces("inner1")
     assert !(upper == inner)
   end
+
+  specify "should find explicit over matches" do
+    source = RbGCCXML.parse(full_dir("headers/classes.h")).namespaces("classes")
+    f = source.classes("Test2").methods("func")
+    f.name.should == "func"
+  end
 end
 
 context "Misc access methods" do

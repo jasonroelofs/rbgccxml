@@ -19,6 +19,7 @@ namespace classes {
       Test2() {  }
       Test2(int a) { }
 
+      void func();
       void func1() {}
       int func2(int a, float b) { return 1; }
   };

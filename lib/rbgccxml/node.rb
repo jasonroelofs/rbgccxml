@@ -25,11 +25,7 @@ module RbGCCXML
 
     # Nodes are not const by default
     def const?
-      if @node.attributes["const"]
-        @node.attributes["const"] == "1"
-      else 
-        false
-      end
+      @node.attributes["const"] ? @node.attributes["const"] == "1" : false
     end
 
     # Is this node public access?
@@ -145,7 +141,14 @@ module RbGCCXML
         return true if self.name == val
         # Need to take care of '*' which is a regex character, and any leading ::,
         # which are redundant in our case.
-        return true if self.qualified_name =~ /#{val.gsub("*", "\\*").gsub(/^::/, "")}/
+        if val =~ /::/
+          return true if self.qualified_name =~ /#{val.gsub("*", "\\*").gsub(/^::/, "")}/
+        end
+
+        false
+      elsif val.is_a?(Regexp)
+        return true if self.name =~ val
+        return true if self.qualified_name =~ val
         false
       else
         super

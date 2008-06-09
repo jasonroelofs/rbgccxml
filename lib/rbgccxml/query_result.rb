@@ -83,11 +83,7 @@ module RbGCCXML
         # C++ name
         if name
           found[:name] ||= []
-          if name.is_a?(String)
-            found[:name] << node if node == name
-          elsif name.is_a?(Regexp)
-            found[:name] << node if node.name =~ name || node == name
-          end
+          found[:name] << node if node == name
         end
 
         # Return type
