@@ -147,9 +147,7 @@ module RbGCCXML
 
         false
       elsif val.is_a?(Regexp)
-        return true if self.name =~ val
-        return true if self.qualified_name =~ val
-        false
+        self.name =~ val || self.qualified_name =~ val
       else
         super
       end
