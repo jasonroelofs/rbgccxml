@@ -8,7 +8,7 @@ module RbGCCXML
   #
   # Any Node further down the heirarchy chain can and should define which 
   # finder methods are and are not avaiable at that level. For example, the 
-  # Class Node cannot search for other Namespaces within that class.
+  # Class node cannot search for other Namespaces within that class.
   class Node 
     attr_reader :node
 
@@ -17,42 +17,42 @@ module RbGCCXML
     def initialize(node)
       @node = node
     end
-    
+    protected :initialize
+
     # Get the C++ name of this node
     def name
       @node.attributes['name']
     end
-
-    # Nodes are not const by default
-    def const?
-      @node.attributes["const"] ? @node.attributes["const"] == "1" : false
-    end
-
-    # Is this node public access?
-    # All nodes default to public access unless otherwise specified
-    def public?
-     @node.attributes["access"] ? @node.attributes["access"] == "public" : true
-    end
-
-    # Is this node protected access?
-    def protected?
-     @node.attributes["access"] ? @node.attributes["access"] == "protected" : false
-    end
-
-    # Is this node private access?
-    def private?
-     @node.attributes["access"] ? @node.attributes["access"] == "private" : false
-    end
-
+    
     # Get the fully qualified (demangled) C++ name of this node.
-    # The 'demangled' attribute of the node for methods / functions is the 
-    # full signature, so cut that out.
     def qualified_name
       if @node.attributes["demangled"]
+        # The 'demangled' attribute of the node for methods / functions is the 
+        # full signature, so cut that part out.
         @node.attributes["demangled"].split(/\(/)[0]
       else
         parent ? "#{parent.qualified_name}::#{name}" : name
       end
+    end
+
+    # Is this node const qualified?
+    def const?
+      @node.attributes["const"] ? @node.attributes["const"] == "1" : false
+    end
+
+    # Does this node have public access?
+    def public?
+     @node.attributes["access"] ? @node.attributes["access"] == "public" : true
+    end
+
+    # Does this node have protected access?
+    def protected?
+     @node.attributes["access"] ? @node.attributes["access"] == "protected" : false
+    end
+
+    # Does this node have private access?
+    def private?
+     @node.attributes["access"] ? @node.attributes["access"] == "private" : false
     end
 
     # Forward up attribute array for easy access to the
@@ -61,7 +61,7 @@ module RbGCCXML
       @node.attributes
     end
 
-    # Get the file name of the file this node is found in. 
+    # Returns the full file name of the file this node is found in. 
     def file_name(basename = true)
       file_id = @node.attributes["file"]
       file_node = XMLParsing.find(:type => "File", :id => file_id)
@@ -69,7 +69,7 @@ module RbGCCXML
       basename ? ::File.basename(name) : name
     end
 
-    # Get the parent node of this node. e.g. function.parent will get the class
+    # Returns the parent node of this node. e.g. function.parent will get the class
     # the function is contained in.
     def parent
       return nil if @node.attributes["context"].nil? || @node.attributes["context"] == "_1"
@@ -79,6 +79,8 @@ module RbGCCXML
     # Find all namespaces. There are two ways of calling this method:
     #   #namespaces  => Get all namespaces in this scope
     #   #namespaces(name) => Shortcut for namespaces.find(:name => name)
+    #
+    # Returns a QueryResult unless only one node was found
     def namespaces(name = nil)
       if name
         namespaces.find(:name => name)
@@ -87,8 +89,8 @@ module RbGCCXML
       end
     end
 
-    # Find all classes in this scope. Like #namespaces, there are
-    # two ways of calling this method.
+    # Find all classes in this scope. 
+    # See Node.namespaces
     def classes(name = nil)
       if name
         classes.find(:name => name)
@@ -97,8 +99,8 @@ module RbGCCXML
       end
     end
 
-    # Find all structs in this scope. Like #namespaces, there are
-    # two ways of calling this method.
+    # Find all structs in this scope. 
+    # See Node.namespaces
     def structs(name = nil)
       if name
         structs.find(:name => name)
@@ -109,8 +111,8 @@ module RbGCCXML
 
     # Find all functions in this scope. Functions are free non-class
     # functions. To search for class methods, use #methods.
-    # 
-    # Like #namespaces, there are two ways of calling this method.
+    #
+    # See Node.namespaces
     def functions(name = nil)
       if name
         functions.find(:name => name)
@@ -120,8 +122,7 @@ module RbGCCXML
     end
 
     # Find all enumerations in this scope. 
-    #
-    # This method functions like the others
+    # See Node.namespaces
     def enumerations(name = nil)
       if name
         enumerations.find(:name => name)
@@ -153,7 +154,7 @@ module RbGCCXML
       end
     end
 
-    # Regexp comparison operator, fits in with #== above
+    # Regexp comparison operator for consistency. See Node.==
     def =~(val)
       if val.is_a?(Regexp)
         self.name =~ val || self.qualified_name =~ val
@@ -162,7 +163,8 @@ module RbGCCXML
       end
     end
 
-    # Make it easy to print out the name of this node
+    # Print out the name of this node. If passed in <tt>true</tt> then will
+    # print out the fully qualified name of this node.
     def to_s(full = false)
       full ? self.qualified_name : self.name
     end

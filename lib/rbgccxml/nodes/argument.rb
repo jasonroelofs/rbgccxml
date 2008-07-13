@@ -1,5 +1,5 @@
 module RbGCCXML
-  # Class representing a single <Argument ...> node.
+  # Class representing a single <Argument> node.
   class Argument < Node
 
     # Get the C++ type of this argument.

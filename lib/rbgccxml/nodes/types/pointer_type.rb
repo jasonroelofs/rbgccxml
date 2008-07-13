@@ -1,9 +1,7 @@
 module RbGCCXML
-
   # This represents a Pointer of any other kind of type
   class PointerType < Type
 
-    # Does this type match the given name string? 
     def ==(val)
       check_sub_type_without(val, /\*/)
     end

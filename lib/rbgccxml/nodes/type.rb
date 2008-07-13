@@ -1,6 +1,7 @@
 module RbGCCXML
-
   # The base class for all type management classes.
+  # RbGCCXML has a pretty extensive type querying sub-system that
+  # allows type matching by names, types, base types, etc
   class Type < Node
 
     # For types like pointers or references, we recursively track down
@@ -28,7 +29,6 @@ module RbGCCXML
       found = XMLParsing.find_type_of(self.node, "type")
       found ? found.const? : false
     end
-
   end
 
 end

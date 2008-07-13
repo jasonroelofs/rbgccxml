@@ -1,5 +1,5 @@
 module RbGCCXML
-  # Node type represending <Method ...> nodes, which are representation
+  # Node type representing <Method> nodes, which are representation
   # of class methods.
   class Method < Function
 
@@ -13,7 +13,7 @@ module RbGCCXML
       @node.attributes["virtual"] == "1"
     end
     
-    # A purely virtual method has no body.
+    # Is this a pure virtual method? A purely virtual method has no body.
     def purely_virtual?
       @node.attributes["pure_virtual"] == "1"
     end

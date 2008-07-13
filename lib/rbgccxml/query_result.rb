@@ -1,8 +1,7 @@
 module RbGCCXML
-  # Any node query will return an instance of this class, QueryResult. This 
-  # class is an Array with slightly different handling of #find. Array#find
-  # expects a block to find elements, we want #find to take an options
-  # hash.
+  # All queries return either an instance of this class, or in the case of
+  # a single result, the node found. Use this class to further define query
+  # parameters.
   class QueryResult < Array
 
     # To facilitate the management of what could be many nodes found by a single query,
@@ -53,6 +52,14 @@ module RbGCCXML
     # functions that return a pointer to MyClass:
     #
     #   find(:returns => "MyClass*")
+    #
+    # There will be cases where you'll want to search *all* of a given type no matter what scope
+    # or nesting exists. To put a finder into this mode, you simply send :all as the first parameter:
+    #
+    #   find(:all, [arguments as defined above])
+    #
+    # will find all nodes that fit the normal arguments for a given type (the node type of the first
+    # in the initial result set. e.g. if you run <tt>classes.find(:all)</tt> then all Class nodes)
     #
     # Returns: A new QueryResult containing the results, allowing for nested +finds+. 
     # However, If there is only one result, returns that single Node instead.

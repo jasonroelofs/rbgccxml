@@ -1,4 +1,7 @@
 module RbGCCXML
+  # Node that represents <CvQualifiedType>. This gccxml node handles
+  # both const and volitile flags, but for our case we only use the
+  # const flag.
   class CvQualifiedType < Type
     
     def ==(val)
@@ -10,7 +13,6 @@ module RbGCCXML
       "const #{type.to_s(full)}"
     end
 
-    # Yes, we are a constant type
     def const?
       self.node.attributes["const"].to_i == 1
     end

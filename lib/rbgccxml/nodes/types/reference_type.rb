@@ -1,4 +1,5 @@
 module RbGCCXML
+  # This deals with C++ Reference nodes (&)
   class ReferenceType < Type
 
     def ==(val)

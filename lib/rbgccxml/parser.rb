@@ -2,7 +2,7 @@ require 'tempfile'
 
 module RbGCCXML
 
-  # This class starts the whole process.
+  # This class manages the parsing of the C++ code.
   # Please use RbGCCXML.parse and not this class directly
   class Parser
 

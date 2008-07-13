@@ -3,11 +3,11 @@
 RbGCCXML allows one to easily parse out and query C++ code. This library uses GCC-XML to parse out 
 the C++ code into XML, and then Hpricot to parse and query that XML.
 
-GCC-XML (http://www.gccxml.org) is an application that takes takes the parse tree of G++ and 
+GCC-XML (http://www.gccxml.org) is an application that takes takes the parse tree of g++ and 
 constructs a very parsable and queryable XML file with all related information. GCC-XML currently 
 only works with code declarations; there currently are no plans to support code bodies.
 
-Note: For those familiary with pygccxml, the similarities are minimal. Outside of the purpose
+Note: For those familiar with pygccxml, the similarities are minimal. Outside of the purpose
 of both libraries, rbgccxml was built from scratch to provide a Ruby-esque query API instead of
 being a port. However, many thanks to Roman for his work, without which this library would also
 not exist.
@@ -110,8 +110,9 @@ These queries are also infinitely nestable. To find the class "Math" inside the 
 
   source.namespaces("core").namespaces("utils").classes("Math")
 
-RbGCCXML will eventually allow automatic jumping through layers, so namespaces("core::utils") would 
-work, but for now the library only supports the long-hand form above.
+or as a short-hand form:
+
+  source.namespaces("core::utils::Math")
 
 === Querying with #find
 
@@ -122,16 +123,20 @@ This is easy with RbGCCXML:
 
   source.classes("yourclass").methods.find(:returns => :int, :arguments => [nil, nil, nil])
 
-The keys +returns+ and +arguments+ can be used on their own, or at the same time as seen above. 
+The keys +returns+ and +arguments+ can be used on their own, or together as seen above. 
 The +arguments+ option must be an array, and if the type of the argument doesn't matter, placing
-'nil' in it's place acts as a wildcard. QueryResult.find is also chainable, provided that there
+'nil' in it's place acts as a wildcard. QueryResult#find is also chainable, provided that there
 are always more than one result. Otherwise, if there is just one result, only that Node will
 be returned and any further chained QueryResult.find methods will fail with "NoMethodError".
 
-For full details on using this method, please see it's documentation at QueryResult.find.
+For full details on using this method, please see it's documentation at RbGCCXML::QueryResult.
 
 === The Next Step
 
-To learn more about RbGCCXML, please start looking through the Node class; most of the query
-API starts there, and following with that head to QueryResult.
+To learn more about RbGCCXML, please start looking through the RbGCCXML::Node class; most of the query
+API starts there, and following with that head to RbGCCXML::QueryResult.
+
+== Additional Notes
+
+Querying for unsigned types is currently not implemented.
 

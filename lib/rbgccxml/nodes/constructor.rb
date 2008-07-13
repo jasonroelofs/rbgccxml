@@ -1,10 +1,7 @@
 module RbGCCXML
-  # Class representing <Constructor ...> nodes.
-  # Has arguments
+  # Class representing <Constructor> nodes.
   class Constructor < Function
-
-    # Constructors do not have a return_type, this raises an
-    # exception.
+    # Disabled: Constructors do not have a return_type.
     def return_type
       raise "There is no return_type of a constructor"
     end

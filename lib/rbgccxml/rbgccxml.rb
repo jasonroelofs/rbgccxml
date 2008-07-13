@@ -3,7 +3,7 @@ module RbGCCXML
 
   class << self
 
-    # This is where it all happens. This method must be after any calls
+    # This is where it all happens. This method must be called after any calls
     # to RbGCCXML.gccxml_path= or RbGCCXML.add_include_paths. 
     # Files can be one of many formats (and should always be full directory paths):
     #
