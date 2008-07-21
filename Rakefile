@@ -4,7 +4,7 @@ require 'rake/contrib/sshpublisher'
 require 'rake/gempackagetask'
 
 PROJECT_NAME = "rbgccxml"
-RBGCCXML_VERSION = "0.2"
+RBGCCXML_VERSION = "0.9"
 
 task :default => :test
 
@@ -25,15 +25,25 @@ end
 RUBYFORGE_USERNAME = "jameskilton"
 PROJECT_WEB_PATH = "/var/www/gforge-projects/rbplusplus/rbgccxml"
 
-# As part of the rbplusplus project, this just goes in a subfolder
-desc "Update the website" 
-task :upload_web => :rdoc  do |t|
-  unless File.directory?("publish")
-    mkdir "publish"
+namespace :web do
+  desc "Put the website together"
+  task :build => :rdoc do
+    unless File.directory?("publish")
+      mkdir "publish"
+    end
+    sh "cp -r html/* publish/"
   end
-  sh "cp -r html/* publish/"
-	Rake::SshDirPublisher.new("#{RUBYFORGE_USERNAME}@rubyforge.org", PROJECT_WEB_PATH, "publish").upload
-  rm_rf "publish"
+
+  # As part of the rbplusplus project, this just goes in a subfolder
+  desc "Update the website" 
+  task :upload => "web:build"  do |t|
+    Rake::SshDirPublisher.new("#{RUBYFORGE_USERNAME}@rubyforge.org", PROJECT_WEB_PATH, "publish").upload
+  end
+
+  desc "Clean up generated web files"
+  task :clean do
+    rm_rf "publish"
+  end
 end
 
 spec = Gem::Specification.new do |s|
