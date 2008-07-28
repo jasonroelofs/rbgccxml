@@ -43,8 +43,10 @@ module RbGCCXML
       @gccxml.parse(parse_file, @results_file.path)
 
       # Everything starts at the :: Namespace
-      document = Hpricot.XML(@results_file)
-      global_ns = document.search("//Namespace[@name='::']")[0]
+#      document = Hpricot.XML(@results_file)
+      document = LibXML::XML::Document.file(@results_file.path)
+      root = document.root
+      global_ns = root.find("//Namespace[@name='::']")[0]
 
       XMLParsing.doc_root = document
 

@@ -28,14 +28,14 @@ module RbGCCXML
       type = options.delete(:type)
       
       # Look value up in the cache for common operations if a type was given
-      if(type && options.length == 1 && options.keys[0] == :id)
-        return cache(type, options[:id])
-      end
+#      if(type && options.length == 1 && options.keys[0] == :id)
+#        return cache(type, options[:id])
+#      end
 
       attrs = options.map {|key, value| "[@#{key}='#{value}']"}.join
-      xpath = "//#{type}#{attrs}"
-
-      got = @@doc_root.at(xpath)
+      xpath = "//#{type || '*'}#{attrs}"
+      
+      got = @@doc_root.find(xpath).first
 
       if got
         RbGCCXML.const_get(type || got.name).new(got) 
@@ -57,21 +57,21 @@ module RbGCCXML
     # Returns all matching nodes
     def self.find_all(options = {})
       return nil if options.empty?
+      results = QueryResult.new
 
       type = options.delete(:type)
       attrs = options.map {|key, value| "[@#{key}='#{value}']"}.join
 
       xpath = "//#{type}#{attrs}"
       
-      results = @@doc_root.search(xpath)
+      found = @@doc_root.find(xpath)
       
-      if results
-        results.collect do |got|
-          RbGCCXML.const_get(type || got.name).new(got) 
+      if found
+        found.each do |got|
+          results << RbGCCXML.const_get(type || got.name).new(got) 
         end
-      else
-        nil
       end
+      results
     end
 
     # Look through the DOM under +node+ for +node_type+ nodes.
@@ -79,18 +79,8 @@ module RbGCCXML
     #
     # Returns a QueryResult with the findings.
     def self.find_nested_nodes_of_type(node, node_type)
-      results = QueryResult.new
-      
-      # First of all limit which elements we're searching for, to ease processing.
-      # In the GCCXML output, node heirarchy is designated by id, members, and context
-      # attributes:
-      # 
-      #   id => Unique identifier of a given node
-      #   members => Space-delimited array of node id's that are under this node
-      #   context => The parent node id of this node
-      #
-      # We only want those nodes in node's context.
-      return nested_cache(node_type, node.attributes["id"]).flatten
+      self.find_all(:type => node_type, :context => node.attributes["id"])
+#      return nested_cache(node_type, node.attributes["id"]).flatten
     end
 
     # Arguments are a special case in gccxml as they are actual children of
@@ -109,7 +99,8 @@ module RbGCCXML
     def self.get_children_nodes_of_type(node, type)
       results = QueryResult.new
 
-      node.get_elements_by_tag_name(type).each do |found|
+      node.children.each do |found|
+        next unless found.element?
         results << RbGCCXML.const_get(type).new(found) 
       end
       
@@ -123,10 +114,13 @@ module RbGCCXML
     #   +find_type_of(func_node, "returns")+ could return "std::string" node, "int" node, etc
     def self.find_type_of(node, attribute)
       id = node.attributes[attribute]
-      %w( PointerType ReferenceType FundamentalType Typedef Enumeration CvQualifiedType Class Struct ).each do |type|
-        return cache(type, id) if cache(type, id)
-      end
-      return nil
+
+      self.find(:id => id)
+
+#      %w( PointerType ReferenceType FundamentalType Typedef Enumeration CvQualifiedType Class Struct ).each do |type|
+#        return cache(type, id) if cache(type, id)
+#      end
+#      return nil
     end
     
     #
