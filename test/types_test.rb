@@ -62,6 +62,19 @@ context "Proper Type handling" do
     assert @@types_source.functions.find(:returns => "myEnum") == "returnMyEnum"
   end
 
+  specify "arrays" do
+#    @@types_source.functions.each do |f|
+#      print f.return_type.to_s + " "
+#      print f.to_s + "("
+#      f.arguments.each do |a|
+#        print "#{a.class} #{a.to_s},"
+#      end
+#      print ")"
+#      puts ""
+#    end
+    assert @@types_source.functions.find(:arguments => ["int[4]*"]) == "usesIntArray"
+  end
+
 end
 
 context "Printing types" do
@@ -99,6 +112,10 @@ context "Printing types" do
     # Enumerations
     @@types_source.functions.find(:returns => "myEnum").return_type.to_s.should == "myEnum"
     @@types_source.functions.find(:returns => "myEnum").return_type.to_s(true).should == "types::myEnum"
+
+    # Array Types
+    @@types_source.functions.find(:name => "usesIntArray").arguments[0].to_s.should == "input"
+    @@types_source.functions.find(:name => "usesIntArray").arguments[0].to_s(true).should == "int[4]* input"
   end
 
   specify "can get to the base C++ construct of given types" do

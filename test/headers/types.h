@@ -69,6 +69,11 @@ namespace types {
 
   const int* returnConstIntPointer();
   const user_type& returnConstUserTypeRef();
+
+  /**
+   * Array types
+   */
+  void usesIntArray(int input[4][4]);
 }
 
 #endif

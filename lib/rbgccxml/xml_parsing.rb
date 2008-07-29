@@ -56,8 +56,8 @@ module RbGCCXML
     #
     # Returns all matching nodes
     def self.find_all(options = {})
-      return nil if options.empty?
       results = QueryResult.new
+      return results if options.empty?
 
       type = options.delete(:type)
       attrs = options.map {|key, value| "[@#{key}='#{value}']"}.join

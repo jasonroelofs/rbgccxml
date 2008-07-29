@@ -32,5 +32,6 @@ module RbGCCXML
   autoload :Typedef, "rbgccxml/nodes/types/typedef" 
   autoload :ReferenceType, "rbgccxml/nodes/types/reference_type"
   autoload :CvQualifiedType, "rbgccxml/nodes/types/cv_qualified_type"  
+  autoload :ArrayType, "rbgccxml/nodes/types/array_type"
 
 end
