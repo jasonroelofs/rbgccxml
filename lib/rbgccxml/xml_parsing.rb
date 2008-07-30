@@ -27,11 +27,6 @@ module RbGCCXML
       return nil if options.empty?
       type = options.delete(:type)
       
-      # Look value up in the cache for common operations if a type was given
-#      if(type && options.length == 1 && options.keys[0] == :id)
-#        return cache(type, options[:id])
-#      end
-
       attrs = options.map {|key, value| "[@#{key}='#{value}']"}.join
       xpath = "//#{type || '*'}#{attrs}"
       
@@ -80,7 +75,6 @@ module RbGCCXML
     # Returns a QueryResult with the findings.
     def self.find_nested_nodes_of_type(node, node_type)
       self.find_all(:type => node_type, :context => node.attributes["id"])
-#      return nested_cache(node_type, node.attributes["id"]).flatten
     end
 
     # Arguments are a special case in gccxml as they are actual children of
@@ -116,63 +110,6 @@ module RbGCCXML
       id = node.attributes[attribute]
 
       self.find(:id => id)
-
-#      %w( PointerType ReferenceType FundamentalType Typedef Enumeration CvQualifiedType Class Struct ).each do |type|
-#        return cache(type, id) if cache(type, id)
-#      end
-#      return nil
-    end
-    
-    #
-    # Returns the element in cache for type at id.
-    # Used internally.
-    #
-    def self.cache(type, id)
-      @@types_cache ||= {}
-      @@types_cache[type] ||= {}
-      build_cache(type) if @@types_cache[type].empty?
-      return @@types_cache[type][id]
-    end
-    
-    #
-    # Creates a cache to work off of.
-    # Used internally
-    #
-    def self.build_cache(type) 
-      XMLParsing.find_all(:type => type).each do |result|
-        @@types_cache[type][result.attributes["id"]] = result
-      end
-    end
-    
-    #
-    # Returns the element in cache for type at id
-    # Used internally
-    #
-    def self.nested_cache(type, context)
-      @@nested_cache ||= {}
-      @@nested_cache[type] ||= {}
-      build_nested_cache(type) if @@nested_cache[type].empty?
-      return @@nested_cache[type][context] || QueryResult.new
-    end
-    
-    #
-    # Creates a nested cache to work off of.
-    # Used internally
-    #
-    def self.build_nested_cache(type) 
-      XMLParsing.find_all(:type => type).each do |result|
-        @@nested_cache[type][result.attributes["context"]] ||= QueryResult.new
-        @@nested_cache[type][result.attributes["context"]] << result
-      end
-    end
-   
-   
-    #
-    # Clears the cache.  Use this if you are querying two seperate libraries.
-    #  
-    def self.clear_cache
-      @@nested_cache = nil
-      @@types_cache = nil
     end
   end
 end
