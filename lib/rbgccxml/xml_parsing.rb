@@ -106,10 +106,8 @@ module RbGCCXML
     # type of a function:
     #
     #   +find_type_of(func_node, "returns")+ could return "std::string" node, "int" node, etc
-    def self.find_type_of(node, attribute)
-      id = node.attributes[attribute]
-
-      self.find(:id => id)
+    def self.find_type_of(node, attr)
+      self.find(:id => node.attributes[attr])
     end
   end
 end
