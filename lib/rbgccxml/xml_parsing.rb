@@ -10,6 +10,12 @@ module RbGCCXML
     # Hpricot document to do proper searching.
     def self.doc_root=(root)
       @@doc_root = root
+      self.clear_cache
+    end
+
+    def self.clear_cache
+      @@find_query_cache = {}
+      @@all_query_cache = {}
     end
 
     # Generic finding of nodes according to attributes.
@@ -25,6 +31,11 @@ module RbGCCXML
     # Returns the first found node
     def self.find(options = {})
       return nil if options.empty?
+
+      cache_key = options.to_s
+      cached = @@find_query_cache[cache_key]
+      return cached if cached
+
       type = options.delete(:type)
       
       attrs = options.map {|key, value| "[@#{key}='#{value}']"}.join
@@ -33,7 +44,9 @@ module RbGCCXML
       got = @@doc_root.find(xpath).first
 
       if got
-        RbGCCXML.const_get(type || got.name).new(got) 
+        result = RbGCCXML.const_get(type || got.name).new(got) 
+        @@find_query_cache[cache_key] = result
+        result
       else
         nil
       end
@@ -53,6 +66,10 @@ module RbGCCXML
     def self.find_all(options = {})
       results = QueryResult.new
       return results if options.empty?
+      cache_key = options.to_s
+
+      cached = @@all_query_cache[cache_key]
+      return cached if cached
 
       type = options.delete(:type)
       attrs = options.map {|key, value| "[@#{key}='#{value}']"}.join
@@ -65,6 +82,7 @@ module RbGCCXML
         found.each do |got|
           results << RbGCCXML.const_get(type || got.name).new(got) 
         end
+        @@all_query_cache[cache_key] = results
       end
       results
     end
