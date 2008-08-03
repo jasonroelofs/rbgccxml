@@ -63,15 +63,6 @@ context "Proper Type handling" do
   end
 
   specify "arrays" do
-#    @@types_source.functions.each do |f|
-#      print f.return_type.to_s + " "
-#      print f.to_s + "("
-#      f.arguments.each do |a|
-#        print "#{a.class} #{a.to_s},"
-#      end
-#      print ")"
-#      puts ""
-#    end
     assert @@types_source.functions.find(:arguments => ["int[4]*"]) == "usesIntArray"
   end
 
@@ -130,6 +121,7 @@ context "Type comparitors" do
     assert @@types_source.functions.find(:returns => "const user_type&").return_type.const?
     assert @@types_source.functions.find(:returns => "const int*").return_type.const?
     assert !@@types_source.functions.find(:returns => "user_type").return_type.const?
+
     assert !@@types_source.functions.find(:returns => "string").return_type.const?
     assert !@@types_source.functions.find(:returns => "int").return_type.const?
   end

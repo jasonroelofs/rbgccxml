@@ -24,7 +24,7 @@ module RbGCCXML
       n.is_a?(Type) ? n.base_type : n
     end
 
-    # Is this type a const?
+    # Is this type const qualified?
     def const?
       found = XMLParsing.find_type_of(self.node, "type")
       found ? found.const? : false

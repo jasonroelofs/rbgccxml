@@ -21,12 +21,12 @@ module RbGCCXML
     # Generic finding of nodes according to attributes.
     # Special options:
     #
-    # <tt>:type</tt>:: Specify a certain node type to search by
+    # <tt>:node_type</tt>:: Specify a certain node type to search by
     #
     # Any other options is directly mapped to attributes on the node. For example, to find
     # a Function node that have the name "functor":
     #
-    #   XMLParsing.find(:type => "Function", :name => "functor")
+    #   XMLParsing.find(:node_type => "Function", :name => "functor")
     #
     # Returns the first found node
     def self.find(options = {})
@@ -36,15 +36,15 @@ module RbGCCXML
       cached = @@find_query_cache[cache_key]
       return cached if cached
 
-      type = options.delete(:type)
-      
+      type = options.delete(:node_type)
+
       attrs = options.map {|key, value| "[@#{key}='#{value}']"}.join
       xpath = "//#{type || '*'}#{attrs}"
       
       got = @@doc_root.find(xpath).first
 
       if got
-        result = RbGCCXML.const_get(type || got.name).new(got) 
+        result = build_type(type || got.name, got)
         @@find_query_cache[cache_key] = result
         result
       else
@@ -55,12 +55,12 @@ module RbGCCXML
     # Generic finding of nodes according to attributes.
     # Special options:
     #
-    # <tt>:type</tt>:: Specify a certain node type to search by
+    # <tt>:node_type</tt>:: Specify a certain node type to search by
     #
     # Any other options is directly mapped to attributes on the node. For example, to find all
     # Function nodes:
     #
-    #   XMLParsing.find_all(:type => "Function")
+    #   XMLParsing.find_all(:node_type => "Function")
     #
     # Returns all matching nodes
     def self.find_all(options = {})
@@ -71,7 +71,7 @@ module RbGCCXML
       cached = @@all_query_cache[cache_key]
       return cached if cached
 
-      type = options.delete(:type)
+      type = options.delete(:node_type)
       attrs = options.map {|key, value| "[@#{key}='#{value}']"}.join
 
       xpath = "//#{type}#{attrs}"
@@ -80,7 +80,7 @@ module RbGCCXML
       
       if found
         found.each do |got|
-          results << RbGCCXML.const_get(type || got.name).new(got) 
+          results << build_type(type || got.name, got) 
         end
         @@all_query_cache[cache_key] = results
       end
@@ -92,7 +92,7 @@ module RbGCCXML
     #
     # Returns a QueryResult with the findings.
     def self.find_nested_nodes_of_type(node, node_type)
-      self.find_all(:type => node_type, :context => node.attributes["id"])
+      self.find_all(:node_type => node_type, :context => node.attributes["id"])
     end
 
     # Arguments are a special case in gccxml as they are actual children of
@@ -113,7 +113,7 @@ module RbGCCXML
 
       node.children.each do |found|
         next unless found.element?
-        results << RbGCCXML.const_get(type).new(found) 
+        results << build_type(type, found) 
       end
       
       results.flatten
@@ -126,6 +126,14 @@ module RbGCCXML
     #   +find_type_of(func_node, "returns")+ could return "std::string" node, "int" node, etc
     def self.find_type_of(node, attr)
       self.find(:id => node.attributes[attr])
+    end
+
+    private
+
+    # Builds up the related RbGCCXML node according to the GCCXML node found
+    # for a given query.
+    def self.build_type(type_name, node)
+      RbGCCXML.const_get(type_name).new(node)
     end
   end
 end

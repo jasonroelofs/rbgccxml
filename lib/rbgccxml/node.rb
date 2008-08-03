@@ -64,7 +64,7 @@ module RbGCCXML
     # Returns the full file name of the file this node is found in. 
     def file_name(basename = true)
       file_id = @node.attributes["file"]
-      file_node = XMLParsing.find(:type => "File", :id => file_id)
+      file_node = XMLParsing.find(:node_type => "File", :id => file_id)
       name = file_node.attributes["name"]
       basename ? ::File.basename(name) : name
     end

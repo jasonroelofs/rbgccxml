@@ -69,7 +69,7 @@ module RbGCCXML
 
       if options[0] == :all
         node_type = self[0].class.to_s.split(/::/)[-1]
-        query_set = XMLParsing.find_all(:type => node_type)
+        query_set = XMLParsing.find_all(:node_type => node_type)
         options = options[1]
       else
         options = options[0]
