@@ -61,6 +61,16 @@ module RbGCCXML
       @node.attributes
     end
 
+    # Some C++ nodes are actually wrappers around other nodes. For example, 
+    #   
+    #   typedef int ThisType;
+    #
+    # You'll get the TypeDef node "ThisType". Use this method if you want the base type for this
+    # typedef, e.g. the "int".
+    def base_type
+      self
+    end
+
     # Returns the full file name of the file this node is found in. 
     def file_name(basename = true)
       file_id = @node.attributes["file"]

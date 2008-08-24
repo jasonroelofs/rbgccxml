@@ -24,6 +24,7 @@ module RbGCCXML
   autoload :Struct, "rbgccxml/nodes/struct" 
   autoload :Enumeration, "rbgccxml/nodes/enumeration"  
   autoload :EnumValue, "rbgccxml/nodes/enum_value"  
+  autoload :FunctionType, "rbgccxml/nodes/function_type"
 
   # Type Management
   autoload :Type, "rbgccxml/nodes/type"

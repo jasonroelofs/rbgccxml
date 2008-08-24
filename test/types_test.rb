@@ -66,6 +66,11 @@ context "Proper Type handling" do
     assert @@types_source.functions.find(:arguments => ["int[4]*"]) == "usesIntArray"
   end
 
+  specify "function pointers" do
+    assert @@types_source.functions.find(:arguments => ["Callback"]) == "takesCallback"
+    assert @@types_source.functions.find(:arguments => ["CallbackWithReturn"]) == "takesCallbackWithReturn"
+  end
+
 end
 
 context "Printing types" do

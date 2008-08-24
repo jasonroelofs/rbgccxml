@@ -74,6 +74,17 @@ namespace types {
    * Array types
    */
   void usesIntArray(int input[4][4]);
+
+  /**
+   * Function pointers
+   */
+  // One that takes an argument, no required return
+  typedef void(*Callback) (int in);
+  void takesCallback(Callback cb);
+
+  // One that requires a return
+  typedef int(*CallbackWithReturn) (int in);
+  void takesCallbackWithReturn(CallbackWithReturn cb);
 }
 
 #endif
