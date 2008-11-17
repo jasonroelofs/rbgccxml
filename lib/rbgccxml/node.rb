@@ -140,6 +140,15 @@ module RbGCCXML
         XMLParsing.find_nested_nodes_of_type(@node, "Enumeration")
       end
     end
+    
+    # Find all variables in this scope
+    def variables(name = nil)
+      if name
+        variables.find(:name => name)
+      else
+        XMLParsing::find_nested_nodes_of_type(@node, "Variable")
+      end
+    end
 
     # Special equality testing. A given node can be tested against
     # a String to test against the name of the node. For example

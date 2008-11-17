@@ -1,6 +1,15 @@
 namespace classes {
+
+  static double GLOBAL_CONST = 10.3;
+
+  int namespaceVar = 1;
+
   class Test1 {
     public: 
+      static int CONST;
+      int publicVariable;
+      float publicVariable2;
+
       Test1() {  }
 
       static void staticMethod() {  }
@@ -12,6 +21,13 @@ namespace classes {
 
           void innerFunc() {  }
       };
+
+    protected:
+      double protVariable;
+      
+
+    private:
+      int privateVariable;
   };
 
   class Test2 {

@@ -20,5 +20,23 @@ module RbGCCXML
         XMLParsing::find_nested_nodes_of_type(@node, "Method")
       end
     end
+
+    # A class has public, private, and protected variables.
+    def variables(name = nil)
+      if name
+        methods.find(:name => name)
+      else
+        XMLParsing::find_nested_nodes_of_type(@node, "Field")
+      end
+    end
+
+    # A class also has constants, unchangeable values
+    def constants(name = nil)
+      if name
+        constants.find(:name => name)
+      else
+        XMLParsing::find_nested_nodes_of_type(@node, "Variable")
+      end
+    end
   end
 end

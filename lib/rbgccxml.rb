@@ -21,6 +21,8 @@ module RbGCCXML
   autoload :Function, "rbgccxml/nodes/function" 
   autoload :Method, "rbgccxml/nodes/method" 
   autoload :Namespace, "rbgccxml/nodes/namespace" 
+  autoload :Field, "rbgccxml/nodes/field" 
+  autoload :Variable, "rbgccxml/nodes/variable" 
   autoload :Struct, "rbgccxml/nodes/struct" 
   autoload :Enumeration, "rbgccxml/nodes/enumeration"  
   autoload :EnumValue, "rbgccxml/nodes/enum_value"  

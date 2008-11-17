@@ -58,3 +58,10 @@ context "Querying for class constructors" do
   end
 end
 
+context "Query for class variables" do
+  setup do
+    @@source ||= RbGCCXML.parse(full_dir("headers/classes.h")).namespaces("classes")
+  end
+
+end
+
