@@ -1,4 +1,3 @@
-require 'tempfile'
 require 'libxml'
 
 module RbGCCXML
@@ -7,50 +6,63 @@ module RbGCCXML
   # Please use RbGCCXML.parse and not this class directly
   class Parser
 
-    def initialize(config = {}) 
-      @gccxml = GCCXML.new
+    def initialize(config = {})
+      if config[:pregenerated]
+        @xml_file = config.delete[:pregenerated]
+      else
+        require 'gccxml'
+        @gccxml = GCCXML.new
 
-      if includes = config.delete(:includes)
-        @gccxml.add_include includes
+        if includes = config.delete(:includes)
+          @gccxml.add_include includes
+        end
+
+        if flags = config.delete(:cxxflags)
+          @gccxml.add_cxxflags flags
+        end
+
+        validate_glob(config[:files])
       end
-
-      if flags = config.delete(:cxxflags)
-        @gccxml.add_cxxflags flags
-      end
-
-      validate_glob(config[:files])
     end
 
-    # Start the parsing process. This includes
-    # 1. Creating a temp file for the resulting xml
-    # 2. Finding all the files to run through gccxml
-    # 3. If applicable, build another temp file and #include 
-    #    the header files to ensure one pass into gccxml
+    # Starts the parsing process. If the parser was configured
+    # with one or more header files, this includes:
+    # 1. Creating a temp file for the resulting XML.
+    # 2. Finding all the files to run through gccxml.
+    # 3. If applicable (more than one header was specified),
+    #    build another temp file and #include the header files
+    #    to ensure one and only one pass into gccxml.
     # 4. Build up our :: Namespace node and pass that back
-    #    to the user for querying
+    #    to the user for querying.
+    #
+    # If the parser was configured for pregenerated gccxml
+    # output, we only have to perform step 4 above.
     def parse
-      @results_file = Tempfile.new("rbgccxml")
-      parse_file = nil
+      if @gccxml
+        require 'tempfile'
+        @results_file = Tempfile.new("rbgccxml")
+        parse_file = nil
 
-      if @files.length == 1
-        parse_file = @files[0]
+        if @files.length == 1
+          parse_file = @files[0]
+        else
+          # Otherwise we need to build up a single header file
+          # that #include's all of the files in the list, and
+          # parse that out instead
+          parse_file = build_header_for(@files)
+        end
+
+        xml_file = @results_file.path
+        @gccxml.parse(parse_file, xml_file)
       else
-        # Otherwise we need to build up a single header file
-        # that #include's all of the files in the list, and
-        # parse that out instead
-        parse_file = build_header_for(@files)
+        xml_file = @xml_file
       end
 
-      @gccxml.parse(parse_file, @results_file.path)
-
-      # Everything starts at the :: Namespace
-#      document = Hpricot.XML(@results_file)
-      document = LibXML::XML::Document.file(@results_file.path)
+      document = LibXML::XML::Document.file(xml_file)
       root = document.root
+      # Everything starts at the :: Namespace
       global_ns = root.find("//Namespace[@name='::']")[0]
-
       XMLParsing.doc_root = document
-
       Namespace.new global_ns
     end
 
@@ -85,7 +97,7 @@ module RbGCCXML
       if found.empty?
         raise SourceNotFoundError.new(
           "Cannot find files matching #{files.inspect}. " +
-          "You might need to specify a full path.") 
+          "You might need to specify a full path.")
       end
 
       @files = found.select {|f| !::File.directory?(f) }

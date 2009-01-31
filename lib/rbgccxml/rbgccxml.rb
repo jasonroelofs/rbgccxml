@@ -37,6 +37,14 @@ module RbGCCXML
       @parser.parse
     end
 
+    # Use this call to parse a pregenerated gccxml file. This method accepts
+    # one and only one filename.
+    #
+    # Returns the Namespace Node linked to the global namespace "::".
+    def parse_xml(filename)
+      @parser = Parser.new :pregenerated => filename
+      @parser.parse
+    end
   end
 
   class SourceNotFoundError < RuntimeError; end
