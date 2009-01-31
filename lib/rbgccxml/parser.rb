@@ -1,4 +1,5 @@
 require 'tempfile'
+require 'libxml'
 
 module RbGCCXML
 

@@ -1,4 +1,3 @@
-require 'libxml'
 require 'gccxml'
 
 require 'rbgccxml/rbgccxml'
