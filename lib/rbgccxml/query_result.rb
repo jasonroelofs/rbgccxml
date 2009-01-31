@@ -141,5 +141,29 @@ module RbGCCXML
 
       result.length == 1 ? result[0] : result
     end
+
+    # Performs a normal Enumerable#find_all operation, except that if only
+    # one Node is being returned by the Enumerable#find_all, returns that
+    # single node.
+    def find_all(&block)
+      res = super
+      res.size == 1 ? res[0] : res
+    end
+
+    # Performs a normal Enumerable#select operation, except that if only
+    # one Node is being returned by the Enumerable#select, returns that
+    # single node.
+    def select(&block)
+      res = super
+      res.size == 1 ? res[0] : res
+    end
+
+    # Performs a normal Enumerable#reject operation, except that if only
+    # one Node is being returned by the Enumerable#reject, returns that
+    # single node.
+    def reject(&block)
+      res = super
+      res.size == 1 ? res[0] : res
+    end
   end
 end
