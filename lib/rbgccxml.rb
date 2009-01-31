@@ -1,6 +1,4 @@
-gem 'libxml-ruby'
 require 'libxml'
-gem 'gccxml_gem'
 require 'gccxml'
 
 require 'rbgccxml/rbgccxml'
