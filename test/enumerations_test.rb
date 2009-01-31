@@ -1,5 +1,4 @@
-
-require File.dirname(__FILE__) + '/test_helper'
+require File.join(File.dirname(__FILE__), 'test_helper')
 
 context "Querying for enumerations" do
   setup do
