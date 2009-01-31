@@ -22,4 +22,10 @@ context "Querying for namespaces" do
     nested.should.be.a.kind_of RbGCCXML::Namespace
     nested.name.should == "nested"
   end
+
+  specify "can find file for namespace" do
+    upper = @source.namespaces.find(:name => "upper")
+    assert_nothing_thrown { upper.file_name.should.be.nil }
+    assert_nothing_thrown { upper.file_name(true).should.be.nil }
+  end
 end

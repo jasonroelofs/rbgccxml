@@ -40,5 +40,11 @@ context "Querying for enumerations" do
     assert enum.values[0].qualified_name == "enums::Inner::INNER_1"
     assert enum.values[1].qualified_name == "enums::Inner::INNER_2"
   end
+
+  specify "Can ind out what file an enum is in." do
+    enum = @@enum_source.enumerations("TestEnum")
+    assert_nothing_thrown { enum.file_name.should == "enums.h" }
+    assert_nothing_thrown { enum.file_name(true).should == "enums.h" }
+  end
 end
 

@@ -15,4 +15,10 @@ context "Function pointers" do
     fp = @@fp_source.functions("takesCallbackWithReturn").arguments[0].cpp_type.base_type
     assert fp.return_type == "int"
   end
+
+  specify "can find out which file said function pointer is in" do
+    fp = @@fp_source.functions("takesCallback")
+    assert_nothing_thrown { fp.file_name.should == "types.h" }
+    assert_nothing_thrown { fp.file_name(true).should == "types.h" }
+  end
 end

@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/test_helper'
+require File.join(File.dirname(__FILE__), 'test_helper')
 
 context "Querying for classes" do
   setup do
@@ -28,7 +28,8 @@ context "Querying for classes" do
 
   specify "can find out which file said class is in" do
     test1 = @@source.classes.find(:name => "Test1")
-    test1.file_name.should == "classes.h"
+    assert_nothing_thrown { test1.file_name.should == "classes.h" }
+    assert_nothing_thrown { test1.file_name(true).should == "classes.h" }
   end
 end
 
@@ -62,6 +63,5 @@ context "Query for class variables" do
   setup do
     @@source ||= RbGCCXML.parse(full_dir("headers/classes.h")).namespaces("classes")
   end
-
 end
 
