@@ -150,6 +150,11 @@ module RbGCCXML
       find_nested_nodes_of_type("Variable", name, &block)
     end
 
+    # Find all typedefs in this scope
+    def typedefs(name = nil, &block)
+      find_nested_nodes_of_type("Typedef", name, &block)
+    end
+
     # Special equality testing. A given node can be tested against
     # a String to test against the name of the node. For example
     #
