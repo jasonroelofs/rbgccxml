@@ -1,6 +1,7 @@
 module RbGCCXML
 
   class NotQueryableException < RuntimeError; end
+  class UnsupportedMatcherException < RuntimeError; end
 
   # A Node is part of the C++ code as dictated by GCC-XML. This class 
   # defines all of the starting points into the querying system, along 
@@ -86,68 +87,67 @@ module RbGCCXML
       XMLParsing.find(:id => @node.attributes["context"])
     end
 
+    # This is a unified search routine for finding nested nodes. It
+    # simplifies the search routines below significantly.
+    def find_nested_nodes_of_type(type, matcher = nil, &block)
+      res = XMLParsing.find_nested_nodes_of_type(@node, type)
+
+      case matcher
+      when String
+        res = res.find(:name => matcher)
+      when Regexp
+        res = res.find_all { |t| t.name =~ matcher }
+      when nil
+        # Do nothing, since not specifying a matcher is okay.
+      else
+        message = "Can't handle a match condition of type #{matcher.class}."
+        raise UnsupportedMatcherException.new(message)
+      end
+
+      res = res.find_all(&block) if block
+
+      res
+    end
+    private :find_nested_nodes_of_type
+
     # Find all namespaces. There are two ways of calling this method:
     #   #namespaces  => Get all namespaces in this scope
     #   #namespaces(name) => Shortcut for namespaces.find(:name => name)
     #
     # Returns a QueryResult unless only one node was found
-    def namespaces(name = nil)
-      if name
-        namespaces.find(:name => name)
-      else
-        XMLParsing.find_nested_nodes_of_type(@node, "Namespace")
-      end
+    def namespaces(name = nil, &block)
+      find_nested_nodes_of_type("Namespace", name, &block)
     end
 
     # Find all classes in this scope. 
     # See Node.namespaces
-    def classes(name = nil)
-      if name
-        classes.find(:name => name)
-      else
-        XMLParsing.find_nested_nodes_of_type(@node, "Class")
-      end
+    def classes(name = nil, &block)
+      find_nested_nodes_of_type("Class", name, &block)
     end
 
     # Find all structs in this scope. 
     # See Node.namespaces
-    def structs(name = nil)
-      if name
-        structs.find(:name => name)
-      else
-        XMLParsing.find_nested_nodes_of_type(@node, "Struct")
-      end
+    def structs(name = nil, &block)
+      find_nested_nodes_of_type("Struct", name, &block)
     end
 
     # Find all functions in this scope. Functions are free non-class
     # functions. To search for class methods, use #methods.
     #
     # See Node.namespaces
-    def functions(name = nil)
-      if name
-        functions.find(:name => name)
-      else
-        XMLParsing.find_nested_nodes_of_type(@node, "Function")
-      end
+    def functions(name = nil, &block)
+      find_nested_nodes_of_type("Function", name, &block)
     end
 
     # Find all enumerations in this scope. 
     # See Node.namespaces
-    def enumerations(name = nil)
-      if name
-        enumerations.find(:name => name)
-      else
-        XMLParsing.find_nested_nodes_of_type(@node, "Enumeration")
-      end
+    def enumerations(name = nil, &block)
+      find_nested_nodes_of_type("Enumeration", name, &block)
     end
     
     # Find all variables in this scope
-    def variables(name = nil)
-      if name
-        variables.find(:name => name)
-      else
-        XMLParsing::find_nested_nodes_of_type(@node, "Variable")
-      end
+    def variables(name = nil, &block)
+      find_nested_nodes_of_type("Variable", name, &block)
     end
 
     # Special equality testing. A given node can be tested against
