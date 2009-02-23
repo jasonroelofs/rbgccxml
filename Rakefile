@@ -4,7 +4,7 @@ require 'rake/contrib/sshpublisher'
 require 'rake/gempackagetask'
 
 PROJECT_NAME = "rbgccxml"
-RBGCCXML_VERSION = "0.8"
+RBGCCXML_VERSION = "0.9"
 
 task :default => :test
 
@@ -55,8 +55,8 @@ spec = Gem::Specification.new do |s|
   s.author = 'Jason Roelofs'
   s.email = 'jameskilton@gmail.com'
   
-  s.add_dependency "libxml-ruby", ">=0.8"
-  s.add_dependency "gccxml_gem", "0.9.1"
+  s.add_dependency "libxml-ruby", "~>0.9"
+  s.add_dependency "gccxml_gem", "~>0.9"
 
   s.description = <<-END
 Rbgccxml is a library that parses out GCCXML (http://www.gccxml.org) output
