@@ -96,17 +96,21 @@ context "Querying for class constructors" do
     test1.constructors.size.should == 2
 
     test2 = @source.classes.find(:name => "Test2")
-    test2.constructors.size.should == 2
+    test2.constructors.size.should == 3
   end
 
   specify "constructors should have arguments" do
     test2 = @source.classes.find(:name => "Test2")
-    test2.constructors.size.should == 2
+    test2.constructors.size.should == 3
 
-    default = test2.constructors[0]
+    # GCC generated copy constructors
+    copy = test2.constructors[0]
+    copy.attributes[:artificial].should == "1"
+
+    default = test2.constructors[1]
     default.arguments.size.should == 0
 
-    specific = test2.constructors[1]
+    specific = test2.constructors[2]
     specific.arguments.size.should == 1
     assert(specific.arguments[0].cpp_type == "int")
   end

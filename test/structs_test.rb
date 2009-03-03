@@ -40,20 +40,23 @@ context "Querying for struct constructors" do
 
   specify "should have a list of constructors" do
     test1 = @@structs_source.structs.find(:name => "Test1")
-    test1.constructors.size.should == 1
+    test1.constructors.size.should == 2
 
     test2 = @@structs_source.structs.find(:name => "Test2")
-    test2.constructors.size.should == 2
+    test2.constructors.size.should == 3
   end
 
   specify "constructors should have arguments" do
     test2 = @@structs_source.structs.find(:name => "Test2")
-    test2.constructors.size.should == 2
 
-    default = test2.constructors[0]
+    # GCC generated copy constructors
+    copy = test2.constructors[0]
+    copy.attributes[:artificial].should == "1"
+
+    default = test2.constructors[1]
     default.arguments.size.should == 0
 
-    specific = test2.constructors[1]
+    specific = test2.constructors[2]
     specific.arguments.size.should == 1
     assert(specific.arguments[0].cpp_type == "int")
   end
