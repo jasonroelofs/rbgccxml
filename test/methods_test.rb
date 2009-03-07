@@ -32,12 +32,12 @@ context "Querying for class methods" do
 
   specify "can search methods via return type" do
     adder = @@adder_source.classes("Adder")
-    adder.methods.find(:returns => [:float]).name.should == "addFloats"
+    adder.methods.find(:returns => :float).name.should == "addFloats"
   end
 
   specify "can search via all options (AND)" do
     adder = @@adder_source.classes("Adder")
-    got = adder.methods.find(:returns => [:int], :arguments => [nil, nil])
+    got = adder.methods.find(:returns => :int, :arguments => [nil, nil])
     got.name.should == "addIntegers"
   end
 

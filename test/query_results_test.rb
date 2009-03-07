@@ -219,7 +219,7 @@ context "QueryResult#find :all - Flag full source search" do
   end
   
   specify "can find according to :returns " do
-    funcs = @@query_source.functions.find(:all, :returns => ["MyType"])
+    funcs = @@query_source.functions.find(:all, :returns => "MyType")
     funcs.size.should == 2
     assert funcs.detect {|f| f.name == "nestedMyTypeReturns"}
     assert funcs.detect {|f| f.name == "testMyType"}

@@ -13,30 +13,18 @@ module RbGCCXML
     end
 
     # Find all methods for this class. See Node.namespaces
-    def methods(name = nil)
-      if name
-        methods.find(:name => name)
-      else
-        XMLParsing::find_nested_nodes_of_type(@node, "Method")
-      end
+    def methods(name = nil, &block)
+      find_nested_nodes_of_type("Method", name, &block)
     end
 
     # A class has public, private, and protected variables.
-    def variables(name = nil)
-      if name
-        methods.find(:name => name)
-      else
-        XMLParsing::find_nested_nodes_of_type(@node, "Field")
-      end
+    def variables(name = nil, &block)
+      find_nested_nodes_of_type("Field", name, &block)
     end
 
     # A class also has constants, unchangeable values
-    def constants(name = nil)
-      if name
-        constants.find(:name => name)
-      else
-        XMLParsing::find_nested_nodes_of_type(@node, "Variable")
-      end
+    def constants(name = nil, &block)
+      find_nested_nodes_of_type("Variable", name, &block)
     end
   end
 end
