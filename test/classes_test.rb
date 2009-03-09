@@ -116,6 +116,23 @@ context "Querying for class constructors" do
   end
 end
 
+context "Querying for the class's deconstructor" do
+  setup do
+    @source ||= RbGCCXML.parse(full_dir("headers/classes.h")).namespaces("classes")
+  end
+
+  specify "can tell if a class has an explicit destructor" do
+    test1 = @source.classes("Test1")
+    test1.destructor.should.not.be.nil
+    test1.destructor.attributes[:artificial].should.be.nil
+
+    test2 = @source.classes("Test2")
+    test2.destructor.should.not.be.nil
+    test2.destructor.attributes[:artificial].should.not.be.nil
+  end
+
+end
+
 context "Query for class variables" do
   setup do
     @source ||= RbGCCXML.parse(full_dir("headers/classes.h")).namespaces("classes")

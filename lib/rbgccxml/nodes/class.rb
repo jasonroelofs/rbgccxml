@@ -12,6 +12,16 @@ module RbGCCXML
       XMLParsing::find_nested_nodes_of_type(@node, "Constructor")
     end
 
+    # Find the destructor for this class.
+    # To tell if a destructor is gcc-generated or not, check the
+    # 'artificial' attribute:
+    #
+    #   class_node.destructor.attributes[:artificial]
+    #
+    def destructor
+      XMLParsing::find_nested_nodes_of_type(@node, "Destructor")[0]
+    end
+
     # Find all methods for this class. See Node.namespaces
     def methods(name = nil, &block)
       find_nested_nodes_of_type("Method", name, &block)

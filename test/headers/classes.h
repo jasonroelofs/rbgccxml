@@ -11,6 +11,7 @@ namespace classes {
       float publicVariable2;
 
       Test1() {  }
+      ~Test1() { }
 
       static void staticMethod() {  }
 
