@@ -120,5 +120,17 @@ context "Query for class variables" do
   setup do
     @source ||= RbGCCXML.parse(full_dir("headers/classes.h")).namespaces("classes")
   end
+
+  specify "find all i-vars" do
+    test1 = @source.classes("Test1")
+    test1.variables.length.should.equal 4
+  end
+
+  specify "can find by access level" do
+    test1 = @source.classes("Test1")
+    test1.variables.find(:access => "public").length.should.equal 2
+    test1.variables.find(:access => "protected").name.should.equal "protVariable"
+    test1.variables.find(:access => "private").name.should.equal "privateVariable"
+  end
 end
 
