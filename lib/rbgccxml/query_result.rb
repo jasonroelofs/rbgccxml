@@ -47,19 +47,19 @@ module RbGCCXML
     #   find(:arguments => [nil, nil, nil])
     #   find(:returns => :int)
     #
-    # When dealing with how to specify the types, Typedefs, user defined types, fundamental
-    # types (int, char, etc) and pointers to all of these are currently supported. To find
-    # functions that return a pointer to MyClass:
+    # Typedefs, user defined types, fundamental # types (int, char, etc) and pointers to all of 
+    # these are currently supported. To find functions that return a pointer to MyClass:
     #
     #   find(:returns => "MyClass*")
     #
-    # There will be cases where you'll want to search *all* of a given type no matter what scope
-    # or nesting exists. To put a finder into this mode, you simply send :all as the first parameter:
+    # There will be cases where you'll want to search *all* of a given type no matter what the current scope
+    # or nesting. To put a finder into this mode, you simply send :all as the first parameter:
     #
     #   find(:all, [arguments as defined above])
     #
-    # will find all nodes that fit the normal arguments for a given type (the node type of the first
-    # in the initial result set. e.g. if you run <tt>classes.find(:all)</tt> then all Class nodes)
+    # This will find all nodes that fit the normal arguments for a given type (the node type of the first
+    # in the initial result set. e.g. if you run <tt>classes.find(:all)</tt> then all Class nodes) across
+    # the entire source.
     #
     # Returns: A new QueryResult containing the results, allowing for nested +finds+. 
     # However, If there is only one result, returns that single Node instead.
