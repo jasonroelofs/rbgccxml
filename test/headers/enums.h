@@ -14,6 +14,12 @@ namespace enums {
     VALUE3
   };
 
+  enum {
+    ANON_VALUE1,
+    ANON_VALUE2,
+    ANON_VALUE3
+  };
+
   enum MyEnum {
     I_LIKE_MONEY = 3,
     YOU_LIKE_MONEY_TOO,

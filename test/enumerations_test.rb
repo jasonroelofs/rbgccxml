@@ -7,7 +7,7 @@ context "Querying for enumerations" do
 
   specify "can query for enumerations" do
     enums = @@enum_source.enumerations
-    enums.length.should == 2
+    enums.length.should == 3
 
     assert @@enum_source.enumerations("TestEnum") == "TestEnum"
     assert @@enum_source.enumerations.find(:name => "MyEnum") == "MyEnum"
@@ -40,10 +40,19 @@ context "Querying for enumerations" do
     assert enum.values[1].qualified_name == "enums::Inner::INNER_2"
   end
 
-  specify "Can ind out what file an enum is in." do
+  specify "Can find out what file an enum is in." do
     enum = @@enum_source.enumerations("TestEnum")
     assert_nothing_thrown { enum.file_name.should == "enums.h" }
     assert_nothing_thrown { enum.file_name(true).should == "enums.h" }
   end
+
+  specify "knows if an enumeration is anonymous" do
+    found = @@enum_source.enumerations.select {|e| e.anonymous? }
+    assert found.is_a?(RbGCCXML::Enumeration)
+    found.values[0].value.should.equal 0
+    found.values[1].value.should.equal 1
+    found.values[2].value.should.equal 2
+  end
+
 end
 
