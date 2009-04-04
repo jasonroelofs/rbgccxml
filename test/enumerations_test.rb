@@ -48,6 +48,9 @@ context "Querying for enumerations" do
 
   specify "knows if an enumeration is anonymous" do
     found = @@enum_source.enumerations.select {|e| e.anonymous? }
+    found.length.should.equal 1
+    found = found[0]
+
     assert found.is_a?(RbGCCXML::Enumeration)
     found.values[0].value.should.equal 0
     found.values[1].value.should.equal 1
