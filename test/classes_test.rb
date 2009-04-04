@@ -151,3 +151,53 @@ context "Query for class variables" do
   end
 end
 
+context "Query inheritance heirarchy" do
+  setup do
+    @source ||= RbGCCXML.parse(full_dir("headers/inheritance.h")).namespaces("inheritance")
+  end
+
+  specify "can find a class's superclass" do
+    pc = @source.classes("ParentClass")
+    pc.superclass.should.be.nil
+
+    base1 = @source.classes("Base1")
+    base1.superclass.should.not.be.nil
+    base1.superclass.name.should.equal "ParentClass"
+  end
+
+  specify "can query for multiple inheritance" do
+    multi = @source.classes("MultiBase")
+    multi.superclasses.length.should.equal 2
+    assert multi.superclasses.select {|sp| sp.name == "ParentClass"}
+    assert multi.superclasses.select {|sp| sp.name == "Parent2"}
+  end
+
+  specify "calling #superclasses always returns an array" do
+    pc = @source.classes("ParentClass")
+    pc.superclasses.should.be.empty
+
+    base1 = @source.classes("Base1")
+    base1.superclasses.length.should.equal 1
+    base1.superclasses[0].name.should.equal "ParentClass"
+  end
+
+  specify "can infinitely climb the inheritance heirarchy" do
+    low = @source.classes("VeryLow")
+    low.superclass.superclass.superclass.name.should.equal "ParentClass"
+  end
+
+  specify "can query for types of inheritance" do
+    pvb1 = @source.classes("PrivateBase1")
+    pvb1.superclass(:public).should.be.nil
+    pvb1.superclass(:protected).should.be.nil
+    pvb1.superclass(:private).should.not.be.nil
+
+    pvb1.superclass(:private).name.should.equal "ParentClass"
+
+    pvb1.superclasses(:public).length.should.equal 0
+    pvb1.superclasses(:protected).length.should.equal 0
+    pvb1.superclasses(:private).length.should.equal 1
+  end
+
+end
+

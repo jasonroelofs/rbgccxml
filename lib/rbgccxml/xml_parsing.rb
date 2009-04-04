@@ -101,6 +101,19 @@ module RbGCCXML
       get_children_nodes_of_type(node, "Argument")
     end
 
+    # Classes / Structs can have superclasses. This method finds the 
+    # classes that are those superclasses according to the access type
+    # passed in (nil means find all of them)
+    def self.find_bases_for(node, access_type = nil)
+      bases = get_children_nodes_of_type(node, "Base")
+
+      if access_type
+        bases = bases.select {|b| b.attributes["access"] == access_type.to_s }
+      end
+
+      bases.map {|b| b.cpp_type }
+    end
+
     # Enumeration values are children of the Enumeration element
     def self.get_values_of(enum)
       get_children_nodes_of_type(enum.node, "EnumValue")

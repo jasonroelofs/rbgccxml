@@ -22,6 +22,24 @@ module RbGCCXML
       XMLParsing::find_nested_nodes_of_type(@node, "Destructor")[0]
     end
 
+    # Find the superclass for this class. 
+    # By default, this will find the superclass of any access type, pass in
+    # the type of access you're looking for if you want specific types (e.g. public, private, protected).
+    #
+    # If there is more than one superclass to this class, this method will only return the first superclass.
+    # If you know or expect there to be multiple superclasses, please use #superclasses instead
+    def superclass(access_type = nil)
+      found = superclasses(access_type)
+      found.empty? ? nil : found[0]
+    end
+
+    # Like #superclass above, this will find all superclasses for this class.
+    # Paramter functions the same as #superclass
+    # This method always returns a QueryResult
+    def superclasses(access_type = nil)
+      XMLParsing::find_bases_for(@node, access_type)
+    end
+
     # Find all methods for this class. See Node.namespaces
     def methods(name = nil, &block)
       find_nested_nodes_of_type("Method", name, &block)

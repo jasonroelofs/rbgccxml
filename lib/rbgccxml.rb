@@ -12,6 +12,7 @@ module RbGCCXML
 
   # Nodes
   autoload :Argument, "rbgccxml/nodes/argument" 
+  autoload :Base, "rbgccxml/nodes/base"
   autoload :Class, "rbgccxml/nodes/class" 
   autoload :Constructor, "rbgccxml/nodes/constructor" 
   autoload :Destructor, "rbgccxml/nodes/destructor"
