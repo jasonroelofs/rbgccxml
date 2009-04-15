@@ -55,7 +55,7 @@ spec = Gem::Specification.new do |s|
   s.author = 'Jason Roelofs'
   s.email = 'jameskilton@gmail.com'
   
-  s.add_dependency "libxml-ruby", "~>0.9"
+  s.add_dependency "libxml-ruby", "~>1.1"
   s.add_dependency "gccxml_gem", "~>0.9"
 
   s.description = <<-END
