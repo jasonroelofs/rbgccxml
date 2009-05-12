@@ -119,6 +119,13 @@ context "Printing types" do
     @@types_source.functions.find(:returns => "const int*").return_type.base_type.to_s.should == "int"
   end
 
+  specify "can get types of class ivars" do
+    @@types_source.classes("user_type").variables("var1").cpp_type.to_s.should == "int"
+    @@types_source.classes("user_type").variables("var2").cpp_type.to_s.should == "float"
+
+    @@types_source.structs("struct_type").variables("myType").cpp_type.to_s(true).should == "types::user_type"
+  end
+
 end
 
 context "Type comparitors" do

@@ -40,9 +40,14 @@ namespace types {
    * User defined types 
    */
   class user_type {
+    public:
+      int var1;
+      float var2;
   };
 
   struct struct_type {
+    public:
+      user_type myType;
   };
 
   enum myEnum {
