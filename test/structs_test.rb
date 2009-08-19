@@ -25,12 +25,6 @@ context "Querying for structs" do
     inner2 = inner1.structs("Inner1")
     inner2.should.not.be.nil
   end
-
-  specify "can find out which file said struct is in" do
-    test1 = @@structs_source.structs.find(:name => "Test1")
-    assert_nothing_thrown { test1.file_name.should == "structs.h" }
-    assert_nothing_thrown { test1.file_name(true).should == "structs.h" }
-  end
 end
 
 context "Querying for struct constructors" do

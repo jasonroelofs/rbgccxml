@@ -41,10 +41,4 @@ context "Querying for functions" do
       test1.functions  
     end
   end
-
-  specify "can find out which file said function is in" do
-    test1 = @@functions_source.functions("test1")
-    assert_nothing_thrown { test1.file_name.should == "functions.h" }
-    assert_nothing_thrown { test1.file_name(true).should == "functions.h" }
-  end
 end

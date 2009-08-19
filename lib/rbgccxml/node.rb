@@ -72,12 +72,12 @@ module RbGCCXML
       self
     end
 
-    # Returns the full file name of the file this node is found in. 
-    def file_name(basename = true)
+    # Returns the full path to the file this node is found in.
+    # Returns nil if no File node is found for this node
+    def file
       file_id = @node.attributes["file"]
       file_node = XMLParsing.find(:node_type => "File", :id => file_id) if file_id
-      name = file_node.attributes["name"] if file_node
-      name ? (basename ? ::File.basename(name) : name) : nil
+      file_node ? file_node.attributes["name"] : nil
     end
 
     # Returns the parent node of this node. e.g. function.parent will get the class

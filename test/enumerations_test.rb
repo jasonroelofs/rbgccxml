@@ -40,12 +40,6 @@ context "Querying for enumerations" do
     assert enum.values[1].qualified_name == "enums::Inner::INNER_2"
   end
 
-  specify "Can find out what file an enum is in." do
-    enum = @@enum_source.enumerations("TestEnum")
-    assert_nothing_thrown { enum.file_name.should == "enums.h" }
-    assert_nothing_thrown { enum.file_name(true).should == "enums.h" }
-  end
-
   specify "knows if an enumeration is anonymous" do
     found = @@enum_source.enumerations.select {|e| e.anonymous? }
     found.length.should.equal 1

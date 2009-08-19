@@ -78,12 +78,6 @@ context "Querying for classes" do
       test4 = @source.classes(4)
     end
   end
-
-  specify "can find out which file said class is in" do
-    test1 = @source.classes.find(:name => "Test1")
-    should.not.raise { test1.file_name.should == "classes.h" }
-    should.not.raise { test1.file_name(true).should == "classes.h" }
-  end
 end
 
 context "Querying for class constructors" do

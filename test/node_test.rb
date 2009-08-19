@@ -82,4 +82,14 @@ context "Misc access methods" do
     assert access.methods("publicMethod").public?
   end
 
+  specify "can get the full file path of a node" do
+    source = RbGCCXML.parse(full_dir("headers/enums.h")).namespaces("enums")
+    source.enumerations("TestEnum").file.should =~ "enums.h"
+  end
+
+  specify "returns nil if no file node is found" do
+    source = RbGCCXML.parse(full_dir("headers/enums.h")).namespaces("enums")
+    source.file.should.be nil
+  end
+
 end
