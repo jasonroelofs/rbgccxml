@@ -8,9 +8,9 @@ module RbGCCXML
       check_sub_type_without(val, /const/)
     end
 
-    def to_s(full = false)
+    def to_cpp
       type = XMLParsing.find_type_of(self.node, "type")
-      "const #{type.to_s(full)}"
+      "const #{type.to_cpp}"
     end
 
     def const?

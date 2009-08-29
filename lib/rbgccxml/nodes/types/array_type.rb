@@ -10,15 +10,15 @@ module RbGCCXML
   #   void func(int* in[3]);
   #
   # aka, a pointer to a 3-element array, so keep this in mind when doing
-  # comparisons or wondering why the to_s output is so odd
+  # comparisons or wondering why the to_cpp output is so odd
   class ArrayType < Type
     def ==(val)
       check_sub_type_without(val, /\[\d\]/)
     end
 
-    def to_s(full = false)
+    def to_cpp
       type = XMLParsing.find_type_of(self.node, "type")
-      "#{type.to_s(full)}[#{self.node.attributes["max"].gsub(/[^\d]/, '').to_i + 1}]"
+      "#{type.to_cpp}[#{self.node.attributes["max"].gsub(/[^\d]/, '').to_i + 1}]"
     end
 
   end

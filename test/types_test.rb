@@ -80,50 +80,48 @@ context "Printing types" do
   end
 
   specify "types should print back properly into string format" do
-    @@types_source.functions.find(:returns => "int").return_type.to_s.should == "int"
-    @@types_source.functions.find(:returns => "int").return_type.to_s(true).should == "int"
+    @@types_source.functions.find(:returns => "int").return_type.name.should == "int"
+    @@types_source.functions.find(:returns => "int").return_type.to_cpp.should == "int"
 
-    @@types_source.functions.find(:returns => "float").return_type.to_s.should == "float"
+    @@types_source.functions.find(:returns => "float").return_type.name.should == "float"
 
     # pointers
-    @@types_source.functions.find(:returns => "int*").return_type.to_s.should == "int*"
+    @@types_source.functions.find(:returns => "int*").return_type.to_cpp.should == "int*"
 
     # references
-    @@types_source.functions.find(:returns => "struct_type&").return_type.to_s.should == "struct_type&"
-    @@types_source.functions.find(:returns => "struct_type&").return_type.to_s(true).should == "types::struct_type&"
+    @@types_source.functions.find(:returns => "struct_type&").return_type.to_cpp.should == "types::struct_type&"
     
     # printout full from the global namespace
-    @@types_source.functions.find(:returns => "string").return_type.to_s(true).should == "others::string"
+    @@types_source.functions.find(:returns => "string").return_type.to_cpp.should == "others::string"
 
     # const
-    @@types_source.functions.find(:returns => "const int").return_type.to_s.should == "const int"
+    @@types_source.functions.find(:returns => "const int").return_type.to_cpp.should == "const int"
     
     # const pointers
-    @@types_source.functions.find(:returns => "const int*").return_type.to_s.should == "const int*"
+    @@types_source.functions.find(:returns => "const int*").return_type.to_cpp.should == "const int*"
 
     # const references
-    @@types_source.functions.find(:returns => "const user_type&").return_type.to_s.should == "const user_type&"
-    @@types_source.functions.find(:returns => "const user_type&").return_type.to_s(true).should == "const types::user_type&"
+    @@types_source.functions.find(:returns => "const user_type&").return_type.to_cpp.should == "const types::user_type&"
 
     # Enumerations
-    @@types_source.functions.find(:returns => "myEnum").return_type.to_s.should == "myEnum"
-    @@types_source.functions.find(:returns => "myEnum").return_type.to_s(true).should == "types::myEnum"
+    @@types_source.functions.find(:returns => "myEnum").return_type.name.should == "myEnum"
+    @@types_source.functions.find(:returns => "myEnum").return_type.to_cpp.should == "types::myEnum"
 
     # Array Types
-    @@types_source.functions.find(:name => "usesIntArray").arguments[0].to_s.should == "input"
-    @@types_source.functions.find(:name => "usesIntArray").arguments[0].to_s(true).should == "int[4]* input"
+    @@types_source.functions.find(:name => "usesIntArray").arguments[0].name.should == "input"
+    @@types_source.functions.find(:name => "usesIntArray").arguments[0].to_cpp.should == "int[4]* input"
   end
 
   specify "can get to the base C++ construct of given types" do
-    @@types_source.functions.find(:returns => "const user_type&").return_type.base_type.to_s.should == "user_type"
-    @@types_source.functions.find(:returns => "const int*").return_type.base_type.to_s.should == "int"
+    @@types_source.functions.find(:returns => "const user_type&").return_type.base_type.name.should == "user_type"
+    @@types_source.functions.find(:returns => "const int*").return_type.base_type.name.should == "int"
   end
 
   specify "can get types of class ivars" do
-    @@types_source.classes("user_type").variables("var1").cpp_type.to_s.should == "int"
-    @@types_source.classes("user_type").variables("var2").cpp_type.to_s.should == "float"
+    @@types_source.classes("user_type").variables("var1").cpp_type.name.should == "int"
+    @@types_source.classes("user_type").variables("var2").cpp_type.name.should == "float"
 
-    @@types_source.structs("struct_type").variables("myType").cpp_type.to_s(true).should == "types::user_type"
+    @@types_source.structs("struct_type").variables("myType").cpp_type.to_cpp.should == "types::user_type"
   end
 
 end
