@@ -9,9 +9,9 @@ module RbGCCXML
     # We assume that if one node accepts the method, then all of them will.
     def method_missing(name, *args)
       if self[0].respond_to?(name)
-        self.each do |node|
-          node.send(name, *args) 
-        end
+        self.inject(QueryResult.new) do |memo, node|
+          memo << node.send(name, *args) 
+        end.flatten
       else
         super
       end
