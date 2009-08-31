@@ -10,8 +10,10 @@ module RbGCCXML
     def method_missing(name, *args)
       if self[0].respond_to?(name)
         self.inject(QueryResult.new) do |memo, node|
-          memo << node.send(name, *args) 
-        end.flatten
+          ret = node.send(name, *args)
+          memo << ret if ret
+          memo
+        end
       else
         super
       end
