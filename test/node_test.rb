@@ -41,36 +41,6 @@ context "Qualified name generation" do
 
 end
 
-context "Equality testing" do
-
-  specify "testing against a string will test against the name" do
-    source = RbGCCXML.parse(full_dir("headers/namespaces.h"))
-    assert(source.namespaces("upper") == "upper")
-  end
-
-  specify "c++ nesting should be usable as well" do
-    source = RbGCCXML.parse(full_dir("headers/classes.h")).namespaces("classes")
-    klass = source.classes("Test1").classes("Inner1")
-    assert !(klass == "Inner2")
-    assert(klass == "Inner1")
-    assert(klass == "Test1::Inner1")
-    assert(klass == "classes::Test1::Inner1")
-  end
-
-  specify "but should be able to test against nodes as well" do
-    source = RbGCCXML.parse(full_dir("headers/namespaces.h"))
-    upper = source.namespaces("upper")
-    inner = upper.namespaces("inner1")
-    assert !(upper == inner)
-  end
-
-  specify "should find explicit over matches" do
-    source = RbGCCXML.parse(full_dir("headers/classes.h")).namespaces("classes")
-    f = source.classes("Test2").methods("func")
-    f.name.should == "func"
-  end
-end
-
 context "Misc access methods" do
 
   specify "can tell if something is public, protected, and private" do

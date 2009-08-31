@@ -52,7 +52,7 @@ context "Querying for struct constructors" do
 
     specific = test2.constructors[2]
     specific.arguments.size.should == 1
-    assert(specific.arguments[0].cpp_type == "int")
+    specific.arguments[0].cpp_type.name.should.equal "int"
   end
 end
 

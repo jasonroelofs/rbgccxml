@@ -94,7 +94,7 @@ context "QueryResult#find :arguments" do
     func.name.should == "test3"
   end
 
-  specify "when searching arguments, can specify catch-all" do
+  specify "when searching arguments, can xspecify catch-all" do
     funcs = @@query_source.functions.find(:arguments => [:int, nil])
     funcs.size.should == 2
     assert funcs.detect {|f| f.name == "test3" }
@@ -103,23 +103,23 @@ context "QueryResult#find :arguments" do
 
   specify "works when using custom defined types" do
     func = @@query_source.functions.find(:arguments => ["MyType"])
-    func.name.should == "testMyTypeArgs"
+    func.name.should.equal "testMyTypeArgs"
   end
 
   specify "works with pointers and references" do
-    func = @@query_source.functions.find(:arguments => ["MyType *"])
-    func.name.should == "testMyTypeArgsPtr"
+    func = @@query_source.functions.find(:arguments => ["MyType*"])
+    func.length.should.equal 2
 
-    func = @@query_source.functions.find(:arguments => ["MyType &"])
+    func = @@query_source.functions.find(:arguments => ["MyType&"])
     func.name.should == "testMyTypeArgsRef"
   end
 
   specify "works with qualified names" do
     func = @@query_source.functions.find(:arguments => ["query::MyType"])
-    func.name.should == "testMyTypeArgs"
+    func.name.should.equal "testMyTypeArgs"
 
     func = @@query_source.functions.find(:arguments => ["::query::MyType"])
-    func.name.should == "testMyTypeArgs"
+    func.name.should.equal "testMyTypeArgs"
   end
 
   specify "works with qualifiers like const" do
@@ -143,19 +143,19 @@ context "QueryResult#find :returns" do
 
   specify "works with custom defined types" do
     func = @@query_source.functions.find(:returns => "MyType")
-    func.name.should == "testMyType"
+    func.length.should.equal 2
   end
 
   specify "work with qualified names" do
     func = @@query_source.functions.find(:returns => "query::MyType")
-    func.name.should == "testMyType"
+    func.length.should.equal 2
 
     func = @@query_source.functions.find(:returns => "::query::MyType")
-    func.name.should == "testMyType"
+    func.length.should.equal 2
   end
 
   specify "works with pointers and references" do
-    func = @@query_source.functions.find(:returns => "MyType *")
+    func = @@query_source.functions.find(:returns => "MyType*")
     func.name.should == "testMyTypePtr"
 
     func = @@query_source.functions.find(:returns => "MyType&")
@@ -220,9 +220,10 @@ context "QueryResult#find :all - Flag full source search" do
   
   specify "can find according to :returns " do
     funcs = @@query_source.functions.find(:all, :returns => "MyType")
-    funcs.size.should == 2
+    funcs.size.should == 3
     assert funcs.detect {|f| f.name == "nestedMyTypeReturns"}
     assert funcs.detect {|f| f.name == "testMyType"}
+    assert funcs.detect {|f| f.name == "testMyTypeConst"}
   end
 
 end

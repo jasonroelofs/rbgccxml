@@ -8,11 +8,11 @@ context "Function pointers" do
   specify "have arguments" do
     fp = @@fp_source.functions("takesCallback").arguments[0].cpp_type.base_type
     fp.arguments.length.should == 1
-    assert fp.arguments[0].cpp_type == "int"
+    fp.arguments[0].cpp_type.name.should.equal "int"
   end
 
   specify "have return value" do
     fp = @@fp_source.functions("takesCallbackWithReturn").arguments[0].cpp_type.base_type
-    assert fp.return_type == "int"
+    fp.return_type.name.should.equal "int"
   end
 end

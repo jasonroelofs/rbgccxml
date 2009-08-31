@@ -7,68 +7,67 @@ context "Proper Type handling" do
   end
 
   specify "fundamental types" do
-    assert @@types_source.functions.find(:returns => "int") == "returnsInt"
-    assert @@types_source.functions.find(:returns => "float") == "returnsFloat"
+    @@types_source.functions.find(:returns => "int").length.should.equal 2
+    @@types_source.functions.find(:returns => "float").name.should.equal "returnsFloat"
   end
 
   xspecify "unsigned fundamental types" do
   end
 
   specify "typedefs" do
-    assert @@types_source.functions.find(:returns => "myLongType") == "returnsLongType"
-    assert @@types_source.functions.find(:returns => "myShortType") == "returnsShortType"
+    @@types_source.functions.find(:returns => "myLongType").name.should.equal "returnsLongType"
+    @@types_source.functions.find(:returns => "myShortType").name.should.equal "returnsShortType"
   end
 
   specify "user defined types (classes / structs)" do
-    assert @@types_source.functions.find(:returns => "user_type") == "returnsUserType"
-    assert @@types_source.functions.find(:returns => "struct_type") == "returnsStructType"
+    @@types_source.functions.find(:returns => "user_type").name.should.equal "returnsUserType"
+    @@types_source.functions.find(:returns => "struct_type").length.should.equal 2
   end
 
-  # Are these three necessary or can it be just one?
   specify "pointers to user defined types" do
-    assert @@types_source.functions.find(:returns => "user_type*") == "returnsUserTypePointer"
-    assert @@types_source.functions.find(:returns => "struct_type*") == "returnsStructTypePointer"
+    @@types_source.functions.find(:returns => "user_type*").name.should.equal "returnsUserTypePointer"
+    @@types_source.functions.find(:returns => "struct_type*").name.should.equal "returnsStructTypePointer"
   end
 
   specify "pointers to fundamental types" do
-    assert @@types_source.functions.find(:returns => "int*") == "returnsIntPointer"
+    @@types_source.functions.find(:returns => "int*").length.should.equal 2
   end
 
   specify "pointers to typedefs" do
-    assert @@types_source.functions.find(:returns => "myLongType*") == "returnsLongTypePointer"
+    @@types_source.functions.find(:returns => "myLongType*").name.should.equal "returnsLongTypePointer"
   end
 
   specify "reference types" do
-    assert @@types_source.functions.find(:returns => "struct_type&") == "returnStructReference"
+    @@types_source.functions.find(:returns => "struct_type&").name.should.equal "returnStructReference"
   end
 
   specify "const definitions (fundamental types)" do
-    assert @@types_source.functions.find(:returns => "const int") == "returnConstInt"
+    @@types_source.functions.find(:returns => "const int").name.should.equal "returnConstInt"
   end
 
   specify "const definitions (defined types)" do
-    assert @@types_source.functions.find(:returns => "const struct_type") == "returnConstStruct"
+    @@types_source.functions.find(:returns => "const struct_type").name.should.equal "returnConstStruct"
   end
 
   specify "const references" do
-    assert @@types_source.functions.find(:returns => "const user_type&") == "returnConstUserTypeRef"
+    @@types_source.functions.find(:returns => "const user_type&").name.should.equal "returnConstUserTypeRef"
   end
 
   specify "const pointers" do
-    assert @@types_source.functions.find(:returns => "const int*") == "returnConstIntPointer"
+    @@types_source.functions.find(:returns => "const int*").name.should.equal "returnConstIntPointer"
   end
 
   specify "enumerations" do
-    assert @@types_source.functions.find(:returns => "myEnum") == "returnMyEnum"
+    @@types_source.functions.find(:returns => "myEnum").name.should.equal "returnMyEnum"
   end
 
   specify "arrays" do
-    assert @@types_source.functions.find(:arguments => ["int[4]*"]) == "usesIntArray"
+    @@types_source.functions.find(:arguments => ["int[4]*"]).name.should.equal "usesIntArray"
   end
 
   specify "function pointers" do
-    assert @@types_source.functions.find(:arguments => ["Callback"]) == "takesCallback"
-    assert @@types_source.functions.find(:arguments => ["CallbackWithReturn"]) == "takesCallbackWithReturn"
+    @@types_source.functions.find(:arguments => ["Callback"]).name.should.equal "takesCallback"
+    @@types_source.functions.find(:arguments => ["CallbackWithReturn"]).name.should.equal "takesCallbackWithReturn"
   end
 
 end
@@ -80,36 +79,39 @@ context "Printing types" do
   end
 
   specify "types should print back properly into string format" do
-    @@types_source.functions.find(:returns => "int").return_type.name.should == "int"
-    @@types_source.functions.find(:returns => "int").return_type.to_cpp.should == "int"
+    @@types_source.functions("returnsInt").return_type.name.should == "int"
+    @@types_source.functions("returnsInt").return_type.to_cpp.should == "int"
 
-    @@types_source.functions.find(:returns => "float").return_type.name.should == "float"
+    @@types_source.functions("returnsFloat").return_type.name.should == "float"
 
     # pointers
-    @@types_source.functions.find(:returns => "int*").return_type.to_cpp.should == "int*"
+    @@types_source.functions("returnsIntPointer").return_type.to_cpp.should == "int*"
 
     # references
-    @@types_source.functions.find(:returns => "struct_type&").return_type.to_cpp.should == "types::struct_type&"
+    @@types_source.functions("returnStructReference").return_type.to_cpp.should == "types::struct_type&"
+    @@types_source.functions("returnStructReference").return_type.to_cpp(false).should == "struct_type&"
     
     # printout full from the global namespace
-    @@types_source.functions.find(:returns => "string").return_type.to_cpp.should == "others::string"
+    @@types_source.functions("returnsString").return_type.to_cpp.should == "others::string"
+    @@types_source.functions("returnsString").return_type.to_cpp(false).should == "string"
 
     # const
-    @@types_source.functions.find(:returns => "const int").return_type.to_cpp.should == "const int"
+    @@types_source.functions("returnConstInt").return_type.to_cpp.should == "const int"
     
     # const pointers
-    @@types_source.functions.find(:returns => "const int*").return_type.to_cpp.should == "const int*"
+    @@types_source.functions("returnConstIntPointer").return_type.to_cpp.should == "const int*"
 
     # const references
-    @@types_source.functions.find(:returns => "const user_type&").return_type.to_cpp.should == "const types::user_type&"
+    @@types_source.functions("returnConstUserTypeRef").return_type.to_cpp.should == "const types::user_type&"
+    @@types_source.functions("returnConstUserTypeRef").return_type.to_cpp(false).should == "const user_type&"
 
     # Enumerations
-    @@types_source.functions.find(:returns => "myEnum").return_type.name.should == "myEnum"
-    @@types_source.functions.find(:returns => "myEnum").return_type.to_cpp.should == "types::myEnum"
+    @@types_source.functions("returnMyEnum").return_type.name.should == "myEnum"
+    @@types_source.functions("returnMyEnum").return_type.to_cpp.should == "types::myEnum"
 
     # Array Types
-    @@types_source.functions.find(:name => "usesIntArray").arguments[0].name.should == "input"
-    @@types_source.functions.find(:name => "usesIntArray").arguments[0].to_cpp.should == "int[4]* input"
+    @@types_source.functions("usesIntArray").arguments[0].name.should == "input"
+    @@types_source.functions("usesIntArray").arguments[0].to_cpp.should == "int[4]* input"
   end
 
   specify "can get to the base C++ construct of given types" do
@@ -127,12 +129,16 @@ context "Printing types" do
 end
 
 context "Type comparitors" do
-  specify "can tell of a given type is a const" do
-    assert @@types_source.functions.find(:returns => "const user_type&").return_type.const?
-    assert @@types_source.functions.find(:returns => "const int*").return_type.const?
-    assert !@@types_source.functions.find(:returns => "user_type").return_type.const?
+  setup do
+    @@types_source ||= RbGCCXML.parse(full_dir("headers/types.h")).namespaces("types")
+  end
 
-    assert !@@types_source.functions.find(:returns => "string").return_type.const?
-    assert !@@types_source.functions.find(:returns => "int").return_type.const?
+  specify "can tell of a given type is a const" do
+    assert @@types_source.functions("returnConstUserTypeRef").return_type.const?
+    assert @@types_source.functions("returnConstIntPointer").return_type.const?
+    assert !@@types_source.functions("returnsUserType").return_type.const?
+
+    assert !@@types_source.functions("returnsString").return_type.const?
+    assert !@@types_source.functions("returnsInt").return_type.const?
   end
 end

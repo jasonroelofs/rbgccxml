@@ -1,4 +1,5 @@
 require File.join(File.dirname(__FILE__), 'test_helper')
+require 'ruby-debug'
 
 context "Querying for enumerations" do
   setup do
@@ -7,37 +8,34 @@ context "Querying for enumerations" do
 
   specify "can query for enumerations" do
     enums = @@enum_source.enumerations
-    enums.length.should == 3
-
-    assert @@enum_source.enumerations("TestEnum") == "TestEnum"
-    assert @@enum_source.enumerations.find(:name => "MyEnum") == "MyEnum"
+    enums.length.should.equal 3
   end
 
   specify "can find specific enum values" do
     enum = @@enum_source.enumerations("TestEnum")
-    enum.values.length.should == 3
-    assert enum.values[0] == "VALUE1"
-    assert enum.values[1] == "VALUE2"
-    assert enum.values[2] == "VALUE3"
+    enum.values.length.should.equal 3
+    enum.values[0].name.should.equal "VALUE1"
+    enum.values[1].name.should.equal "VALUE2"
+    enum.values[2].name.should.equal "VALUE3"
   end
 
   specify "can find the given value of enum entries" do
     enum = @@enum_source.enumerations.find(:name => "MyEnum")
-    enum.values[0].value.should == 3
-    enum.values[1].value.should == 4
-    enum.values[2].value.should == 7
+    enum.values[0].value.should.equal 3
+    enum.values[1].value.should.equal 4
+    enum.values[2].value.should.equal 7
   end
 
   specify "properly prints out fully qualified C++ identifier for enum values" do
     enum = @@enum_source.enumerations("TestEnum")
-    enum.values.length.should == 3
-    assert enum.values[0].qualified_name == "enums::VALUE1"
-    assert enum.values[1].qualified_name == "enums::VALUE2"
-    assert enum.values[2].qualified_name == "enums::VALUE3"
+    enum.values.length.should.equal 3
+    enum.values[0].qualified_name.should.equal "enums::VALUE1"
+    enum.values[1].qualified_name.should.equal "enums::VALUE2"
+    enum.values[2].qualified_name.should.equal "enums::VALUE3"
 
     enum = @@enum_source.classes("Inner").enumerations("InnerEnum")
-    assert enum.values[0].qualified_name == "enums::Inner::INNER_1"
-    assert enum.values[1].qualified_name == "enums::Inner::INNER_2"
+    enum.values[0].qualified_name.should.equal "enums::Inner::INNER_1"
+    enum.values[1].qualified_name.should.equal "enums::Inner::INNER_2"
   end
 
   specify "knows if an enumeration is anonymous" do

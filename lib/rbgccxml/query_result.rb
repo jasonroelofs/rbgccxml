@@ -23,9 +23,9 @@ module RbGCCXML
 
     # Find within this result set any nodes that match the given options
     # Options can be any or all of the following, based on the type of node:
-    # 
+    #
     # <tt>:name</tt>::        The unmangled name of the node. Can be a string or Regexp. Works on all nodes.
-    # <tt>:arguments</tt>::   Search according to argument types. 
+    # <tt>:arguments</tt>::   Search according to argument types.
     #                         This needs to be an array of strings or symbols. nil can be
     #                         used as a "any" flag. Only works on Functions, Methods, and Constructors
     # <tt>:returns</tt>::     Search according to the return type. Can be a string or symbol.
@@ -38,18 +38,18 @@ module RbGCCXML
     #
     #   find(:arguments => [nil, nil, nil], :returns => :int)
     #
-    # It's also possible to do this in two steps, chaining the +find+ calls, as long as 
+    # It's also possible to do this in two steps, chaining the +find+ calls, as long as
     # each +find+ in the chain has multiple results:
     #
     #   find(:arguments => [nil, nil, nil]).find(:returns => :int)
-    # 
-    # However if you want 3 random arguments OR returning int, you should use 
+    #
+    # However if you want 3 random arguments OR returning int, you should use
     # two seperate queries:
     #
     #   find(:arguments => [nil, nil, nil])
     #   find(:returns => :int)
     #
-    # Typedefs, user defined types, fundamental # types (int, char, etc) and pointers to all of 
+    # Typedefs, user defined types, fundamental # types (int, char, etc) and pointers to all of
     # these are currently supported. To find functions that return a pointer to MyClass:
     #
     #   find(:returns => "MyClass*")
@@ -63,7 +63,7 @@ module RbGCCXML
     # in the initial result set. e.g. if you run <tt>classes.find(:all)</tt> then all Class nodes) across
     # the entire source.
     #
-    # Returns: A new QueryResult containing the results, allowing for nested +finds+. 
+    # Returns: A new QueryResult containing the results, allowing for nested +finds+.
     # However, If there is only one result, returns that single Node instead.
     def find(*options)
       result = QueryResult.new
@@ -92,13 +92,13 @@ module RbGCCXML
         # C++ name
         if name
           found[:name] ||= []
-          found[:name] << node if node == name
+          found[:name] << node if matches?(node.name, name)
         end
 
         # Return type
         if returns && [Function, Method].include?(node.class)
           found[:returns] ||= []
-          found[:returns] << node if node.return_type == returns.to_s
+          found[:returns] << node if type_matches?(node.return_type, returns.to_s)
         end
 
         # Arguments list
@@ -111,7 +111,7 @@ module RbGCCXML
             keep = true
             arguments.each_with_index do |arg, idx|
               # nil is the "any" flag
-              if !arg.nil? && args[idx].cpp_type != arg.to_s
+              if !arg.nil? && !type_matches?(args[idx].cpp_type, arg.to_s)
                 keep = false
                 break
               end
@@ -136,7 +136,7 @@ module RbGCCXML
         tmp = (tmp & value)
       end
 
-      # But make sure that we always have a QueryResult and 
+      # But make sure that we always have a QueryResult and
       # not a plain Array
       result << tmp
       result.flatten!
@@ -149,7 +149,33 @@ module RbGCCXML
     # single node.
     def find_all(&block)
       res = super
-      res.size == 1 ? res[0] : res
+      res.length == 1 ? res[0] : res
     end
+
+    private
+
+    # Finders can take strings or regexes, so this wraps up the logic that chooses
+    # between straight equality matching and matching
+    def matches?(value, against)
+      case against
+      when Regexp
+        value =~ against
+      else
+        value == against
+      end
+    end
+
+    def type_matches?(node, against)
+      against_full =
+        against.is_a?(Regexp) ?
+          against :
+          /#{against.to_s.gsub("*", "\\*").gsub(/^::/, "").gsub("[", "\\[").gsub("]", "\\]")}$/
+
+      matches?(node.name, against) ||
+        matches?(node.to_cpp, against_full) ||
+        matches?(node.to_cpp(false), against_full)
+    end
+
+
   end
 end

@@ -7,25 +7,24 @@ context "Querying for classes" do
 
   specify "can find all classes in a given namespace" do
     classes = @source.classes
-    classes.size.should == 4
+    classes.size.should.equal 4
 
-    %w(Test1 Test2 Test3).each do |t|
-      assert classes.detect {|c| c.node == @source.classes(t).node }, 
-        "unable to find node for #{t}"
-    end
+    classes.find(:name => "Test1").should.not.be.nil
+    classes.find(:name => "Test2").should.not.be.nil
+    classes.find(:name => "Test3").should.not.be.nil
   end
 
   specify "can find classes within classes" do
     test1 = @source.classes.find(:name => "Test1")
     test1.should.not.be.nil
     test1.should.be.kind_of RbGCCXML::Class
-    test1.name.should == "Test1"
-    
+    test1.name.should.equal "Test1"
+
     inner1 = test1.classes("Inner1")
     inner1.should.not.be.nil
     inner1.should.be.kind_of RbGCCXML::Class
-    inner1.name.should == "Inner1"
-    
+    inner1.name.should.equal "Inner1"
+
     inner2 = inner1.classes("Inner1")
     inner2.should.not.be.nil
     inner2.should.be.kind_of Array
@@ -34,20 +33,20 @@ context "Querying for classes" do
     inner2 = inner1.classes("Inner2")
     inner2.should.not.be.nil
     inner2.should.be.kind_of RbGCCXML::Class
-    inner2.name.should == "Inner2"
+    inner2.name.should.equal "Inner2"
   end
 
   specify "can find classes within classes by regex" do
     test1 = @source.classes(/t1/)
     test1.should.not.be.nil
     test1.should.be.kind_of RbGCCXML::Class
-    test1.name.should == "Test1"
-    
+    test1.name.should.equal "Test1"
+
     inner1 = test1.classes(/In.*1/)
     inner1.should.not.be.nil
     inner1.should.be.kind_of RbGCCXML::Class
-    inner1.name.should == "Inner1"
-    
+    inner1.name.should.equal "Inner1"
+
     inner2 = inner1.classes(/1/)
     inner2.should.not.be.nil
     inner2.should.be.kind_of Array
@@ -56,7 +55,7 @@ context "Querying for classes" do
     inner2 = inner1.classes(/2/)
     inner2.should.not.be.nil
     inner2.should.be.kind_of RbGCCXML::Class
-    inner2.name.should == "Inner2"
+    inner2.name.should.equal "Inner2"
   end
 
   specify "can find classes within classes by block" do
@@ -64,7 +63,7 @@ context "Querying for classes" do
     test4 = @source.classes { |c| c.methods.any? { |m| m.virtual? } }
     test4.should.not.be.nil
     test4.should.be.kind_of RbGCCXML::Class
-    test4.name.should == "Test4"
+    test4.name.should.equal "Test4"
 
     # Fail case -- there's no methods that return double.
     test0 = @source.classes { |c| c.methods.any? { |m| m.return_type == "double" }}
@@ -87,26 +86,26 @@ context "Querying for class constructors" do
 
   specify "should have a list of constructors" do
     test1 = @source.classes.find(:name => "Test1")
-    test1.constructors.size.should == 2
+    test1.constructors.size.should.equal 2
 
     test2 = @source.classes.find(:name => "Test2")
-    test2.constructors.size.should == 3
+    test2.constructors.size.should.equal 3
   end
 
   specify "constructors should have arguments" do
     test2 = @source.classes.find(:name => "Test2")
-    test2.constructors.size.should == 3
+    test2.constructors.size.should.equal 3
 
     # GCC generated copy constructors
     copy = test2.constructors[0]
-    copy.attributes[:artificial].should == "1"
+    copy.attributes[:artificial].should.equal "1"
 
     default = test2.constructors[1]
-    default.arguments.size.should == 0
+    default.arguments.size.should.equal 0
 
     specific = test2.constructors[2]
-    specific.arguments.size.should == 1
-    assert(specific.arguments[0].cpp_type == "int")
+    specific.arguments.size.should.equal 1
+    specific.arguments[0].cpp_type.name.should.equal "int"
   end
 end
 

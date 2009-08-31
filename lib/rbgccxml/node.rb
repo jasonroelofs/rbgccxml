@@ -155,38 +155,6 @@ module RbGCCXML
       find_nested_nodes_of_type("Typedef", name, &block)
     end
 
-    # Special equality testing. A given node can be tested against
-    # a String to test against the name of the node. For example
-    #
-    #   source.classes("MyClass") == "MyClass"                                #=> true
-    #   source.classes("MyClass") == source.classes.find(:name => "MyClass")  #=> true
-    #
-    def ==(val)
-      if val.is_a?(String)
-        return true if self.name == val
-        # Need to take care of '*' which is a regex character, and any leading ::,
-        # which are redundant in our case.
-        if val =~ /::/
-          return true if self.qualified_name =~ /#{val.gsub("*", "\\*").gsub(/^::/, "")}/
-        end
-
-        false
-      elsif val.is_a?(Regexp)
-        self =~ val
-      else
-        super
-      end
-    end
-
-    # Regexp comparison operator for consistency. See Node.==
-    def =~(val)
-      if val.is_a?(Regexp)
-        self.name =~ val || self.qualified_name =~ val
-      else
-        super
-      end
-    end
-
     # Print out the full C++ valid code for this node.
     # By default, it just prints out the qualified name of this node.
     # See various type classes to see how this method is really used
