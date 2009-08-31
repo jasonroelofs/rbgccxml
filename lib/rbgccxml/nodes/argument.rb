@@ -8,8 +8,8 @@ module RbGCCXML
     end
 
     # See Node#to_cpp, prints out C++ code for this argument
-    def to_cpp
-      "#{self.cpp_type.to_cpp} #{self.name}"
+    def to_cpp(qualified = true)
+      "#{self.cpp_type.to_cpp(qualified)} #{self.name}"
     end
 
   end

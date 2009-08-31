@@ -8,8 +8,8 @@ module RbGCCXML
     end
 
     # See Node#to_cpp, prints out the C++ code for this field.
-    def to_cpp
-      "#{self.cpp_type.to_cpp} #{self.name}"
+    def to_cpp(qualified = false)
+      "#{self.cpp_type.to_cpp(qualified)} #{self.name}"
     end
 
   end

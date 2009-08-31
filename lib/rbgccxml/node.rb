@@ -190,8 +190,8 @@ module RbGCCXML
     # Print out the full C++ valid code for this node.
     # By default, it just prints out the qualified name of this node.
     # See various type classes to see how this method is really used
-    def to_cpp
-      self.qualified_name
+    def to_cpp(qualified = true)
+      qualified ? self.qualified_name : self.name
     end
   end
 
