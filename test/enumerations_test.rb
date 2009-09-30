@@ -1,5 +1,4 @@
 require File.join(File.dirname(__FILE__), 'test_helper')
-require 'ruby-debug'
 
 context "Querying for enumerations" do
   setup do
