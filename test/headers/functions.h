@@ -5,7 +5,7 @@
 
 namespace functions {
 
-  void test1() { }
+  void test1(int x, double y = 3.0) { }
 
   bool bool_method() {  }
 
@@ -14,4 +14,8 @@ namespace functions {
       void nestedFunction();
     }
   }
+
+  int test();
+
+  int rockin(int x, int y = test());
 }
