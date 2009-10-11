@@ -27,13 +27,6 @@ please open a ticket on this project's tracker.
  
 == The Project
 
-For bug reports, patch submissions, project annoucements and downloads, visit RbGCCXML's rubyforge
-project page at:
-
-http://www.rubyforge.org/projects/rbplusplus
-
-Feel free to post help request, hints, or general ideas on the forums.
-
 RbGCCXML's source is in a git repository hosted on github:
 
 Project page: 
@@ -48,7 +41,7 @@ Clone with:
 
 === Parsing
 
-The entry point of an RbGCCXML project is as follows:
+All rbgccxml parses start with the RbGCCXML.parse method:
 
   # Parse a single header file
   RbGCCXML.parse("/path/to/header/file.h")
@@ -72,38 +65,31 @@ that may be included by the header files being parsed out. Adding these director
 +directories+ can be a single directory string or an array of directories, just like RbGCCXML.parse.
 
 Also, if there are other CXXFLAGS that need to be added to the command line for GCC-XML to properly
-parse the source headers, add those via the :cxxflags option.
+parse the source headers (say, -D defines), add those via the :cxxflags option.
 
   RbGCCXML.parse(..., :cxxflags => *flags)
 
 === Querying By Name
 
 Once the header files have been parsed, RbGCCXML.parse returns a Namespace node that references the 
-global namespace of "::". From here, all the function, class, etc declarations are easily queryable.
+global namespace "::". From here, all the function, class, etc declarations are easily queryable.
 
   source = RbGCCXML.parse("header.h")  #=> <Namespace ...>
 
-Each major C++ part (class, struct, function, method (class functions), argument (of functions, methods, and constructors) have a related query method that can be called in one of two ways:
+Each major C++ part (class, struct, function, method (class functions), argument (of functions, methods, 
+and constructors) have a related query method that can be called in one of two ways:
 
-  # Grab all the classes and search from there
-  source.classes.find(...)
-
-  # Or just get a class of a given name, or that matches a regex. These calls are the same as
-  # source.classes.find(:name => ...)
-
-  # Find all classes with the name "ClassName"
-  source.classes("ClassName")  
-
-  # Find all classes that match ...Manager
-  source.classes(/Manager$/)
-
-For finding all classes in a namespace:
-
+  # Get all classes in the current scope
   source.classes
 
-Or finding all namespaces:
+  # Explicitly call #find on these classes
+  source.classes.find(...)
 
-  source.namespaces 
+  # Or use a short cut, if you're just looking for a class by a given name
+  source.classes("ClassName")  
+
+  # Find supports regular expressions as well
+  source.classes(/Manager$/)
 
 These queries are also infinitely nestable. To find the class "Math" inside the namespace 
 "core::utils", you can do:
@@ -118,23 +104,23 @@ or as a short-hand form:
 
 Of course, querying for names is only the tip of the powerful querying that RbGCCXML supports.
 
-What if you wanted to find all methods on a class that return an int value and have three arguments?
+What if you want to find all methods on a class that return an int value and have three arguments?
 This is easy with RbGCCXML:
 
-  source.classes("yourclass").methods.find(:returns => :int, :arguments => [nil, nil, nil])
+  source.classes("TheClass").methods.find(:returns => :int, :arguments => [nil, nil, nil])
 
-The keys +returns+ and +arguments+ can be used on their own, or together as seen above. 
+The keys +returns+ and +arguments+ can be used on their own or together as seen above. 
 The +arguments+ option must be an array, and if the type of the argument doesn't matter, placing
 'nil' in it's place acts as a wildcard. QueryResult#find is also chainable, provided that there
 are always more than one result. Otherwise, if there is just one result, only that Node will
-be returned and any further chained QueryResult.find methods will fail with "NoMethodError".
+be returned and any further chained QueryResult.find methods will fail with NoMethodError.
 
-For full details on using this method, please see it's documentation at RbGCCXML::QueryResult.
+For full details on using this method, please see the documentation of RbGCCXML::QueryResult.
 
 === The Next Step
 
-To learn more about RbGCCXML, please start looking through the RbGCCXML::Node class; most of the query
-API starts there, and following with that head to RbGCCXML::QueryResult.
+To learn more about RbGCCXML, please start looking through the RbGCCXML::Node class as most of the query
+API starts there, continuing on to other specific Node classes.
 
 == Additional Notes
 
