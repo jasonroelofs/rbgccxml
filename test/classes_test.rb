@@ -72,10 +72,12 @@ context "Querying for classes" do
     test0.should.be.empty
   end
 
-  specify "can't find classes by number" do
-    should.raise RbGCCXML::UnsupportedMatcherException do
-      test4 = @source.classes(4)
-    end
+  specify "can tell if a class is pure virtual" do
+    test1 = @source.classes("Test1")
+    test4 = @source.classes("Test4")
+
+    test1.pure_virtual?.should.be false
+    test4.pure_virtual?.should.be true
   end
 end
 

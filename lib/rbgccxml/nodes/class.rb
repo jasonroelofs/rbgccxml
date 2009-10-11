@@ -7,6 +7,11 @@ module RbGCCXML
       raise NotQueryableException.new("Cannot query for Namespaces while in a Class")
     end
 
+    # Is this class pure virtual?
+    def pure_virtual?
+      @node.attributes["abstract"] ? @node.attributes["abstract"] == "1" : false
+    end
+
     # Find all the constructors for this class. 
     def constructors
       XMLParsing::find_nested_nodes_of_type(@node, "Constructor")
