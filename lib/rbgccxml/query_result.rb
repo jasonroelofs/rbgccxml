@@ -1,7 +1,7 @@
 module RbGCCXML
   # All queries return either an instance of this class, or in the case of
   # a single result, the node found. Use this class to further define query
-  # parameters.
+  # parameters for multiple return sets.
   class QueryResult < Array
 
     # To facilitate the management of what could be many nodes found by a single query,
@@ -21,13 +21,14 @@ module RbGCCXML
 
     EXPECTED_OPTIONS = [:name, :returns, :arguments, :access] unless defined?(EXPECTED_OPTIONS)
 
-    # Find within this result set any nodes that match the given options
-    # Options can be any or all of the following, based on the type of node:
+    # Find within this result set any nodes that match the given options.
+    # Options can be any or all of the following, based on the type of node
+    # (all entries can be either Strings or Symbols):
     #
     # <tt>:name</tt>::        The unmangled name of the node. Can be a string or Regexp. Works on all nodes.
     # <tt>:arguments</tt>::   Search according to argument types.
-    #                         This needs to be an array of strings or symbols. nil can be
-    #                         used as a "any" flag. Only works on Functions, Methods, and Constructors
+    #                         This needs to be an array of strings or symbols. nil is used as the wildcard.
+    #                         Only works on Functions, Methods, and Constructors
     # <tt>:returns</tt>::     Search according to the return type. Can be a string or symbol.
     #                         Only works on Functions and Methods
     # <tt>:access</tt>::      Search according to access properties. Can be :public, :protected, or :private.
@@ -49,13 +50,13 @@ module RbGCCXML
     #   find(:arguments => [nil, nil, nil])
     #   find(:returns => :int)
     #
-    # Typedefs, user defined types, fundamental # types (int, char, etc) and pointers to all of
-    # these are currently supported. To find functions that return a pointer to MyClass:
+    # Typedefs, user defined types, fundamental types (int, char, etc), pointers, and references
+    # are all supported. For example, to find functions that return a pointer to MyClass:
     #
     #   find(:returns => "MyClass*")
     #
     # There will be cases where you'll want to search *all* of a given type no matter what the current scope
-    # or nesting. To put a finder into this mode, you simply send :all as the first parameter:
+    # or nesting. To put a finder into this mode, specify :all as the first parameter:
     #
     #   find(:all, [arguments as defined above])
     #

@@ -1,6 +1,6 @@
 module RbGCCXML
-  # This represents a Typedef, basically the renaming of one type to
-  # another.
+
+  # Represents a <Typedef> node.
   class Typedef < Type
   end
 

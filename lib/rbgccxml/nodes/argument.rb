@@ -1,8 +1,9 @@
 module RbGCCXML
-  # Class representing a single <Argument> node.
+  # Represents a single <Argument> node.
+  # Can be an argument for a Method, Function, or Constructor
   class Argument < Node
 
-    # Get the C++ type of this argument.
+    # Get the Node for this argument's type
     def cpp_type
       XMLParsing.find_type_of(node, "type")
     end

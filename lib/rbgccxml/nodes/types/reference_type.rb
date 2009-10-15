@@ -1,5 +1,6 @@
 module RbGCCXML
-  # This deals with C++ Reference nodes (&)
+
+  # References a <ReferenceType> node, which is a reference to another Type.
   class ReferenceType < Type
 
     def ==(val)
@@ -10,5 +11,7 @@ module RbGCCXML
       type = XMLParsing.find_type_of(self.node, "type")
       "#{type.to_cpp(qualified)}&"
     end
+
   end
+
 end

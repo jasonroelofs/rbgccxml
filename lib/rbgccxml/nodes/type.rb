@@ -1,4 +1,5 @@
 module RbGCCXML
+
   # The base class for all type management classes.
   # RbGCCXML has a pretty extensive type querying sub-system that
   # allows type matching by names, types, base types, etc
@@ -15,8 +16,8 @@ module RbGCCXML
     end
 
     # Get the base type without any qualifiers. E.g, if you've
-    # got the CVQualified type "const my_space::MyClass&, this 
-    # will return the node for "my_space::MyClass"
+    # got the CvQualifiedType "const my_space::MyClass&, this 
+    # will return the Node for "my_space::MyClass"
     #
     # returns: Node related to the base C++ construct of this type
     def base_type
@@ -29,6 +30,7 @@ module RbGCCXML
       found = XMLParsing.find_type_of(self.node, "type")
       found ? found.const? : false
     end
+
   end
 
 end

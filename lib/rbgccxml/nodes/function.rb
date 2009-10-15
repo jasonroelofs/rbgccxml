@@ -1,6 +1,7 @@
 module RbGCCXML
-  # Represents the <Function> node. Functions are the end point of the tree.
-  # They have arguments and return types.
+
+  # Represents a <Function> node, a global or namespaced function
+  # or static class functions.
   class Function < Node
     
     # First of all, no more querying once you're this far in
@@ -10,14 +11,15 @@ module RbGCCXML
       end
     end
     
-    # Get the list of arguments for this Function.
+    # Get the list of Arguments for this Function.
     def arguments
       XMLParsing.find_arguments_for(node)
     end
 
-    # Find the return type of this function
+    # Get the Node representing this Function's return type
     def return_type
       XMLParsing.find_type_of(node, "returns")
     end
   end
+
 end

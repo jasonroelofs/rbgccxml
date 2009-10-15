@@ -1,5 +1,5 @@
 module RbGCCXML
-  # Node type represending <Class> nodes.
+  # Represents a <Class> node.
   class Class < Node
     
     # Disabled: Classes cannot have nested namespaces
@@ -32,30 +32,29 @@ module RbGCCXML
     # the type of access you're looking for if you want specific types (e.g. public, private, protected).
     #
     # If there is more than one superclass to this class, this method will only return the first superclass.
-    # If you know or expect there to be multiple superclasses, please use #superclasses instead
+    # If you know or expect there to be multiple superclasses, use #superclasses instead
     def superclass(access_type = nil)
       found = superclasses(access_type)
       found.empty? ? nil : found[0]
     end
 
     # Like #superclass above, this will find all superclasses for this class.
-    # Paramter functions the same as #superclass
-    # This method always returns a QueryResult
+    # Functions the same as #superclass except this method always returns a QueryResult
     def superclasses(access_type = nil)
       XMLParsing::find_bases_for(@node, access_type)
     end
 
-    # Find all methods for this class. See Node.namespaces
+    # Find all methods for this class. See Node#namespaces
     def methods(name = nil, &block)
       find_nested_nodes_of_type("Method", name, &block)
     end
 
-    # A class has public, private, and protected variables.
+    # Find all instance variables for this class. See Node#namespaces
     def variables(name = nil, &block)
       find_nested_nodes_of_type("Field", name, &block)
     end
 
-    # A class also has constants, unchangeable values
+    # Find all constants under this class. See Node#namespaces
     def constants(name = nil, &block)
       find_nested_nodes_of_type("Variable", name, &block)
     end

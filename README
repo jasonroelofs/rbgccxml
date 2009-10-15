@@ -19,6 +19,7 @@ not exist.
 
 == Installation
 
+  gem sources --add http://gemcutter.org
   gem install rbgccxml
 
 RbGCCXML will work on all platforms that GCC-XML supports, which is currently all the major platforms
@@ -58,11 +59,11 @@ All rbgccxml parses start with the RbGCCXML.parse method:
 === Configuration
 
 As GCC-XML runs on top of GCC, it will need to know about locations of other header files
-that may be included by the header files being parsed out. Adding these directories is very easy.
+that may be included by the header files being parsed out. Adding these paths is simple:
 
   RbGCCXML.parse(..., :includes => *directories)
 
-+directories+ can be a single directory string or an array of directories, just like RbGCCXML.parse.
+where +directories+ can be a single directory string or an array of directories, just like RbGCCXML.parse.
 
 Also, if there are other CXXFLAGS that need to be added to the command line for GCC-XML to properly
 parse the source headers (say, -D defines), add those via the :cxxflags option.
@@ -76,8 +77,8 @@ global namespace "::". From here, all the function, class, etc declarations are 
 
   source = RbGCCXML.parse("header.h")  #=> <Namespace ...>
 
-Each major C++ part (class, struct, function, method (class functions), argument (of functions, methods, 
-and constructors) have a related query method that can be called in one of two ways:
+Each major C++ node (class, struct, function, method, argument (of functions, methods, 
+and constructors)) have a related query method that can be called in various ways:
 
   # Get all classes in the current scope
   source.classes
@@ -91,12 +92,12 @@ and constructors) have a related query method that can be called in one of two w
   # Find supports regular expressions as well
   source.classes(/Manager$/)
 
-These queries are also infinitely nestable. To find the class "Math" inside the namespace 
-"core::utils", you can do:
+These queries are also nestable as long as there's more code available to query.
+To find the class "Math" inside the namespace "core::utils", you can do:
 
   source.namespaces("core").namespaces("utils").classes("Math")
 
-or as a short-hand form:
+or in a short-hand / C++ qualified form:
 
   source.namespaces("core::utils::Math")
 
@@ -104,8 +105,8 @@ or as a short-hand form:
 
 Of course, querying for names is only the tip of the powerful querying that RbGCCXML supports.
 
-What if you want to find all methods on a class that return an int value and have three arguments?
-This is easy with RbGCCXML:
+What if you want to find all methods on a class that return an int and have three arguments of
+any type? This is easy with RbGCCXML:
 
   source.classes("TheClass").methods.find(:returns => :int, :arguments => [nil, nil, nil])
 
@@ -115,12 +116,11 @@ The +arguments+ option must be an array, and if the type of the argument doesn't
 are always more than one result. Otherwise, if there is just one result, only that Node will
 be returned and any further chained QueryResult.find methods will fail with NoMethodError.
 
-For full details on using this method, please see the documentation of RbGCCXML::QueryResult.
-
 === The Next Step
 
-To learn more about RbGCCXML, please start looking through the RbGCCXML::Node class as most of the query
-API starts there, continuing on to other specific Node classes.
+See RbGCCXML::Node for all methods available on all C++ nodes.
+
+See RbGCCXML::QueryResult for the full run-down on #find
 
 == Additional Notes
 

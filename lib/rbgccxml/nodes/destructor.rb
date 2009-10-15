@@ -1,5 +1,7 @@
 module RbGCCXML
-  # Classes can have an explicit destructor
+
+  # Represents a <Destructor> node.
   class Destructor < Node
   end
+
 end

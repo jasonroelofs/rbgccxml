@@ -1,18 +1,17 @@
 module RbGCCXML
 
-  # A module of methods used to parse out the flat GCC-XML file into
+  # A module of methods used to parse out the flat GCC-XML xml structure into
   # a proper heirarchy. These methods are used internally and not intended
   # for outside use.
   module XMLParsing
 
-    # I'm not sure if Hpricot is unable to jump back out to the document
-    # root or if I just can't find how, but we give this module the 
-    # Hpricot document to do proper searching.
+    # Save a reference to the root node of the parsed XML
     def self.doc_root=(root)
       @@doc_root = root
       self.clear_cache
     end
 
+    # Clear the internal query cache
     def self.clear_cache
       @@find_query_cache = {}
       @@all_query_cache = {}
@@ -137,6 +136,7 @@ module RbGCCXML
     # type of a function:
     #
     #   +find_type_of(func_node, "returns")+ could return "std::string" node, "int" node, etc
+    #
     def self.find_type_of(node, attr)
       self.find(:id => node.attributes[attr])
     end

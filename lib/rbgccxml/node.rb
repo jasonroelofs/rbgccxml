@@ -9,12 +9,16 @@ module RbGCCXML
   #
   # Any Node further down the heirarchy chain can and should define which 
   # finder methods are and are not avaiable at that level. For example, the 
-  # Class node cannot search for other Namespaces within that class.
+  # Class node cannot search for other Namespaces within that class, and any
+  # attempt to will throw a NotQueryableException.
   class Node 
+
+    # The underlying libxml node for this Node.
     attr_reader :node
 
     # Initialize this node according to the XML element passed in
-    # Only to be used internally.
+    # Only to be used internally. Use query methods on the object
+    # returned by RbGCCXML::parse
     def initialize(node)
       @node = node
     end
@@ -56,8 +60,7 @@ module RbGCCXML
      @node.attributes["access"] ? @node.attributes["access"] == "private" : false
     end
 
-    # Forward up attribute array for easy access to the
-    # underlying XML node
+    # Access to the underlying libxml node's attributes
     def attributes
       @node.attributes
     end
@@ -120,19 +123,20 @@ module RbGCCXML
     end
 
     # Find all classes in this scope. 
+    #
     # See Node.namespaces
     def classes(name = nil, &block)
       find_nested_nodes_of_type("Class", name, &block)
     end
 
     # Find all structs in this scope. 
+    #
     # See Node.namespaces
     def structs(name = nil, &block)
       find_nested_nodes_of_type("Struct", name, &block)
     end
 
-    # Find all functions in this scope. Functions are free non-class
-    # functions. To search for class methods, use #methods.
+    # Find all functions in this scope. 
     #
     # See Node.namespaces
     def functions(name = nil, &block)
@@ -140,24 +144,29 @@ module RbGCCXML
     end
 
     # Find all enumerations in this scope. 
+    #
     # See Node.namespaces
     def enumerations(name = nil, &block)
       find_nested_nodes_of_type("Enumeration", name, &block)
     end
     
     # Find all variables in this scope
+    #
+    # See Node.namespaces
     def variables(name = nil, &block)
       find_nested_nodes_of_type("Variable", name, &block)
     end
 
     # Find all typedefs in this scope
+    #
+    # See Node.namespaces
     def typedefs(name = nil, &block)
       find_nested_nodes_of_type("Typedef", name, &block)
     end
 
     # Print out the full C++ valid code for this node.
-    # By default, it just prints out the qualified name of this node.
-    # See various type classes to see how this method is really used
+    # By default, it will print out the fully qualified name of this node.
+    # See various Type classes to see how else this method is used.
     def to_cpp(qualified = true)
       qualified ? self.qualified_name : self.name
     end
