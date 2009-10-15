@@ -41,7 +41,7 @@ namespace :web do
   end
 
   desc "Clean up generated web files"
-  task :clean do
+  task :clean => ["clobber_rdoc"] do
     rm_rf "publish"
   end
 end
