@@ -2,7 +2,7 @@ module RbGCCXML
 
   # Node that represents <ArrayType>, which is any static array
   # declaration.
-  # One oddity on how GCCXML parses certain array designations:
+  # One oddity on how GCC-XML parses certain array designations:
   #  
   #   void func(int in[4][3]);
   #

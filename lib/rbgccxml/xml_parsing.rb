@@ -131,7 +131,7 @@ module RbGCCXML
       results.flatten
     end
 
-    # Entrance into the type management. Given a GCCXML node and an attribute
+    # Entrance into the type management. Given a GCC-XML node and an attribute
     # to reference, find the C++ type related. For example, finding the return
     # type of a function:
     #
@@ -143,7 +143,7 @@ module RbGCCXML
 
     private
 
-    # Builds up the related RbGCCXML node according to the GCCXML node found
+    # Builds up the related RbGCCXML node according to the GCC-XML node found
     # for a given query.
     def self.build_type(type_name, node)
       RbGCCXML.const_get(type_name).new(node)

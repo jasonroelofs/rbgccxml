@@ -28,14 +28,14 @@ module RbGCCXML
     # Starts the parsing process. If the parser was configured
     # with one or more header files, this includes:
     # 1. Creating a temp file for the resulting XML.
-    # 2. Finding all the files to run through gccxml.
+    # 2. Finding all the files to run through GCC-XML.
     # 3. If applicable (more than one header was specified),
     #    build another temp file and #include the header files
-    #    to ensure one and only one pass into gccxml.
+    #    to ensure one and only one pass into GCC-XML.
     # 4. Build up our :: Namespace node and pass that back
     #    to the user for querying.
     #
-    # If the parser was configured for pregenerated gccxml
+    # If the parser was configured for pregenerated GCC-XML
     # output, we only have to perform step 4 above.
     def parse
       if @gccxml

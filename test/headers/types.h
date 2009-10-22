@@ -22,7 +22,7 @@ namespace types {
   float returnsFloat();
 
   // Unsigned types are handled differently.
-  // GCCXML sees this as "short unsigned int"
+  // GCC-XML sees this as "short unsigned int"
   //unsigned short returnsUShort();
 
   myLongType returnsLongType();
