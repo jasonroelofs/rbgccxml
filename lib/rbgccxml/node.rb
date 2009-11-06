@@ -13,7 +13,7 @@ module RbGCCXML
   # attempt to will throw a NotQueryableException.
   class Node 
 
-    # The underlying libxml node for this Node.
+    # The underlying xml node for this Node.
     attr_reader :node
 
     # Initialize this node according to the XML element passed in

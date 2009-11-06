@@ -1,7 +1,7 @@
 == What is rbgccxml?
 
 RbGCCXML allows one to easily parse out and query C++ code. This library uses GCC-XML to parse out 
-the C++ code into XML, and then libxml-ruby for parsing and querying.
+the C++ code into XML, and then nokogiri for parsing and querying.
 
 GCC-XML (http://www.gccxml.org) is an application that takes takes the parse tree of g++ and 
 constructs a very parsable and queryable XML file with all related information. GCC-XML currently 
@@ -14,7 +14,7 @@ not exist.
 
 == Requirements
 
-* libxml-ruby
+* nokogiri
 * gccxml_gem (binary gem, choose proper platform)
 
 == Installation
