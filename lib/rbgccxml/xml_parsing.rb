@@ -40,7 +40,7 @@ module RbGCCXML
       attrs = options.map {|key, value| "[@#{key}='#{value}']"}.join
       xpath = "//#{type || '*'}#{attrs}"
       
-      got = @@doc_root.find(xpath).first
+      got = @@doc_root.search(xpath).first
 
       if got
         result = build_type(type || got.name, got)
@@ -75,7 +75,7 @@ module RbGCCXML
 
       xpath = "//#{type}#{attrs}"
       
-      found = @@doc_root.find(xpath)
+      found = @@doc_root.search(xpath)
       
       if found
         found.each do |got|
@@ -91,7 +91,7 @@ module RbGCCXML
     #
     # Returns a QueryResult with the findings.
     def self.find_nested_nodes_of_type(node, node_type)
-      self.find_all(:node_type => node_type, :context => node.attributes["id"])
+      self.find_all(:node_type => node_type, :context => node["id"])
     end
 
     # Arguments are a special case in gccxml as they are actual children of
@@ -107,7 +107,7 @@ module RbGCCXML
       bases = get_children_nodes_of_type(node, "Base")
 
       if access_type
-        bases = bases.select {|b| b.attributes["access"] == access_type.to_s }
+        bases = bases.select {|b| b["access"] == access_type.to_s }
       end
 
       bases.map {|b| b.cpp_type }
@@ -138,7 +138,7 @@ module RbGCCXML
     #   +find_type_of(func_node, "returns")+ could return "std::string" node, "int" node, etc
     #
     def self.find_type_of(node, attr)
-      self.find(:id => node.attributes[attr])
+      self.find(:id => node[attr])
     end
 
     private

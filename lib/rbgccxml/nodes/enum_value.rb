@@ -8,7 +8,7 @@ module RbGCCXML
 
     # Get the defined value of this EnumValue
     def value
-      node.attributes["init"].to_i
+      node["init"].to_i
     end
 
     # The qualified name of an EnumValue doesn't

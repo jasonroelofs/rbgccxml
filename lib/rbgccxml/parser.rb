@@ -1,4 +1,4 @@
-require 'libxml'
+require 'nokogiri'
 
 module RbGCCXML
 
@@ -58,10 +58,9 @@ module RbGCCXML
         xml_file = @xml_file
       end
 
-      document = LibXML::XML::Document.file(xml_file)
-      root = document.root
+      document = Nokogiri::XML(::File.read(xml_file))
       # Everything starts at the :: Namespace
-      global_ns = root.find("//Namespace[@name='::']")[0]
+      global_ns = document.search("//Namespace[@name='::']")[0]
       XMLParsing.doc_root = document
       Namespace.new global_ns
     end

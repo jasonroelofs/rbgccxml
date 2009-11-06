@@ -125,7 +125,7 @@ module RbGCCXML
         # Access type
         if access
           found[:access] ||= []
-          found[:access] << node if node.attributes["access"] == access.to_s
+          found[:access] << node if node["access"] == access.to_s
         end
       end
 

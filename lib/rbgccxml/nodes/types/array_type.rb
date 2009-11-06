@@ -21,7 +21,7 @@ module RbGCCXML
     # See Node#to_cpp
     def to_cpp(qualified = true)
       type = XMLParsing.find_type_of(self.node, "type")
-      "#{type.to_cpp(qualified)}[#{self.node.attributes["max"].gsub(/[^\d]/, '').to_i + 1}]"
+      "#{type.to_cpp(qualified)}[#{self.node["max"].gsub(/[^\d]/, '').to_i + 1}]"
     end
 
   end

@@ -26,15 +26,15 @@ module RbGCCXML
 
     # Get the C++ name of this node
     def name
-      @node.attributes['name']
+      @node['name']
     end
     
     # Get the fully qualified (demangled) C++ name of this node.
     def qualified_name
-      if @node.attributes["demangled"]
+      if @node["demangled"]
         # The 'demangled' attribute of the node for methods / functions is the 
         # full signature, so cut that part out.
-        @node.attributes["demangled"].split(/\(/)[0]
+        @node["demangled"].split(/\(/)[0]
       else
         parent ? "#{parent.qualified_name}::#{name}" : name
       end
@@ -42,27 +42,32 @@ module RbGCCXML
 
     # Is this node const qualified?
     def const?
-      @node.attributes["const"] ? @node.attributes["const"] == "1" : false
+      @node["const"] ? @node["const"] == "1" : false
     end
 
     # Does this node have public access?
     def public?
-     @node.attributes["access"] ? @node.attributes["access"] == "public" : true
+     @node["access"] ? @node["access"] == "public" : true
     end
 
     # Does this node have protected access?
     def protected?
-     @node.attributes["access"] ? @node.attributes["access"] == "protected" : false
+     @node["access"] ? @node["access"] == "protected" : false
     end
 
     # Does this node have private access?
     def private?
-     @node.attributes["access"] ? @node.attributes["access"] == "private" : false
+     @node["access"] ? @node["access"] == "private" : false
     end
 
-    # Access to the underlying libxml node's attributes
+    # Access to the underlying xml node's attributes.
     def attributes
-      @node.attributes
+      @node
+    end
+
+    # Access indivitual attributes directly
+    def [](val)
+      @node[val]
     end
 
     # Some C++ nodes are actually wrappers around other nodes. For example, 
@@ -78,7 +83,7 @@ module RbGCCXML
     # Returns the full path to the file this node is found in.
     # Returns nil if no File node is found for this node
     def file
-      file_id = @node.attributes["file"]
+      file_id = @node["file"]
       file_node = XMLParsing.find(:node_type => "File", :id => file_id) if file_id
       file_node ? file_node.attributes["name"] : nil
     end
@@ -86,8 +91,8 @@ module RbGCCXML
     # Returns the parent node of this node. e.g. function.parent will get the class
     # the function is contained in.
     def parent
-      return nil if @node.attributes["context"].nil? || @node.attributes["context"] == "_1"
-      XMLParsing.find(:id => @node.attributes["context"])
+      return nil if @node["context"].nil? || @node["context"] == "_1"
+      XMLParsing.find(:id => @node["context"])
     end
 
     # This is a unified search routine for finding nested nodes. It

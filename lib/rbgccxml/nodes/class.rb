@@ -9,7 +9,7 @@ module RbGCCXML
 
     # Is this class pure virtual?
     def pure_virtual?
-      @node.attributes["abstract"] ? @node.attributes["abstract"] == "1" : false
+      @node["abstract"] ? @node["abstract"] == "1" : false
     end
 
     # Find all the constructors for this class. 

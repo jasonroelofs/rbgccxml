@@ -10,7 +10,7 @@ module RbGCCXML
 
     # Get any default value for this argument
     def value
-      attributes["default"]
+      self["default"]
     end
 
     # See Node#to_cpp, prints out C++ code for this argument

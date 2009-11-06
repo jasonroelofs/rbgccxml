@@ -16,7 +16,7 @@ module RbGCCXML
 
     # Is this node const?
     def const?
-      self.node.attributes["const"].to_i == 1
+      self.node["const"].to_i == 1
     end
 
   end
