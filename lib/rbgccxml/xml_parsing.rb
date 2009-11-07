@@ -73,7 +73,7 @@ module RbGCCXML
       type = options.delete(:node_type)
       attrs = options.map {|key, value| "[@#{key}='#{value}']"}.join
 
-      xpath = "//#{type}#{attrs}"
+      xpath = "//#{type || "*"}#{attrs}"
       
       found = @@doc_root.search(xpath)
       
