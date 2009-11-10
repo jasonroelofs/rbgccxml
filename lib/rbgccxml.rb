@@ -27,6 +27,8 @@ module RbGCCXML
   autoload :Struct,           "rbgccxml/nodes/struct" 
   autoload :Variable,         "rbgccxml/nodes/variable" 
 
+  autoload :Union,            "rbgccxml/nodes/union"
+
   # Type Management
   autoload :Type,             "rbgccxml/nodes/type"
   autoload :Typedef,          "rbgccxml/nodes/types/typedef" 
