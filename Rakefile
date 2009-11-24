@@ -55,6 +55,7 @@ spec = Gem::Specification.new do |s|
   s.author = 'Jason Roelofs'
   s.email = 'jameskilton@gmail.com'
   
+  s.add_dependency "test-unit", "1.2.3"
   s.add_dependency "nokogiri", "~>1.4.0"
   s.add_dependency "gccxml_gem", "~>0.9"
 
@@ -78,6 +79,4 @@ what you want out of the C++ source code
 end
 
 Rake::GemPackageTask.new(spec) do |pkg|
-  pkg.need_zip = true
-  pkg.need_tar = true
 end
