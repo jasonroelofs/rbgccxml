@@ -19,12 +19,10 @@ not exist.
 
 == Installation
 
-  gem sources --add http://gemcutter.org
   gem install rbgccxml
 
-RbGCCXML will work on all platforms that GCC-XML supports, which is currently all the major platforms
-of Linux, Mac and Windows. If you're on a platform for which there isn't a current gccxml_gem build, 
-please open a ticket on this project's tracker.
+RbGCCXML will work on all platforms that GCC-XML supports, which includes Windows, Mac, and *nix.
+If you're on a platform for which there isn't a current gccxml_gem build, please open an Issue.
  
 == The Project
 
@@ -32,7 +30,7 @@ RbGCCXML's source is in a git repository hosted on github:
 
 Project page: 
 
-http://github.com/jameskilton/rbgccxml/tree/master
+http://github.com/jameskilton/rbgccxml
 
 Clone with: 
 
