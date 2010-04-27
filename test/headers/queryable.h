@@ -46,6 +46,7 @@ namespace query {
   void testMyTypeArgsPtr(MyType* arg1);
   void testMyTypeArgsRef(MyType& arg1);
   void testMyTypeArgsConstPtr(const MyType* arg1);
+  void testConstMyTypeArgsConstPtr(const MyType* const arg1);
 
   // Can find methods via qualified names
   namespace nested1 {

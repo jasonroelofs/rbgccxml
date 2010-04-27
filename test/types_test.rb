@@ -105,6 +105,10 @@ context "Printing types" do
     @@types_source.functions("returnConstUserTypeRef").return_type.to_cpp.should == "const types::user_type&"
     @@types_source.functions("returnConstUserTypeRef").return_type.to_cpp(false).should == "const user_type&"
 
+    # const const
+    @@types_source.functions("withConstPtrConst").arguments[0].to_cpp.should == "const types::user_type* const arg1"
+    @@types_source.functions("withConstPtrConst").arguments[0].to_cpp(false).should == "const user_type* const arg1"
+
     # Enumerations
     @@types_source.functions("returnMyEnum").return_type.name.should == "myEnum"
     @@types_source.functions("returnMyEnum").return_type.to_cpp.should == "types::myEnum"

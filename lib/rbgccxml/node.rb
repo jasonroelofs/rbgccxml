@@ -16,6 +16,11 @@ module RbGCCXML
     # The underlying xml node for this Node.
     attr_reader :node
 
+    # A linking ivar that lets types figure out where they sit,
+    # for example an argument type can find the <Argument> it's
+    # a part of.
+    attr_accessor :container
+
     # Initialize this node according to the XML element passed in
     # Only to be used internally. Use query methods on the object
     # returned by RbGCCXML::parse

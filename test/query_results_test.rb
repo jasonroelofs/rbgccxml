@@ -123,6 +123,12 @@ context "QueryResult#find :arguments" do
   end
 
   specify "works with qualifiers like const" do
+    func = @@query_source.functions.find(:arguments => ["const MyType* const"])
+    func.name.should == "testConstMyTypeArgsConstPtr"
+
+    func = @@query_source.functions.find(:arguments => ["MyType* const"])
+    func.name.should == "testConstMyTypeArgsConstPtr"
+
     func = @@query_source.functions.find(:arguments => ["const MyType*"])
     func.name.should == "testMyTypeArgsConstPtr"
   end

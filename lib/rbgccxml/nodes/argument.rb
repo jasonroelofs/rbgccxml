@@ -5,7 +5,9 @@ module RbGCCXML
 
     # Get the Node for this argument's type
     def cpp_type
-      XMLParsing.find_type_of(node, "type")
+      found = XMLParsing.find_type_of(self.node, "type")
+      found.container = self
+      found
     end
 
     # Get any default value for this argument

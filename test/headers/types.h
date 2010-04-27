@@ -75,6 +75,8 @@ namespace types {
   const int* returnConstIntPointer();
   const user_type& returnConstUserTypeRef();
 
+  void withConstPtrConst(const user_type* const arg1);
+
   /**
    * Array types
    */
