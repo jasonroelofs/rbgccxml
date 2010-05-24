@@ -58,9 +58,6 @@ spec = Gem::Specification.new do |s|
   s.add_dependency "nokogiri", "~> 1.4.0"
   s.add_dependency "gccxml_gem", "~> 0.9"
 
-  s.add_development_dependency "test-unit", "1.2.3"
-  s.add_development_dependency "mocha", "~> 0.9"
-
   s.description = <<-END
 Rbgccxml is a library that parses out GCCXML (http://www.gccxml.org) output
 and provides a simple but very powerful querying API for finding exactly
