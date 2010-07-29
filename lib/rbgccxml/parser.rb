@@ -58,11 +58,11 @@ module RbGCCXML
         xml_file = @xml_file
       end
 
-      document = Nokogiri::XML(::File.read(xml_file))
-      # Everything starts at the :: Namespace
-      global_ns = document.search("//Namespace[@name='::']")[0]
-      XMLParsing.doc_root = document
-      Namespace.new global_ns
+      parser = SAXParser.new(xml_file)
+
+      # Runs the SAX parser and returns the root level node
+      # which will be the Namespace node for "::"
+      parser.parse
     end
 
     private

@@ -8,6 +8,7 @@ module RbGCCXML
   # Core classes
   autoload :Node,             "rbgccxml/node"
   autoload :Parser,           "rbgccxml/parser"
+  autoload :SAXParser,        "rbgccxml/sax_parser"
   autoload :XMLParsing,       "rbgccxml/xml_parsing"
   autoload :QueryResult,      "rbgccxml/query_result"
 
