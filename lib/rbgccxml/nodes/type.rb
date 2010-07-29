@@ -24,12 +24,14 @@ module RbGCCXML
       n = XMLParsing.find_type_of(self.node, "type")
       n.is_a?(Type) ? n.base_type : n
     end
+    once :base_type
 
     # Is this type const qualified?
     def const?
       found = XMLParsing.find_type_of(self.node, "type")
       found ? found.const? : false
     end
+    once :const?
 
   end
 

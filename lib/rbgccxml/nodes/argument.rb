@@ -9,6 +9,7 @@ module RbGCCXML
       found.container = self
       found
     end
+    once :cpp_type
 
     # Get any default value for this argument
     def value
@@ -19,6 +20,7 @@ module RbGCCXML
     def to_cpp(qualified = true)
       "#{self.cpp_type.to_cpp(qualified)} #{self.name}"
     end
+    once :to_cpp
 
   end
 end

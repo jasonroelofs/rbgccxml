@@ -16,6 +16,7 @@ module RbGCCXML
     def qualified_name #:nodoc:
       "#{self.parent.parent.qualified_name}::#{self.name}"
     end
+    once :qualified_name
 
   end
 

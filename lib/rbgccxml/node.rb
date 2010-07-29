@@ -44,6 +44,7 @@ module RbGCCXML
         parent ? "#{parent.qualified_name}::#{name}" : name
       end
     end
+    once :qualified_name
 
     # Is this node const qualified?
     def const?
@@ -92,6 +93,7 @@ module RbGCCXML
       file_node = XMLParsing.find(:node_type => "File", :id => file_id) if file_id
       file_node ? file_node.attributes["name"] : nil
     end
+    once :file
 
     # Returns the parent node of this node. e.g. function.parent will get the class
     # the function is contained in.
@@ -99,6 +101,7 @@ module RbGCCXML
       return nil if @node["context"].nil? || @node["context"] == "_1"
       XMLParsing.find(:id => @node["context"])
     end
+    once :parent
 
     # This is a unified search routine for finding nested nodes. It
     # simplifies the search routines below significantly.
@@ -131,6 +134,7 @@ module RbGCCXML
     def namespaces(name = nil, &block)
       find_nested_nodes_of_type("Namespace", name, &block)
     end
+    once :namespaces
 
     # Find all classes in this scope. 
     #
@@ -138,6 +142,7 @@ module RbGCCXML
     def classes(name = nil, &block)
       find_nested_nodes_of_type("Class", name, &block)
     end
+    once :classes
 
     # Find all structs in this scope. 
     #
@@ -145,6 +150,7 @@ module RbGCCXML
     def structs(name = nil, &block)
       find_nested_nodes_of_type("Struct", name, &block)
     end
+    once :structs
 
     # Find all functions in this scope. 
     #
@@ -152,6 +158,7 @@ module RbGCCXML
     def functions(name = nil, &block)
       find_nested_nodes_of_type("Function", name, &block)
     end
+    once :functions
 
     # Find all enumerations in this scope. 
     #
@@ -159,6 +166,7 @@ module RbGCCXML
     def enumerations(name = nil, &block)
       find_nested_nodes_of_type("Enumeration", name, &block)
     end
+    once :enumerations
     
     # Find all variables in this scope
     #
@@ -166,6 +174,7 @@ module RbGCCXML
     def variables(name = nil, &block)
       find_nested_nodes_of_type("Variable", name, &block)
     end
+    once :variables
 
     # Find all typedefs in this scope
     #
@@ -173,6 +182,7 @@ module RbGCCXML
     def typedefs(name = nil, &block)
       find_nested_nodes_of_type("Typedef", name, &block)
     end
+    once :typedefs
 
     # Print out the full C++ valid code for this node.
     # By default, it will print out the fully qualified name of this node.
@@ -180,6 +190,7 @@ module RbGCCXML
     def to_cpp(qualified = true)
       qualified ? self.qualified_name : self.name
     end
+    once :to_cpp
   end
 
 end

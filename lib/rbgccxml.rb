@@ -1,6 +1,7 @@
 require 'gccxml'
 
 require 'rbgccxml/rbgccxml'
+require 'vendor/facets/once'
 
 module RbGCCXML
 

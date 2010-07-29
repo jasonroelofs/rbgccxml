@@ -15,11 +15,13 @@ module RbGCCXML
     def arguments
       XMLParsing.find_arguments_for(node)
     end
+    once :arguments
 
     # Get the Node representing this Function's return type
     def return_type
       XMLParsing.find_type_of(node, "returns")
     end
+    once :return_type
   end
 
 end

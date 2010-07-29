@@ -7,11 +7,13 @@ module RbGCCXML
     def cpp_type
       XMLParsing.find_type_of(node, "type")
     end
+    once :cpp_type
 
     # See Node#to_cpp
     def to_cpp(qualified = false)
       "#{self.cpp_type.to_cpp(qualified)} #{self.name}"
     end
+    once :to_cpp
 
   end
 

@@ -23,6 +23,7 @@ module RbGCCXML
       type = XMLParsing.find_type_of(self.node, "type")
       "#{type.to_cpp(qualified)}[#{self.node["max"].gsub(/[^\d]/, '').to_i + 1}]"
     end
+    once :to_cpp
 
   end
 

@@ -17,6 +17,7 @@ module RbGCCXML
 
       "#{pre_const}#{type.to_cpp(qualified)}#{post_const}"
     end
+    once :to_cpp
 
     # Is this node const?
     def const?

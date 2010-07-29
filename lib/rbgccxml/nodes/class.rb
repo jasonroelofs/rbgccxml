@@ -16,6 +16,7 @@ module RbGCCXML
     def constructors
       XMLParsing::find_nested_nodes_of_type(@node, "Constructor")
     end
+    once :constructors
 
     # Find the destructor for this class.
     # To tell if a destructor is gcc-generated or not, check the
@@ -26,6 +27,7 @@ module RbGCCXML
     def destructor
       XMLParsing::find_nested_nodes_of_type(@node, "Destructor")[0]
     end
+    once :destructor
 
     # Find the superclass for this class. 
     # By default, this will find the superclass of any access type, pass in
@@ -37,26 +39,31 @@ module RbGCCXML
       found = superclasses(access_type)
       found.empty? ? nil : found[0]
     end
+    once :superclass
 
     # Like #superclass above, this will find all superclasses for this class.
     # Functions the same as #superclass except this method always returns a QueryResult
     def superclasses(access_type = nil)
       XMLParsing::find_bases_for(@node, access_type)
     end
+    once :superclasses
 
     # Find all methods for this class. See Node#namespaces
     def methods(name = nil, &block)
       find_nested_nodes_of_type("Method", name, &block)
     end
+    once :methods
 
     # Find all instance variables for this class. See Node#namespaces
     def variables(name = nil, &block)
       find_nested_nodes_of_type("Field", name, &block)
     end
+    once :variables
 
     # Find all constants under this class. See Node#namespaces
     def constants(name = nil, &block)
       find_nested_nodes_of_type("Variable", name, &block)
     end
+    once :constants
   end
 end
