@@ -13,67 +13,67 @@ module RbGCCXML
   # attempt to will throw a NotQueryableException.
   class Node 
 
-    # The underlying xml node for this Node.
-    attr_reader :node
+    # GCC_XML id of this node
+    attr_accessor :id
 
-    # A linking ivar that lets types figure out where they sit,
-    # for example an argument type can find the <Argument> it's
-    # a part of.
-    attr_accessor :container
+    # The C++ scoping parent of this node
+    attr_accessor :parent
 
-    # Initialize this node according to the XML element passed in
+    # Any children this node has
+    attr_accessor :children
+
+    # The base name of this node
+    attr_accessor :name
+
+    # Hash of all the attributes
+    attr_accessor :attributes
+
+    # Initialize this node according to the attributes passed in
     # Only to be used internally. Use query methods on the object
     # returned by RbGCCXML::parse
-    def initialize(node)
-      @node = node
-    end
-    protected :initialize
+    def initialize(attributes)
+      @id = attributes.delete("id")
+      @name = attributes.delete("name")
+      @demangled = attributes.delete("demangled")
 
-    # Get the C++ name of this node
-    def name
-      @node['name']
+      @attributes = attributes
     end
     
     # Get the fully qualified (demangled) C++ name of this node.
     def qualified_name
-      if @node["demangled"]
+      if @demangled
         # The 'demangled' attribute of the node for methods / functions is the 
         # full signature, so cut that part out.
-        @node["demangled"].split(/\(/)[0]
+        @demangled.split(/\(/)[0]
       else
-        parent ? "#{parent.qualified_name}::#{name}" : name
+        @parent ? "#{@parent.qualified_name}::#{@name}" : @name
       end
     end
     once :qualified_name
 
     # Is this node const qualified?
     def const?
-      @node["const"] ? @node["const"] == "1" : false
+      @attributes["const"] ? @attributes["const"] == "1" : false
     end
 
     # Does this node have public access?
     def public?
-     @node["access"] ? @node["access"] == "public" : true
+     @attributes["access"] ? @attributes["access"] == "public" : true
     end
 
     # Does this node have protected access?
     def protected?
-     @node["access"] ? @node["access"] == "protected" : false
+     @attributes["access"] ? @attributes["access"] == "protected" : false
     end
 
     # Does this node have private access?
     def private?
-     @node["access"] ? @node["access"] == "private" : false
-    end
-
-    # Access to the underlying xml node's attributes.
-    def attributes
-      @node
+     @attributes["access"] ? @attributes["access"] == "private" : false
     end
 
     # Access indivitual attributes directly
     def [](val)
-      @node[val]
+      @attributes[val]
     end
 
     # Some C++ nodes are actually wrappers around other nodes. For example, 
@@ -89,24 +89,16 @@ module RbGCCXML
     # Returns the full path to the file this node is found in.
     # Returns nil if no File node is found for this node
     def file
-      file_id = @node["file"]
-      file_node = XMLParsing.find(:node_type => "File", :id => file_id) if file_id
-      file_node ? file_node.attributes["name"] : nil
+      file_id = @attributes["file"]
+      file_node = NodeCache.find_by_id(file_id)
+      file_node ? file_node.name : nil
     end
     once :file
-
-    # Returns the parent node of this node. e.g. function.parent will get the class
-    # the function is contained in.
-    def parent
-      return nil if @node["context"].nil? || @node["context"] == "_1"
-      XMLParsing.find(:id => @node["context"])
-    end
-    once :parent
 
     # This is a unified search routine for finding nested nodes. It
     # simplifies the search routines below significantly.
     def find_nested_nodes_of_type(type, matcher = nil, &block)
-      res = XMLParsing.find_nested_nodes_of_type(@node, type)
+      res = NodeCache.find_nested_nodes_of_type(self, type, matcher, &block)
 
       case matcher
       when String
@@ -134,7 +126,6 @@ module RbGCCXML
     def namespaces(name = nil, &block)
       find_nested_nodes_of_type("Namespace", name, &block)
     end
-    once :namespaces
 
     # Find all classes in this scope. 
     #
@@ -142,7 +133,6 @@ module RbGCCXML
     def classes(name = nil, &block)
       find_nested_nodes_of_type("Class", name, &block)
     end
-    once :classes
 
     # Find all structs in this scope. 
     #
@@ -150,7 +140,6 @@ module RbGCCXML
     def structs(name = nil, &block)
       find_nested_nodes_of_type("Struct", name, &block)
     end
-    once :structs
 
     # Find all functions in this scope. 
     #
@@ -158,7 +147,6 @@ module RbGCCXML
     def functions(name = nil, &block)
       find_nested_nodes_of_type("Function", name, &block)
     end
-    once :functions
 
     # Find all enumerations in this scope. 
     #
@@ -166,7 +154,6 @@ module RbGCCXML
     def enumerations(name = nil, &block)
       find_nested_nodes_of_type("Enumeration", name, &block)
     end
-    once :enumerations
     
     # Find all variables in this scope
     #
@@ -174,7 +161,6 @@ module RbGCCXML
     def variables(name = nil, &block)
       find_nested_nodes_of_type("Variable", name, &block)
     end
-    once :variables
 
     # Find all typedefs in this scope
     #
@@ -182,7 +168,6 @@ module RbGCCXML
     def typedefs(name = nil, &block)
       find_nested_nodes_of_type("Typedef", name, &block)
     end
-    once :typedefs
 
     # Print out the full C++ valid code for this node.
     # By default, it will print out the fully qualified name of this node.
@@ -190,7 +175,6 @@ module RbGCCXML
     def to_cpp(qualified = true)
       qualified ? self.qualified_name : self.name
     end
-    once :to_cpp
   end
 
 end

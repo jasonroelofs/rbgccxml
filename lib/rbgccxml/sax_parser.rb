@@ -13,15 +13,30 @@ module RbGCCXML
     # the root node of the tree and return it
     def parse
       @parser.parse(::File.open(@file))
+      NodeCache.root
     end
   end
 
   # Our SAX Events handler class
   class ParserEventHandler < Nokogiri::XML::SAX::Document
 
+    # Ignore types we don't handle yet
+    IGNORE_NODES = %w(GCC_XML Ellipsis)
+
     def start_element(name, attributes = [])
       attr_hash = Hash[*attributes]
-      puts "We got element #{name} with attributes: #{attr_hash.inspect}"
+
+      if !IGNORE_NODES.include?(name)
+        node = RbGCCXML.const_get(name).new(attr_hash)
+
+        # Save node to node cache
+        NodeCache << node
+      end
+    end
+
+    # Once the document is done parsing we process our node tree
+    def end_document
+      NodeCache.process_tree
     end
 
   end
