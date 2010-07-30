@@ -97,76 +97,60 @@ module RbGCCXML
 
     # This is a unified search routine for finding nested nodes. It
     # simplifies the search routines below significantly.
-    def find_nested_nodes_of_type(type, matcher = nil, &block)
-      res = NodeCache.find_nested_nodes_of_type(self, type, matcher, &block)
-
-      case matcher
-      when String
-        res = res.find(:name => matcher)
-      when Regexp
-        res = res.find_all { |t| t.name =~ matcher }
-      when nil
-        # Do nothing, since not specifying a matcher is okay.
-      else
-        message = "Can't handle a match condition of type #{matcher.class}."
-        raise UnsupportedMatcherException.new(message)
-      end
-
-      res = res.find_all(&block) if block
-
-      res
+    def find_children_of_type(type, matcher = nil)
+      NodeCache.find_children_of_type(self, type, matcher)
     end
-    private :find_nested_nodes_of_type
+    private :find_children_of_type
 
     # Find all namespaces. There are two ways of calling this method:
     #   #namespaces  => Get all namespaces in this scope
     #   #namespaces(name) => Shortcut for namespaces.find(:name => name)
     #
     # Returns a QueryResult unless only one node was found
-    def namespaces(name = nil, &block)
-      find_nested_nodes_of_type("Namespace", name, &block)
+    def namespaces(name = nil)
+      find_children_of_type("Namespace", name)
     end
 
     # Find all classes in this scope. 
     #
     # See Node.namespaces
-    def classes(name = nil, &block)
-      find_nested_nodes_of_type("Class", name, &block)
+    def classes(name = nil)
+      find_children_of_type("Class", name)
     end
 
     # Find all structs in this scope. 
     #
     # See Node.namespaces
-    def structs(name = nil, &block)
-      find_nested_nodes_of_type("Struct", name, &block)
+    def structs(name = nil)
+      find_children_of_type("Struct", name)
     end
 
     # Find all functions in this scope. 
     #
     # See Node.namespaces
-    def functions(name = nil, &block)
-      find_nested_nodes_of_type("Function", name, &block)
+    def functions(name = nil)
+      find_children_of_type("Function", name)
     end
 
     # Find all enumerations in this scope. 
     #
     # See Node.namespaces
-    def enumerations(name = nil, &block)
-      find_nested_nodes_of_type("Enumeration", name, &block)
+    def enumerations(name = nil)
+      find_children_of_type("Enumeration", name)
     end
     
     # Find all variables in this scope
     #
     # See Node.namespaces
-    def variables(name = nil, &block)
-      find_nested_nodes_of_type("Variable", name, &block)
+    def variables(name = nil)
+      find_children_of_type("Variable", name)
     end
 
     # Find all typedefs in this scope
     #
     # See Node.namespaces
-    def typedefs(name = nil, &block)
-      find_nested_nodes_of_type("Typedef", name, &block)
+    def typedefs(name = nil)
+      find_children_of_type("Typedef", name)
     end
 
     # Print out the full C++ valid code for this node.
