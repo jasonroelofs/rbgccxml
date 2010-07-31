@@ -5,11 +5,8 @@ module RbGCCXML
 
     # Get the Node for this argument's type
     def cpp_type
-      found = XMLParsing.find_type_of(self.node, "type")
-      found.container = self
-      found
+      NodeCache.find(attributes["type"])
     end
-    once :cpp_type
 
     # Get any default value for this argument
     def value

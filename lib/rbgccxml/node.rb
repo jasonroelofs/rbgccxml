@@ -37,6 +37,8 @@ module RbGCCXML
       @demangled = attributes.delete("demangled")
 
       @attributes = attributes
+
+      @children = []
     end
     
     # Get the fully qualified (demangled) C++ name of this node.

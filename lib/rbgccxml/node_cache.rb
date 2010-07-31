@@ -24,6 +24,11 @@ module RbGCCXML
         @index_list["_1"]
       end
 
+      # Given an id, find the node
+      def find(id)
+        @index_list[id]
+      end
+
       # Look through the DOM under +node+ for +type+ nodes.
       # +type+ must be the string name of an existing Node subclass.
       #
@@ -46,9 +51,11 @@ module RbGCCXML
           # Build our children if there are some
           if node["members"] && node["members"].any?
             # Structure we're working with here is: members="_1 _2 _4 _8 _12"
-            node.children = node["members"].split(" ").map do |child_id|
+            node.children << node["members"].split(" ").map do |child_id|
               @index_list[child_id]
             end
+
+            node.children.flatten!.compact!
           end
         end
       end
