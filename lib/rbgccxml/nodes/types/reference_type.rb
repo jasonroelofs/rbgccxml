@@ -8,7 +8,7 @@ module RbGCCXML
     end
 
     def to_cpp(qualified = true)
-      type = XMLParsing.find_type_of(self.node, "type")
+      type = NodeCache.find(attributes["type"])
       "#{type.to_cpp(qualified)}&"
     end
     once :to_cpp

@@ -10,19 +10,14 @@ module RbGCCXML
 
     # See Node#to_cpp
     def to_cpp(qualified = true)
-      type = XMLParsing.find_type_of(self.node, "type")
+      type = NodeCache.find(attributes["type"])
 
-      post_const = self.container ? " const" : ""
-      pre_const = self.container ? "" : "const "
+      post_const = self.parent ? " const" : ""
+      pre_const = self.parent ? "" : "const "
 
       "#{pre_const}#{type.to_cpp(qualified)}#{post_const}"
     end
     once :to_cpp
-
-    # Is this node const?
-    def const?
-      self.node["const"].to_i == 1
-    end
 
   end
 
