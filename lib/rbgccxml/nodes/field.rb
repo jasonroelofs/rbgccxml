@@ -5,7 +5,7 @@ module RbGCCXML
 
     # Get the Node representing this field's type
     def cpp_type
-      XMLParsing.find_type_of(node, "type")
+      NodeCache.find(attributes["type"])
     end
     once :cpp_type
 

@@ -5,7 +5,9 @@ module RbGCCXML
 
     # Get the Node for this argument's type
     def cpp_type
-      NodeCache.find(attributes["type"])
+      type = NodeCache.find(attributes["type"])
+      type.container = self
+      type
     end
 
     # Get any default value for this argument
