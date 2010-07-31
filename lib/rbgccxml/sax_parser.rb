@@ -21,10 +21,10 @@ module RbGCCXML
   class ParserEventHandler < Nokogiri::XML::SAX::Document
 
     # Ignore types we don't handle yet
-    IGNORE_NODES = %w(GCC_XML Ellipsis OperatorMethod)
+    IGNORE_NODES = %w(GCC_XML Ellipsis OperatorMethod OperatorFunction)
 
     # Some nodes are actually stored in XML as nested structures
-    NESTED_NODES = %w(Argument Base)
+    NESTED_NODES = %w(Argument Base EnumValue)
 
     def start_element(name, attributes = [])
       attr_hash = Hash[*attributes]

@@ -6,9 +6,8 @@ module RbGCCXML
 
     # Get the list of EnumValues for this enumeration
     def values
-      XMLParsing.get_values_of(self).each {|v| v.parent = self }
+      children
     end
-    once :values
 
     # Is this enumeration anonymous? As in, does it have a name or is
     # it just a pretty wrapper around constant values, ala:
