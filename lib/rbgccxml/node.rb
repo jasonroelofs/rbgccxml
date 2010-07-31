@@ -97,7 +97,7 @@ module RbGCCXML
     # Returns nil if no File node is found for this node
     def file
       file_id = @attributes["file"]
-      file_node = NodeCache.find_by_id(file_id)
+      file_node = NodeCache.find(file_id)
       file_node ? file_node.name : nil
     end
     once :file
