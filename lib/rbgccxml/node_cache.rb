@@ -9,12 +9,21 @@ module RbGCCXML
     class << self
 
       # Hash of id => node for all nodes
-      attr_accessor :index_list
+      attr_reader :index_list
+
+      # Hash of Type => [node list] for easy
+      # searching of all nodes of a given type
+      attr_reader :types_list
 
       # Add a new node to the index list
       def <<(node)
         @index_list ||= {}
+        @types_list ||= {}
+
         @index_list[node.id] = node
+
+        @types_list[node.class.name] ||= []
+        @types_list[node.class.name] << node
       end
 
       # Get the root node of the parse
@@ -27,6 +36,11 @@ module RbGCCXML
       # Given an id, find the node
       def find(id)
         @index_list[id]
+      end
+
+      # Get the list of all nodes of a given type
+      def all(type)
+        @types_list[type]
       end
 
       # Given an array of ids return an array of nodes that match
