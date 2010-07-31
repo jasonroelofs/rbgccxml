@@ -24,7 +24,7 @@ module RbGCCXML
     IGNORE_NODES = %w(GCC_XML Ellipsis OperatorMethod)
 
     # Some nodes are actually stored in XML as nested structures
-    NESTED_NODES = %w(Argument)
+    NESTED_NODES = %w(Argument Base)
 
     def start_element(name, attributes = [])
       attr_hash = Hash[*attributes]
@@ -32,12 +32,16 @@ module RbGCCXML
       if !IGNORE_NODES.include?(name)
         node = RbGCCXML.const_get(name).new(attr_hash)
 
-        # Save node to node cache
-        NodeCache << node
-
         if NESTED_NODES.include?(name)
+          # Don't save node to cache. These nodes don't have
+          # ids on which we can index off of
           @context_node.children << node
+          node.parent = @context_node
         else
+          # Save node to node cache
+          NodeCache << node
+
+          # Save node for any XML children it might have later
           @context_node = node
         end
       end

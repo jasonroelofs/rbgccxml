@@ -60,13 +60,13 @@ context "Querying for classes" do
 
   specify "can find classes within classes by block" do
     # We're looking for any class that has virtual methods.
-    test4 = @source.classes { |c| c.methods.any? { |m| m.virtual? } }
+    test4 = @source.classes.select { |c| c.methods.any? { |m| m.virtual? } }
     test4.should.not.be.nil
     test4.should.be.kind_of RbGCCXML::Class
     test4.name.should.equal "Test4"
 
     # Fail case -- there's no methods that return double.
-    test0 = @source.classes { |c| c.methods.any? { |m| m.return_type == "double" }}
+    test0 = @source.classes.select { |c| c.methods.any? { |m| m.return_type == "double" }}
     test0.should.not.be.nil
     test0.should.be.kind_of Array
     test0.should.be.empty
@@ -100,7 +100,7 @@ context "Querying for class constructors" do
 
     # GCC generated copy constructors
     copy = test2.constructors[0]
-    copy.attributes[:artificial].should.equal "1"
+    copy.artificial?.should.be true
 
     default = test2.constructors[1]
     default.arguments.size.should.equal 0
@@ -119,11 +119,11 @@ context "Querying for the class's deconstructor" do
   specify "can tell if a class has an explicit destructor" do
     test1 = @source.classes("Test1")
     test1.destructor.should.not.be.nil
-    test1.destructor.attributes[:artificial].should.be.nil
+    test1.destructor.artificial?.should.be false
 
     test2 = @source.classes("Test2")
     test2.destructor.should.not.be.nil
-    test2.destructor.attributes[:artificial].should.not.be.nil
+    test2.destructor.artificial?.should.be true
   end
 
 end
@@ -192,6 +192,11 @@ context "Query inheritance heirarchy" do
     pvb1.superclasses(:public).length.should.equal 0
     pvb1.superclasses(:protected).length.should.equal 0
     pvb1.superclasses(:private).length.should.equal 1
+
+    vlow = @source.classes("VeryLow")
+    vlow.superclasses(:public).length.should.equal 1
+    vlow.superclasses(:private).length.should.equal 0
+    vlow.superclasses(:protected).length.should.equal 1
   end
 
 end

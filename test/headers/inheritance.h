@@ -29,6 +29,6 @@ namespace inheritance {
   class Base2 : public Base1 {
   };
 
-  class VeryLow : public Base2 {
+  class VeryLow : public Base2, protected Parent2 {
   };
 }

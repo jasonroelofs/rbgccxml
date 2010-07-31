@@ -149,7 +149,13 @@ module RbGCCXML
     # one Node is being returned by the Enumerable#find_all, returns that
     # single node.
     def find_all(&block)
-      res = super
+      res = QueryResult.new(super)
+      res.length == 1 ? res[0] : res
+    end
+
+    # Same with #find_all, force to work as a QueryResult
+    def select(&block)
+      res = QueryResult.new(super)
       res.length == 1 ? res[0] : res
     end
 
