@@ -29,11 +29,16 @@ module RbGCCXML
         @index_list[id]
       end
 
+      # Given an array of ids return an array of nodes that match
+      def find_by_ids(ids)
+        QueryResult.new(ids.map {|id| @index_list[id] })
+      end
+
       # Look through the DOM under +node+ for +type+ nodes.
       # +type+ must be the string name of an existing Node subclass.
       #
       # Returns a QueryResult with the findings.
-      def find_children_of_type(node, type, matcher)
+      def find_children_of_type(node, type, matcher = nil)
         results = QueryResult.new(self.select_nodes_of_type(node.children, type))
         results = results.find(:name => matcher) if matcher
         results
