@@ -12,7 +12,7 @@ module RbGCCXML
     def check_sub_type_without(val, delim)
       return false unless val =~ delim
       new_val = val.gsub(delim, "").strip
-      XMLParsing.find_type_of(self.node, "type") == new_val
+      NodeCache.find(attributes["type"]) == new_valu
     end
 
     # Get the base type without any qualifiers. E.g, if you've
@@ -21,14 +21,14 @@ module RbGCCXML
     #
     # returns: Node related to the base C++ construct of this type
     def base_type
-      n = XMLParsing.find_type_of(self.node, "type")
+      n = NodeCache.find(attributes["type"])
       n.is_a?(Type) ? n.base_type : n
     end
     once :base_type
 
     # Is this type const qualified?
     def const?
-      found = XMLParsing.find_type_of(self.node, "type")
+      found = NodeCache.find(attributes["type"])
       found ? found.const? : false
     end
     once :const?
