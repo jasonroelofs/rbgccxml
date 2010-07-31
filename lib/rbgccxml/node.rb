@@ -32,9 +32,9 @@ module RbGCCXML
     # Only to be used internally. Use query methods on the object
     # returned by RbGCCXML::parse
     def initialize(attributes)
-      @id = attributes.delete("id")
-      @name = attributes.delete("name")
-      @demangled = attributes.delete("demangled")
+      @id = attributes["id"]
+      @name = attributes["name"]
+      @demangled = attributes["demangled"]
 
       @attributes = attributes
 
