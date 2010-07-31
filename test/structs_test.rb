@@ -9,10 +9,9 @@ context "Querying for structs" do
     structs = @@structs_source.structs
     structs.size.should == 3 
 
-    %w(Test1 Test2 Test3).each do |t|
-      assert structs.detect {|c| c.node == @@structs_source.structs(t).node }, 
-        "unable to find node for #{t}"
-    end
+    @@structs_source.structs("Test1").should.not.be.nil
+    @@structs_source.structs("Test2").should.not.be.nil
+    @@structs_source.structs("Test3").should.not.be.nil
   end
 
   specify "can find structs within structs" do
@@ -45,7 +44,7 @@ context "Querying for struct constructors" do
 
     # GCC generated copy constructors
     copy = test2.constructors[0]
-    copy.attributes[:artificial].should == "1"
+    copy.artificial?.should.be true
 
     default = test2.constructors[1]
     default.arguments.size.should == 0
