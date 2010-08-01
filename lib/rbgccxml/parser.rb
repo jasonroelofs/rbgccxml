@@ -58,6 +58,8 @@ module RbGCCXML
         xml_file = @xml_file
       end
 
+      NodeCache.clear
+
       parser = SAXParser.new(xml_file)
 
       # Runs the SAX parser and returns the root level node
