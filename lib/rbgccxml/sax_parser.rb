@@ -21,7 +21,15 @@ module RbGCCXML
   class ParserEventHandler < Nokogiri::XML::SAX::Document
 
     # Ignore types we don't handle yet
-    IGNORE_NODES = %w(GCC_XML Ellipsis OperatorMethod OperatorFunction)
+    IGNORE_NODES = %w(
+      GCC_XML
+      Ellipsis
+      OperatorMethod
+      OperatorFunction
+      Unimplemented
+      Converter
+      OffsetType
+    )
 
     # Some nodes are actually stored in XML as nested structures
     NESTED_NODES = %w(Argument Base EnumValue)
