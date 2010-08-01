@@ -22,8 +22,14 @@ module RbGCCXML
 
         @index_list[node.id] = node
 
-        @types_list[node.class.name] ||= []
-        @types_list[node.class.name] << node
+        class_name = node.class.name.split("::")[-1]
+        @types_list[class_name] ||= []
+        @types_list[class_name] << node
+      end
+
+      def clear
+        @index_list = {}
+        @types_list = {}
       end
 
       # Get the root node of the parse
