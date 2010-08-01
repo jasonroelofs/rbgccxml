@@ -171,6 +171,12 @@ module RbGCCXML
     def to_cpp(qualified = true)
       qualified ? self.qualified_name : self.name
     end
+
+    def to_s
+      "#<#{self.class.name} @attributes=#{self.attributes.inspect}>"
+    end
+
+    alias :inspect :to_s
   end
 
 end
