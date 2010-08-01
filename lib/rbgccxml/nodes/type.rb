@@ -5,8 +5,6 @@ module RbGCCXML
   # allows type matching by names, types, base types, etc
   class Type < Node
 
-    attr_accessor :container
-
     # For types like pointers or references, we recursively track down
     # the base type when doing comparisons.
     #

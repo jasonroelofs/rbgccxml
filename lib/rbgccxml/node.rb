@@ -28,6 +28,11 @@ module RbGCCXML
     # Hash of all the attributes
     attr_accessor :attributes
 
+    # HACK A linking ivar that lets types figure out where they sit,
+    # for example an argument type can find the <Argument> it's
+    # a part of.
+    attr_accessor :container
+
     # Initialize this node according to the attributes passed in
     # Only to be used internally. Use query methods on the object
     # returned by RbGCCXML::parse
