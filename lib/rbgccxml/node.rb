@@ -175,7 +175,6 @@ module RbGCCXML
     def to_s
       "#<#{self.class.name} @attributes=#{self.attributes.inspect}>"
     end
-
     alias :inspect :to_s
   end
 

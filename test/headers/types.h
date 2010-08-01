@@ -1,6 +1,8 @@
 #ifndef __TYPES_H__
 #define __TYPES_H__
 
+#include <cstddef>
+
 namespace others {
   typedef char* string;
 }
@@ -20,6 +22,8 @@ namespace types {
 
   int returnsInt();
   float returnsFloat();
+
+  void noReturnWithSizeT(std::size_t arg);
 
   // Unsigned types are handled differently.
   // GCC-XML sees this as "short unsigned int"

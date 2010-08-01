@@ -9,6 +9,8 @@ context "Proper Type handling" do
   specify "fundamental types" do
     @@types_source.functions.find(:returns => "int").length.should.equal 2
     @@types_source.functions.find(:returns => "float").name.should.equal "returnsFloat"
+
+    @@types_source.functions("noReturnWithSizeT").arguments[0].to_cpp.should.equal "::size_t arg"
   end
 
   xspecify "unsigned fundamental types" do
