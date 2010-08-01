@@ -37,21 +37,25 @@ module RbGCCXML
     def start_element(name, attributes = [])
       attr_hash = Hash[*attributes]
 
-      if !IGNORE_NODES.include?(name)
-        node = RbGCCXML.const_get(name).new(attr_hash)
+      # Need to build a node in memory for those
+      # that we don't directly support
+      if IGNORE_NODES.include?(name)
+        name = "Node"
+      end
 
-        if NESTED_NODES.include?(name)
-          # Don't save node to cache. These nodes don't have
-          # ids on which we can index off of
-          @context_node.children << node
-          node.parent = @context_node
-        else
-          # Save node to node cache
-          NodeCache << node
+      node = RbGCCXML.const_get(name).new(attr_hash)
 
-          # Save node for any XML children it might have later
-          @context_node = node
-        end
+      if NESTED_NODES.include?(name)
+        # Don't save node to cache. These nodes don't have
+        # ids on which we can index off of
+        @context_node.children << node
+        node.parent = @context_node
+      else
+        # Save node to node cache
+        NodeCache << node
+
+        # Save node for any XML children it might have later
+        @context_node = node
       end
     end
 
