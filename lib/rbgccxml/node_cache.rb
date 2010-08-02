@@ -70,18 +70,14 @@ module RbGCCXML
       # is no guarentee the nodes will come in the right order
       def process_tree
         @index_list.each do |id, node|
-          # Build our parent, if there is one
-          node.parent = @index_list[node["context"]] if node["context"]
 
-          # Build our children if there are some
-          if node["members"] && node["members"].any?
-            # Structure we're working with here is: members="_1 _2 _4 _8 _12"
-            node.children << node["members"].split(" ").map do |child_id|
-              @index_list[child_id]
-            end
-
-            node.children.flatten!.compact!
+          # If this node has a context, link to that context as a parent
+          # and then put ourselves as that parent's child
+          if node["context"]
+            node.parent = @index_list[node["context"]]
+            node.parent.children << node
           end
+
         end
       end
 
