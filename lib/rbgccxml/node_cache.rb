@@ -46,7 +46,7 @@ module RbGCCXML
 
       # Get the list of all nodes of a given type
       def all(type)
-        @types_list[type]
+        @types_list[type] || []
       end
 
       # Given an array of ids return an array of nodes that match
