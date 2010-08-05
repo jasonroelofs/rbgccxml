@@ -10,10 +10,11 @@ context "Querying for class methods" do
     methods = adder.methods
 
     methods.size.should == 4
-    methods[0].name.should == "addIntegers"
-    methods[1].name.should == "addFloats"
-    methods[2].name.should == "addStrings"
-    methods[3].name.should == "getClassName"
+    found = methods.sort {|a, b| a.name <=> b.name}
+    found[0].name.should == "addFloats"
+    found[1].name.should == "addIntegers"
+    found[2].name.should == "addStrings"
+    found[3].name.should == "getClassName"
   end
 
   # The following are simplistic. functions_test tests the
