@@ -4,7 +4,7 @@ require 'rake/contrib/sshpublisher'
 require 'rake/gempackagetask'
 
 PROJECT_NAME = "rbgccxml"
-RBGCCXML_VERSION = "0.9.1"
+RBGCCXML_VERSION = "1.0"
 
 task :default => :test
 
