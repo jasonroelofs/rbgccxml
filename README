@@ -97,7 +97,10 @@ To find the class "Math" inside the namespace "core::utils", you can do:
 
 or in a short-hand / C++ qualified form:
 
-  source.namespaces("core::utils::Math")
+  source.namespaces("core::utils").classes("Math")
+
+  # or
+  source.classes("core::utils::Math")
 
 === Querying with #find
 
