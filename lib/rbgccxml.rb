@@ -10,7 +10,6 @@ module RbGCCXML
   autoload :Parser,           "rbgccxml/parser"
   autoload :SAXParser,        "rbgccxml/sax_parser"
   autoload :NodeCache,        "rbgccxml/node_cache"
-  autoload :XMLParsing,       "rbgccxml/xml_parsing"
   autoload :QueryResult,      "rbgccxml/query_result"
 
   # Nodes
