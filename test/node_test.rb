@@ -1,6 +1,6 @@
 require "test_helper"
 
-context "Qualified name generation" do
+describe "Qualified name generation" do
 
   specify "for namespaces" do
     source = RbGCCXML.parse(full_dir("headers/namespaces.h"))
@@ -41,25 +41,25 @@ context "Qualified name generation" do
 
 end
 
-context "Misc access methods" do
+describe "Misc access methods" do
 
   specify "can tell if something is public, protected, and private" do
     source = RbGCCXML.parse(full_dir("headers/misc.h"))
     access = source.namespaces("misc").classes("AccessSettings")
 
-    assert access.methods("privateMethod").private?
-    assert access.methods("protectedMethod").protected?
-    assert access.methods("publicMethod").public?
+    access.methods("privateMethod").should be_private
+    access.methods("protectedMethod").should be_protected
+    access.methods("publicMethod").should be_public
   end
 
   specify "can get the full file path of a node" do
     source = RbGCCXML.parse(full_dir("headers/enums.h")).namespaces("enums")
-    source.enumerations("TestEnum").file.should =~ "enums.h"
+    source.enumerations("TestEnum").file.should match(%r{enums.h})
   end
 
   specify "returns nil if no file node is found" do
     source = RbGCCXML.parse(full_dir("headers/enums.h")).namespaces("enums")
-    source.file.should.be nil
+    source.file.should be_nil
   end
 
 end

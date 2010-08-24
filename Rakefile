@@ -1,17 +1,18 @@
-require 'rake/testtask'
 require 'rake/rdoctask'
 require 'rake/contrib/sshpublisher'
 require 'rake/gempackagetask'
 
+require 'rspec/core/rake_task'
+
 PROJECT_NAME = "rbgccxml"
 RBGCCXML_VERSION = "1.0"
 
-task :default => :test
+task :default => :spec
 
-Rake::TestTask.new do |t|
-  t.libs = ["lib", "test"]
-  t.test_files = FileList["test/*_test.rb"]
-  t.verbose = true
+desc "Run all specs"
+RSpec::Core::RakeTask.new do |t|
+  t.ruby_opts = ["-Itest"]
+  t.pattern = "test/**/*.rb"
 end
 
 Rake::RDocTask.new do |rd|

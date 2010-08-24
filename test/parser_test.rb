@@ -1,73 +1,73 @@
 require "test_helper"
 
-context "Default parsing configuration" do
+describe "Default parsing configuration" do
 
   specify "can parse a single header file" do
-    should.not.raise do
+    lambda do
       RbGCCXML.parse(full_dir("headers/Adder.h"))
-    end
+    end.should_not raise_error
   end
 
   specify "can parse a glob" do
-    should.not.raise do
+    lambda do
       RbGCCXML.parse(full_dir("headers/*.hpp"))
-    end
+    end.should_not raise_error
   end
 
   specify "can parse all files in a directory" do
-    should.not.raise do
+    lambda do
       RbGCCXML.parse(full_dir("headers"),
                     :includes => full_dir("headers/include"),
                     :cxxflags => "-DMUST_BE_DEFINED")
-    end
+    end.should_not raise_error
   end
 
   specify "can take an array of files" do
     files = [full_dir("headers/Adder.h"),
               full_dir("headers/Subtracter.hpp")]
-    should.not.raise do
+    lambda do
       RbGCCXML.parse(files)
-    end
+    end.should_not raise_error
   end
 
   specify "can take an array of globs" do
     files = [full_dir("headers/*.h"),
               full_dir("headers/*.hpp")]
-    should.not.raise do
+    lambda do
       RbGCCXML.parse(files, :includes => full_dir("headers/include"))
-    end
+    end.should_not raise_error
   end
 
   specify "should throw an error if files aren't found" do
-    should.raise RbGCCXML::SourceNotFoundError do
+    lambda do
       RbGCCXML.parse(full_dir("headers/Broken.hcc"))
-    end
+    end.should raise_error(RbGCCXML::SourceNotFoundError)
 
-    should.raise RbGCCXML::SourceNotFoundError do
+    lambda do
       RbGCCXML.parse(full_dir("hockers"))
-    end
+    end.should raise_error(RbGCCXML::SourceNotFoundError)
 
-    should.raise RbGCCXML::SourceNotFoundError do
+    lambda do
       RbGCCXML.parse(full_dir("something/*"))
-    end
+    end.should raise_error(RbGCCXML::SourceNotFoundError)
 
-    should.raise RbGCCXML::SourceNotFoundError do
+    lambda do
       RbGCCXML.parse([full_dir("something/*"), full_dir("anotherthing/*")])
-    end
+    end.should raise_error(RbGCCXML::SourceNotFoundError)
   end
 end
 
-context "Configurable parsing configuration" do
+describe "Configurable parsing configuration" do
   specify "can give extra include directories for parsing" do
     found = RbGCCXML.parse full_dir("headers/with_includes.h"),
       :includes => full_dir("headers/include")
-    found.namespaces("code").should.not.be.nil
+    found.namespaces("code").should_not be_nil
   end
 
   specify "can be given extra cxxflags for parsing" do
-    should.not.raise do
+    lambda do
       RbGCCXML.parse full_dir("headers/requires_define.hxx"),
         :cxxflags => "-DMUST_BE_DEFINED"
-    end
+    end.should_not raise_error
   end
 end
