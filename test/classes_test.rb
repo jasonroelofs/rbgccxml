@@ -62,13 +62,13 @@ describe "Querying for classes" do
     # We're looking for any class that has virtual methods.
     test4 = @source.classes.select { |c| c.methods.any? { |m| m.virtual? } }
     test4.should_not be_nil
-    test4.should be_kind_of RbGCCXML::Class
+    test4.should be_kind_of(RbGCCXML::Class)
     test4.name.should == "Test4"
 
     # Fail case -- there's no methods that return double.
     test0 = @source.classes.select { |c| c.methods.any? { |m| m.return_type == "double" }}
     test0.should_not be_nil
-    test0.should be_kind_of Array
+    test0.should be_kind_of(Array)
     test0.should be_empty
   end
 
