@@ -35,7 +35,7 @@ module RbGCCXML
     NESTED_NODES = %w(Argument Base EnumValue)
 
     def start_element(name, attributes = [])
-      attr_hash = Hash[*attributes]
+      attr_hash = Hash[*attributes.flatten]
 
       # Need to build a node in memory for those
       # that we don't directly support
