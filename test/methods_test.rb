@@ -44,7 +44,7 @@ describe "Querying for class methods" do
 
 end
 
-context "Properties on Methods" do
+describe "Properties on Methods" do
   before(:all) do
     @classes_source = RbGCCXML.parse(full_dir("headers/classes.h")).namespaces("classes")
   end
