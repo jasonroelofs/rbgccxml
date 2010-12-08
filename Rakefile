@@ -5,7 +5,7 @@ require 'rake/gempackagetask'
 require 'rspec/core/rake_task'
 
 PROJECT_NAME = "rbgccxml"
-RBGCCXML_VERSION = "1.0"
+RBGCCXML_VERSION = "1.0.1"
 
 task :default => :spec
 
