@@ -11,8 +11,7 @@ task :default => :spec
 
 desc "Run all specs"
 RSpec::Core::RakeTask.new do |t|
-  t.ruby_opts = ["-Itest"]
-  t.pattern = "test/**/*.rb"
+  t.pattern = "spec/**/*_test.rb"
 end
 
 Rake::RDocTask.new do |rd|
