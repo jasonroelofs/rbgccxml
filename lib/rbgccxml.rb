@@ -24,6 +24,7 @@ module RbGCCXML
   autoload :File,             "rbgccxml/nodes/file" 
   autoload :FunctionType,     "rbgccxml/nodes/function_type"
   autoload :Function,         "rbgccxml/nodes/function" 
+  autoload :MethodType,       "rbgccxml/nodes/method_type" 
   autoload :Method,           "rbgccxml/nodes/method" 
   autoload :Namespace,        "rbgccxml/nodes/namespace" 
   autoload :Struct,           "rbgccxml/nodes/struct" 
