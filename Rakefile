@@ -72,7 +72,7 @@ what you want out of the C++ source code
 
   s.files = patterns.map {|p| Dir.glob(p) }.flatten
 
-  s.test_files = Dir.glob('test/**/*.rb')
+  s.test_files = Dir.glob('spec/**/*.rb')
 
   s.require_paths = ['lib']
 end
