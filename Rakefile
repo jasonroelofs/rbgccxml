@@ -1,11 +1,7 @@
-require 'rake/rdoctask'
+require 'rdoc/task'
 require 'rake/contrib/sshpublisher'
-require 'rake/gempackagetask'
 
 require 'rspec/core/rake_task'
-
-PROJECT_NAME = "rbgccxml"
-RBGCCXML_VERSION = "1.0.1"
 
 task :default => :spec
 
@@ -35,7 +31,7 @@ namespace :web do
   end
 
   # As part of the rbplusplus project, this just goes in a subfolder
-  desc "Update the website" 
+  desc "Update the website"
   task :upload => "web:build"  do |t|
     Rake::SshDirPublisher.new("#{RUBYFORGE_USERNAME}@rubyforge.org", PROJECT_WEB_PATH, "publish").upload
   end
@@ -44,38 +40,4 @@ namespace :web do
   task :clean => ["clobber_rdoc"] do
     rm_rf "publish"
   end
-end
-
-spec = Gem::Specification.new do |s|
-  s.name = PROJECT_NAME
-  s.version = RBGCCXML_VERSION
-  s.summary = 'Ruby interface to GCCXML'
-  s.homepage = 'http://rbplusplus.rubyforge.org/rbgccxml'
-  s.rubyforge_project = "rbplusplus"
-  s.author = 'Jason Roelofs'
-  s.email = 'jameskilton@gmail.com'
-  
-  s.add_dependency "nokogiri", "~> 1.4.0"
-  s.add_dependency "gccxml_gem", "~> 0.9"
-
-  s.description = <<-END
-Rbgccxml is a library that parses out GCCXML (http://www.gccxml.org) output
-and provides a simple but very powerful querying API for finding exactly
-what you want out of the C++ source code
-  END
-
-  patterns = [
-    'TODO',
-    'Rakefile',
-    'lib/**/*.rb',
-  ]
-
-  s.files = patterns.map {|p| Dir.glob(p) }.flatten
-
-  s.test_files = Dir.glob('spec/**/*.rb')
-
-  s.require_paths = ['lib']
-end
-
-Rake::GemPackageTask.new(spec) do |pkg|
 end
