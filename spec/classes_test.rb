@@ -163,6 +163,7 @@ describe "Query inheritance heirarchy" do
   specify "can query for multiple inheritance" do
     multi = @source.classes("MultiBase")
     multi.superclasses.length.should == 2
+    multi.superclasses.should be_a_kind_of(RbGCCXML::QueryResult)
     multi.superclasses.select {|sp| sp.name == "ParentClass"}.should_not be_nil
     multi.superclasses.select {|sp| sp.name == "Parent2"}.should_not be_nil
   end

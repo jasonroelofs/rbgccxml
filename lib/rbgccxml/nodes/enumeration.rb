@@ -6,7 +6,7 @@ module RbGCCXML
 
     # Get the list of EnumValues for this enumeration
     def values
-      children
+      QueryResult.new children
     end
 
     # Is this enumeration anonymous? As in, does it have a name or is

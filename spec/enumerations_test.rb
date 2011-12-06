@@ -46,5 +46,10 @@ describe "Querying for enumerations" do
     found.values[2].value.should == 2
   end
 
+  specify "should be a QueryResult" do
+    enum = @enum_source.enumerations("TestEnum")
+    enum.values.length.should == 3
+    enum.values.should be_a_kind_of(RbGCCXML::QueryResult)
+  end
 end
 

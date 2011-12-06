@@ -43,11 +43,13 @@ module RbGCCXML
     # Like #superclass above, this will find all superclasses for this class.
     # Functions the same as #superclass except this method always returns a QueryResult
     def superclasses(access_type = nil)
-      [
-        NodeCache.find_children_of_type(self, "Base").select do |base|
-          access_type.nil? ? true : base.send("#{access_type}?")
-        end
-      ].flatten.map {|base| base.cpp_type }
+      QueryResult.new(
+        [
+          NodeCache.find_children_of_type(self, "Base").select do |base|
+            access_type.nil? ? true : base.send("#{access_type}?")
+          end
+        ].flatten.map {|base| base.cpp_type }
+      )
     end
 
     # Find all methods for this class. See Node#namespaces

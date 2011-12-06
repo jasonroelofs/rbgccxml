@@ -25,5 +25,10 @@ describe "Function and Method Arguments" do
     rockin = @arguments_source.functions("rockin")
     rockin.arguments[1].value.should == "functions::test()"
   end
+
+  specify "should be a QueryResult" do
+    test = @arguments_source.functions("test1")
+    test.arguments.should be_a_kind_of(RbGCCXML::QueryResult)
+  end
 end
 
