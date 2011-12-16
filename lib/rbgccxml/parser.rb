@@ -8,7 +8,7 @@ module RbGCCXML
 
     def initialize(config = {})
       if config[:pregenerated]
-        @xml_file = config.delete[:pregenerated]
+        @xml_file = config.delete(:pregenerated)
       else
         require 'gccxml'
         @gccxml = GCCXML.new

@@ -2,6 +2,12 @@ require "test_helper"
 
 describe "Default parsing configuration" do
 
+  specify "can be given a raw XML file" do
+    lambda do
+      RbGCCXML.parse_xml(full_dir("parsed/Adder.xml"))
+    end.should_not raise_error
+  end
+
   specify "can parse a single header file" do
     lambda do
       RbGCCXML.parse(full_dir("headers/Adder.h"))
