@@ -5,3 +5,4 @@ pkg
 publish
 .bundle
 *.gem
+Gemfile.lock
