@@ -30,11 +30,11 @@ RbGCCXML's source is in a git repository hosted on github:
 
 Project page: 
 
-http://github.com/jameskilton/rbgccxml
+http://github.com/jasonroelofs/rbgccxml
 
 Clone with: 
 
-  git clone git://github.com/jameskilton/rbgccxml.git
+  git clone git://github.com/jasonroelofs/rbgccxml.git
 
 == Usage
 

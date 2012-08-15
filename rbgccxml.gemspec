@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.homepage = 'http://rbplusplus.rubyforge.org/rbgccxml'
   s.rubyforge_project = "rbplusplus"
   s.author = 'Jason Roelofs'
-  s.email = 'jameskilton@gmail.com'
+  s.email = 'jasongroelofs@gmail.com'
 
   s.add_dependency "nokogiri", "~> 1.4.0"
   s.add_dependency "gccxml_gem", "~> 0.9"
