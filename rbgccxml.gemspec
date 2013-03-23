@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.author = 'Jason Roelofs'
   s.email = 'jasongroelofs@gmail.com'
 
-  s.add_dependency "nokogiri", "~> 1.4.0"
+  s.add_dependency "nokogiri", "~> 1.5.0"
   s.add_dependency "gccxml_gem", "~> 0.9"
 
   s.description = <<-END
