@@ -1,7 +1,6 @@
 source "http://rubygems.org"
 
-gem "nokogiri", "~> 1.5.0"
-gem "gccxml_gem", "~>0.9.0"
+gemspec
 
 group :development do
   gem 'rake'
