@@ -22,4 +22,10 @@ describe "Querying for namespaces" do
     nested.should be_a_kind_of(RbGCCXML::Namespace)
     nested.name.should == "nested"
   end
+
+  specify "handles namespace aliases" do
+    takes_class = @source.functions.find(:name => "takes_class")
+    aliased_arg = takes_class.arguments.first
+    aliased_arg.cpp_type.to_cpp.should == "upper::inner2::NamespacedClass"
+  end
 end

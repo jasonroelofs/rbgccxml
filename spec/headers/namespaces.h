@@ -17,8 +17,15 @@ namespace upper {
       void method4() { }
     }
 
+    class NamespacedClass {
+    };
   }
+}
 
+// Namespace Aliases
+namespace superInner = upper::inner2;
+
+void takes_class(superInner::NamespacedClass obj) {
 }
 
 /* Include the ability to look into the default namespace */

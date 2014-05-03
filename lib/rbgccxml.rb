@@ -27,6 +27,7 @@ module RbGCCXML
   autoload :MethodType,       "rbgccxml/nodes/method_type" 
   autoload :Method,           "rbgccxml/nodes/method" 
   autoload :Namespace,        "rbgccxml/nodes/namespace" 
+  autoload :NamespaceAlias,   "rbgccxml/nodes/namespace_alias" 
   autoload :Struct,           "rbgccxml/nodes/struct" 
   autoload :Variable,         "rbgccxml/nodes/variable" 
 
