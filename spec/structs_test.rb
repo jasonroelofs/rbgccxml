@@ -42,15 +42,14 @@ describe "Querying for struct constructors" do
   specify "constructors should have arguments" do
     test2 = @structs_source.structs.find(:name => "Test2")
 
-    # GCC generated copy constructors
-    copy = test2.constructors[0]
-    copy.artificial?.should be_true
+    # GCC generated copy constructor
+    copy = test2.constructors.detect {|c| c.arguments.length == 1 && c.artificial? }
+    copy.should_not be_nil
 
-    default = test2.constructors[1]
-    default.arguments.size.should == 0
+    default = test2.constructors.detect {|c| c.arguments.size == 0 }
+    default.should_not be_nil
 
-    specific = test2.constructors[2]
-    specific.arguments.size.should == 1
+    specific = test2.constructors.detect {|c| c.arguments.size == 1 && !c.artificial? }
     specific.arguments[0].cpp_type.name.should == "int"
   end
 end
