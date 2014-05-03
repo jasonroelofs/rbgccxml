@@ -21,10 +21,8 @@ describe "Managing Query results" do
     q = RbGCCXML::QueryResult.new  
     q << obj1 << obj2
 
-    lambda do
-      q.call_me
-      q.other_thingy
-    end.should_not raise_error(NoMethodError)
+    q.call_me
+    q.other_thingy
 
     obj1.call_me_called.should_not be_nil
     obj1.other_thingy_called.should_not be_nil

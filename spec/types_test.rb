@@ -13,8 +13,6 @@ describe "Proper Type handling" do
     @types_source.functions("noReturnWithSizeT").arguments[0].to_cpp.should == "std::size_t arg"
   end
 
-  specify "unsigned fundamental types"
-
   specify "typedefs" do
     @types_source.functions.find(:returns => "myLongType").name.should == "returnsLongType"
     @types_source.functions.find(:returns => "myShortType").name.should == "returnsShortType"
