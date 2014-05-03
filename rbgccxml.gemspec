@@ -7,13 +7,12 @@ Gem::Specification.new do |s|
   s.author = 'Jason Roelofs'
   s.email = 'jasongroelofs@gmail.com'
 
-  s.add_dependency "nokogiri", "~> 1.5.0"
-  s.add_dependency "gccxml_gem", "~> 0.9"
+  s.add_dependency "nokogiri", ">= 1.5.0", "< 1.7.0"
 
   s.description = <<-END
 Rbgccxml is a library that parses out GCCXML (http://www.gccxml.org) output
 and provides a simple but very powerful querying API for finding exactly
-what you want out of the C++ source code
+what you want out of C++ source code.
   END
 
   patterns = [
