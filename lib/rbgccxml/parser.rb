@@ -10,7 +10,6 @@ module RbGCCXML
       if config[:pregenerated]
         @xml_file = config.delete(:pregenerated)
       else
-        require 'gccxml'
         @gccxml = GCCXML.new
 
         if includes = config.delete(:includes)
