@@ -4,5 +4,6 @@ gemspec
 
 group :development, :test do
   gem "rake"
+  gem "rdoc"
   gem "rspec"
 end
