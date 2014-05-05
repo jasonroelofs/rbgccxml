@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = "rbgccxml"
-  s.version = "1.0.3"
+  s.version = "1.0.4"
   s.summary = 'Ruby interface to GCCXML'
   s.homepage = 'http://rbplusplus.rubyforge.org/rbgccxml'
   s.rubyforge_project = "rbplusplus"
