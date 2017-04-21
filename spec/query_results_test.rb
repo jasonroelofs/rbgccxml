@@ -18,7 +18,7 @@ describe "Managing Query results" do
     obj1 = MyObj.new
     obj2 = MyObj.new
 
-    q = RbGCCXML::QueryResult.new  
+    q = RbGCCXML::QueryResult.new
     q << obj1 << obj2
 
     q.call_me
@@ -52,7 +52,7 @@ end
 describe "QueryResult#find :name" do
 
   before(:all) do
-    @query_source = RbGCCXML.parse(full_dir("headers/queryable.h")).namespaces("query")
+    @query_source = RbGCCXML.parse(full_dir("headers/queryable.hpp")).namespaces("query")
   end
 
   specify "can find by regular name" do
@@ -72,7 +72,7 @@ end
 describe "QueryResult#find :arguments" do
 
   before(:all) do
-    @query_source = RbGCCXML.parse(full_dir("headers/queryable.h")).namespaces("query")
+    @query_source = RbGCCXML.parse(full_dir("headers/queryable.hpp")).namespaces("query")
   end
 
   specify "no arguments" do
@@ -135,7 +135,7 @@ end
 describe "QueryResult#find :returns" do
 
   before(:all) do
-    @query_source = RbGCCXML.parse(full_dir("headers/queryable.h")).namespaces("query")
+    @query_source = RbGCCXML.parse(full_dir("headers/queryable.hpp")).namespaces("query")
   end
 
   specify "by return type" do
@@ -175,7 +175,7 @@ end
 describe "QueryResult#find access type" do
 
   specify "can find according to public / private / protected" do
-    @query_source = RbGCCXML.parse(full_dir("headers/queryable.h")).namespaces("query")
+    @query_source = RbGCCXML.parse(full_dir("headers/queryable.hpp")).namespaces("query")
     klass = @query_source.classes("AccessTester")
     m = klass.methods.find(:access => :public)
     m.name.should == "publicMethod"
@@ -192,7 +192,7 @@ end
 describe "QueryResult#find multiple options" do
 
   specify "by both return type and arguments (AND form, not OR)" do
-    @query_source = RbGCCXML.parse(full_dir("headers/queryable.h")).namespaces("query")
+    @query_source = RbGCCXML.parse(full_dir("headers/queryable.hpp")).namespaces("query")
     func = @query_source.functions.find(:returns => :int, :arguments => [nil, nil])
     func.should be_a_kind_of(RbGCCXML::Function)
     func.name.should == "test4"
@@ -203,7 +203,7 @@ end
 describe "QueryResult#find :all - Flag full source search" do
 
   before(:all) do
-    @query_source = RbGCCXML.parse(full_dir("headers/queryable.h")).namespaces("query")
+    @query_source = RbGCCXML.parse(full_dir("headers/queryable.hpp")).namespaces("query")
   end
 
   specify "can find all :names regardless of nesting" do
@@ -215,7 +215,7 @@ describe "QueryResult#find :all - Flag full source search" do
     func = @query_source.functions.find(:all, :arguments => ["MyType", "MyType"])
     func.name.should == "nestedMyTypeArg"
   end
-  
+
   specify "can find according to :returns " do
     funcs = @query_source.functions.find(:all, :returns => "MyType")
     funcs.size.should == 3

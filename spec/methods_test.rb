@@ -2,7 +2,7 @@ require "test_helper"
 
 describe "Querying for class methods" do
   before(:all) do
-    @adder_source = RbGCCXML.parse(full_dir("headers/Adder.h")).namespaces("classes")
+    @adder_source = RbGCCXML.parse(full_dir("headers/Adder.hpp")).namespaces("classes")
   end
 
   specify "should be able to get the methods on a class" do
@@ -46,7 +46,7 @@ end
 
 describe "Properties on Methods" do
   before(:all) do
-    @classes_source = RbGCCXML.parse(full_dir("headers/classes.h")).namespaces("classes")
+    @classes_source = RbGCCXML.parse(full_dir("headers/classes.hpp")).namespaces("classes")
   end
 
   specify "should be able to tell if a given method is static or not" do

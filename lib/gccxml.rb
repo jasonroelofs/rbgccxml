@@ -21,8 +21,10 @@ class GCCXML
   def parse(header_file, to_file)
     includes = @includes.flatten.uniq.map {|i| "-I#{i.chomp}"}.join(" ").chomp
     flags = @flags.flatten.join(" ").chomp
-    cmd = "#{@exe} #{includes} #{flags} #{header_file} -fxml=#{to_file}"
-    raise "Error executing gccxml command line: #{cmd}" unless system(cmd)
+    flags += " -Wno-unused-command-line-argument --castxml-cc-gnu #{find_clang} --castxml-gccxml"
+
+    cmd = "#{@exe} #{includes} #{flags} -o #{to_file} #{header_file}"
+    raise "Error executing castxml command line: #{cmd}" unless system(cmd)
   end
 
   private
@@ -33,13 +35,17 @@ class GCCXML
 
   def find_exe
     ext = windows? ? ".exe" : ""
-    binary = "gccxml#{ext}"
+    binary = "castxml#{ext}"
 
-    if `#{binary} --version 2>&1` =~ /GCC-XML/
+    if `#{binary} --version 2>&1` =~ /CastXML/
       binary
     else
-      raise "Unable to find the gccxml executable on your PATH."
+      raise "Unable to find the castxml executable on your PATH."
     end
+  end
+
+  def find_clang
+    `which clang`.strip
   end
 
 end

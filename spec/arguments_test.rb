@@ -3,7 +3,7 @@ require "test_helper"
 describe "Function and Method Arguments" do
 
   before(:all) do
-    @arguments_source = RbGCCXML.parse(full_dir("headers/functions.h")).namespaces("functions")
+    @arguments_source = RbGCCXML.parse(full_dir("headers/functions.hpp")).namespaces("functions")
   end
 
   specify "have type and to_cpp" do
@@ -20,7 +20,7 @@ describe "Function and Method Arguments" do
   specify "can have a default value" do
     test1 = @arguments_source.functions("test1")
     test1.arguments[0].value.should be_nil
-    test1.arguments[1].value.should == "3.0e+0"
+    test1.arguments[1].value.should == "3."
 
     rockin = @arguments_source.functions("rockin")
     rockin.arguments[1].value.should == "functions::test()"

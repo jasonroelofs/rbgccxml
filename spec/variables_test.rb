@@ -3,7 +3,7 @@ require "test_helper"
 describe "Querying for variables" do
 
   before(:all) do
-    @variables_source ||= RbGCCXML.parse(full_dir("headers/classes.h")).namespaces("classes")
+    @variables_source ||= RbGCCXML.parse(full_dir("headers/classes.hpp")).namespaces("classes")
   end
 
   specify "find global variables and constants" do

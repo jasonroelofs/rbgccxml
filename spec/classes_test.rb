@@ -2,7 +2,7 @@ require "test_helper"
 
 describe "Querying for classes" do
   before do
-    @source ||= RbGCCXML.parse(full_dir("headers/classes.h")).namespaces("classes")
+    @source ||= RbGCCXML.parse(full_dir("headers/classes.hpp")).namespaces("classes")
   end
 
   specify "can find all classes in a given namespace" do
@@ -76,14 +76,14 @@ describe "Querying for classes" do
     test1 = @source.classes("Test1")
     test4 = @source.classes("Test4")
 
-    test1.pure_virtual?.should be_false
-    test4.pure_virtual?.should be_true
+    test1.pure_virtual?.should == false
+    test4.pure_virtual?.should == true
   end
 end
 
 describe "Querying for class constructors" do
   before do
-    @source ||= RbGCCXML.parse(full_dir("headers/classes.h")).namespaces("classes")
+    @source ||= RbGCCXML.parse(full_dir("headers/classes.hpp")).namespaces("classes")
   end
 
   specify "should have a list of constructors" do
@@ -99,38 +99,38 @@ describe "Querying for class constructors" do
     test2.constructors.size.should == 3
 
     # GCC generated copy constructors
-    copy = test2.constructors[0]
-    copy.artificial?.should be_true
+    copy = test2.constructors.detect {|c| c.artificial? }
+    copy.should_not be_nil
 
-    default = test2.constructors[1]
-    default.arguments.size.should == 0
+    default = test2.constructors.detect {|c| c.arguments.size == 0 }
+    default.should_not be_nil
 
-    specific = test2.constructors[2]
-    specific.arguments.size.should == 1
+    specific = test2.constructors.detect {|c| c.arguments.size == 1 }
+    specific.should_not be_nil
     specific.arguments[0].cpp_type.name.should == "int"
   end
 end
 
 describe "Querying for the class's deconstructor" do
   before do
-    @source ||= RbGCCXML.parse(full_dir("headers/classes.h")).namespaces("classes")
+    @source ||= RbGCCXML.parse(full_dir("headers/classes.hpp")).namespaces("classes")
   end
 
   specify "can tell if a class has an explicit destructor" do
     test1 = @source.classes("Test1")
     test1.destructor.should_not be_nil
-    test1.destructor.artificial?.should be_false
+    test1.destructor.artificial?.should == false
 
     test2 = @source.classes("Test2")
     test2.destructor.should_not be_nil
-    test2.destructor.artificial?.should be_true
+    test2.destructor.artificial?.should == true
   end
 
 end
 
 describe "Query for class variables" do
   before do
-    @source ||= RbGCCXML.parse(full_dir("headers/classes.h")).namespaces("classes")
+    @source ||= RbGCCXML.parse(full_dir("headers/classes.hpp")).namespaces("classes")
   end
 
   specify "find all i-vars" do
@@ -148,7 +148,7 @@ end
 
 describe "Query inheritance heirarchy" do
   before do
-    @source ||= RbGCCXML.parse(full_dir("headers/inheritance.h")).namespaces("inheritance")
+    @source ||= RbGCCXML.parse(full_dir("headers/inheritance.hpp")).namespaces("inheritance")
   end
 
   specify "can find a class's superclass" do

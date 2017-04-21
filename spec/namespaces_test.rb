@@ -3,7 +3,7 @@ require "test_helper"
 describe "Querying for namespaces" do
 
   before do
-    @source ||= RbGCCXML.parse(full_dir("headers/namespaces.h"))
+    @source ||= RbGCCXML.parse(full_dir("headers/namespaces.hpp"))
   end
 
   specify "can find a namespace" do
@@ -26,6 +26,6 @@ describe "Querying for namespaces" do
   specify "handles namespace aliases" do
     takes_class = @source.functions.find(:name => "takes_class")
     aliased_arg = takes_class.arguments.first
-    aliased_arg.cpp_type.to_cpp.should == "upper::inner2::NamespacedClass"
+    aliased_arg.cpp_type.to_cpp.should == "::upper::inner2::NamespacedClass"
   end
 end

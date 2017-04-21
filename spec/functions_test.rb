@@ -3,7 +3,7 @@ require "test_helper"
 describe "Querying for functions" do
 
   before(:all) do
-    @functions_source = RbGCCXML.parse(full_dir("headers/functions.h")).namespaces("functions")
+    @functions_source = RbGCCXML.parse(full_dir("headers/functions.hpp")).namespaces("functions")
   end
 
   specify "should be able to find all functions" do

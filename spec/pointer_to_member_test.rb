@@ -3,7 +3,7 @@ require "test_helper"
 describe "Pointer to member function or member variable" do
   before(:all) do
     @ptm_source = RbGCCXML.parse(
-      full_dir("headers/pointer_to_member.h")).namespaces("pointer_to_member")
+      full_dir("headers/pointer_to_member.hpp")).namespaces("pointer_to_member")
   end
 
   specify "finds the test struct" do
