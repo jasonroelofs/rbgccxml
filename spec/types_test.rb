@@ -10,7 +10,7 @@ describe "Proper Type handling" do
     @types_source.functions.find(:returns => "int").length.should == 2
     @types_source.functions.find(:returns => "float").name.should == "returnsFloat"
 
-    @types_source.functions("noReturnWithSizeT").arguments[0].to_cpp.should == "::size_t arg"
+    @types_source.functions("noReturnWithSizeT").arguments[0].to_cpp.should == "::std::size_t arg"
   end
 
   specify "typedefs" do
