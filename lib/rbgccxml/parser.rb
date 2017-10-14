@@ -20,6 +20,14 @@ module RbGCCXML
           @gccxml.add_cxxflags flags
         end
 
+        if path = config.delete(:castxml_path)
+          @gccxml.set_castxml_path path
+        end
+
+        if path = config.delete(:clangpp_path)
+          @gccxml.set_clangpp_path path
+        end
+
         validate_glob(config[:files])
       end
     end

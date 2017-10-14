@@ -63,4 +63,18 @@ describe "Configurable parsing configuration" do
     RbGCCXML.parse full_dir("headers/requires_define.hxx"),
       :cxxflags => "-DMUST_BE_DEFINED"
   end
+
+  specify "can give an explicit path to castxml" do
+    lambda do
+      RbGCCXML.parse full_dir("headers/requires_define.hxx"),
+        :castxml_path => "/not/here/castxml"
+    end.should raise_error(RuntimeError, %r{/not/here/castxml})
+  end
+
+  specify "can give an explicit path to clang++" do
+    lambda do
+      RbGCCXML.parse full_dir("headers/requires_define.hxx"),
+        :clangpp_path => "/not/here/clang++"
+    end.should raise_error(RuntimeError, %r{/not/here/clang++})
+  end
 end
