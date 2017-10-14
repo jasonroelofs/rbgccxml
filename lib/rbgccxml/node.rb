@@ -3,7 +3,7 @@ module RbGCCXML
   class NotQueryableException < RuntimeError; end
   class UnsupportedMatcherException < RuntimeError; end
 
-  # A Node is part of the C++ code as dictated by GCC-XML. This class 
+  # A Node is part of the C++ code as dictated by CastXML. This class 
   # defines all of the starting points into the querying system, along 
   # with helper methods to access data from the C++ code itself.
   #

@@ -1,6 +1,6 @@
 module RbGCCXML
 
-  # Manager of the tree of Nodes we build from GCC-XML.
+  # Manager of the tree of Nodes we build from CastXML.
   #
   # This is a static class that keeps around references to the
   # entire generated Node tree as well as other structures

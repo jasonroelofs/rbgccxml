@@ -19,7 +19,7 @@ module RbGCCXML
     #   };
     #
     def anonymous?
-      # The given GCC-XML name of an anon Enum is _[number]. We don't care what
+      # The given CastXML name of an anon Enum is _[number]. We don't care what
       # that number is, only that the name matches this format
       self.name =~ /_\d+/ || self.name == ""
     end

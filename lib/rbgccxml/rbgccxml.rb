@@ -30,7 +30,7 @@ module RbGCCXML
       @parser.parse
     end
 
-    # Use this call to parse a pregenerated GCC-XML file.
+    # Use this call to parse a pregenerated CastXML file.
     #
     # Returns the Namespace Node linked to the global namespace "::".
     def parse_xml(filename)
