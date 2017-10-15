@@ -61,7 +61,7 @@ that may be included by the header files being parsed out. Adding these paths is
 RbGCCXML.parse(..., :includes => *directories)
 ```
 
-where +directories+ can be a single directory string or an array of directories, just like RbGCCXML.parse.
+where `directories` can be a single directory string or an array of directories, just like RbGCCXML.parse.
 
 Also, if there are other CXXFLAGS that need to be added to the command line for CastXML to properly
 parse the source headers (say, -D defines), add those via the :cxxflags option.
