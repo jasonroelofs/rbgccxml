@@ -19,7 +19,6 @@ not exist.
   gem install rbgccxml
 
 RbGCCXML will work on all platforms that CastXML supports, which includes Windows, Mac, and *nix.
-If you're on a platform for which there isn't a current gccxml_gem build, please open an Issue.
 
 == The Project
 
@@ -65,6 +64,8 @@ parse the source headers (say, -D defines), add those via the :cxxflags option.
 
   RbGCCXML.parse(..., :cxxflags => *flags)
 
+RbGCCXML tries to intelligently find the location of the `castxml` and `clang++` binaries, but if these binaries cannot be found, you can specify an exact path using the `:castxml_path` and `:clangpp_path` options respectively.
+
 === Querying By Name
 
 Once the header files have been parsed, RbGCCXML.parse returns a Namespace node that references the
@@ -108,11 +109,11 @@ any type? This is easy with RbGCCXML:
 
   source.classes("TheClass").methods.find(:returns => :int, :arguments => [nil, nil, nil])
 
-The keys +returns+ and +arguments+ can be used on their own or together as seen above.
-The +arguments+ option must be an array, and if the type of the argument doesn't matter, placing
-'nil' in it's place acts as a wildcard. QueryResult#find is also chainable, provided that there
+The keys `:returns` and `:arguments` can be used on their own or together as seen above.
+The `:arguments` option must be an array, and if the type of the argument doesn't matter, placing
+'nil' in it's place acts as a wildcard. `QueryResult#find` is also chainable, provided that there
 are always more than one result. Otherwise, if there is just one result, only that Node will
-be returned and any further chained QueryResult.find methods will fail with NoMethodError.
+be returned and any further chained `QueryResult#find` methods will fail with NoMethodError.
 
 === The Next Step
 
