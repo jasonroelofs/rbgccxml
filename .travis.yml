@@ -1,9 +1,15 @@
 language: ruby
 before_install:
   - sudo apt-get update
-  - sudo apt-get install gccxml
+  - sudo apt-get install cmake
+  - git clone https://github.com/CastXML/CastXML.git
+  - mkdir CastXMLBuild
+  - cd CastXMLBuild
+  - cmake ../CastXML
+  - make
+  - export PATH=$PWD/bin:$PATH
+  - cd ..
 rvm:
-  - 1.9.3
-  - 2.0.0
-  - 2.1
-  - ruby-head
+  - 2.2
+  - 2.3
+  - 2.4

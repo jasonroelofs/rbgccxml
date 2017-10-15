@@ -2,7 +2,7 @@ require "test_helper"
 
 describe "Querying for structs" do
   before(:all) do
-    @structs_source = RbGCCXML.parse(full_dir("headers/structs.h")).namespaces("structs")
+    @structs_source = RbGCCXML.parse(full_dir("headers/structs.hpp")).namespaces("structs")
   end
 
   specify "can find all structs in a given namespace" do
@@ -28,7 +28,7 @@ end
 
 describe "Querying for struct constructors" do
   before(:all) do
-    @structs_source = RbGCCXML.parse(full_dir("headers/structs.h")).namespaces("structs")
+    @structs_source = RbGCCXML.parse(full_dir("headers/structs.hpp")).namespaces("structs")
   end
 
   specify "should have a list of constructors" do

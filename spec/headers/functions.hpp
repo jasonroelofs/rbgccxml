@@ -7,7 +7,7 @@ namespace functions {
 
   void test1(int x, double y = 3.0) { }
 
-  bool bool_method() {  }
+  bool bool_method() { return false;  }
 
   namespace nested1 {
     namespace nested2 {

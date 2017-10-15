@@ -3,14 +3,15 @@ require "test_helper"
 describe "Proper Type handling" do
 
   before(:all) do
-    @types_source = RbGCCXML.parse(full_dir("headers/types.h")).namespaces("types")
+    @types_source = RbGCCXML.parse(full_dir("headers/types.hpp")).namespaces("types")
   end
 
   specify "fundamental types" do
     @types_source.functions.find(:returns => "int").length.should == 2
     @types_source.functions.find(:returns => "float").name.should == "returnsFloat"
 
-    @types_source.functions("noReturnWithSizeT").arguments[0].to_cpp.should == "std::size_t arg"
+    output = @types_source.functions("noReturnWithSizeT").arguments[0].to_cpp
+    (output == "::std::size_t arg" || output == "::size_t arg").should == true
   end
 
   specify "typedefs" do
@@ -72,9 +73,9 @@ describe "Proper Type handling" do
 end
 
 describe "Printing types" do
-  
+
   before(:all) do
-    @types_source = RbGCCXML.parse(full_dir("headers/types.h")).namespaces("types")
+    @types_source = RbGCCXML.parse(full_dir("headers/types.hpp")).namespaces("types")
   end
 
   specify "types should print back properly into string format" do
@@ -87,30 +88,30 @@ describe "Printing types" do
     @types_source.functions("returnsIntPointer").return_type.to_cpp.should == "int*"
 
     # references
-    @types_source.functions("returnStructReference").return_type.to_cpp.should == "types::struct_type&"
+    @types_source.functions("returnStructReference").return_type.to_cpp.should == "::types::struct_type&"
     @types_source.functions("returnStructReference").return_type.to_cpp(false).should == "struct_type&"
-    
+
     # printout full from the global namespace
-    @types_source.functions("returnsString").return_type.to_cpp.should == "others::string"
+    @types_source.functions("returnsString").return_type.to_cpp.should == "::others::string"
     @types_source.functions("returnsString").return_type.to_cpp(false).should == "string"
 
     # const
     @types_source.functions("returnConstInt").return_type.to_cpp.should == "const int"
-    
+
     # const pointers
     @types_source.functions("returnConstIntPointer").return_type.to_cpp.should == "const int*"
 
     # const references
-    @types_source.functions("returnConstUserTypeRef").return_type.to_cpp.should == "const types::user_type&"
+    @types_source.functions("returnConstUserTypeRef").return_type.to_cpp.should == "const ::types::user_type&"
     @types_source.functions("returnConstUserTypeRef").return_type.to_cpp(false).should == "const user_type&"
 
     # const const
-    @types_source.functions("withConstPtrConst").arguments[0].to_cpp.should == "const types::user_type* const arg1"
+    @types_source.functions("withConstPtrConst").arguments[0].to_cpp.should == "const ::types::user_type* const arg1"
     @types_source.functions("withConstPtrConst").arguments[0].to_cpp(false).should == "const user_type* const arg1"
 
     # Enumerations
     @types_source.functions("returnMyEnum").return_type.name.should == "myEnum"
-    @types_source.functions("returnMyEnum").return_type.to_cpp.should == "types::myEnum"
+    @types_source.functions("returnMyEnum").return_type.to_cpp.should == "::types::myEnum"
 
     # Array Types
     @types_source.functions("usesIntArray").arguments[0].name.should == "input"
@@ -126,14 +127,14 @@ describe "Printing types" do
     @types_source.classes("user_type").variables("var1").cpp_type.name.should == "int"
     @types_source.classes("user_type").variables("var2").cpp_type.name.should == "float"
 
-    @types_source.structs("struct_type").variables("myType").cpp_type.to_cpp.should == "types::user_type"
+    @types_source.structs("struct_type").variables("myType").cpp_type.to_cpp.should == "::types::user_type"
   end
 
 end
 
 describe "Type comparitors" do
   specify "can tell of a given type is a const" do
-    @types_source ||= RbGCCXML.parse(full_dir("headers/types.h")).namespaces("types")
+    @types_source ||= RbGCCXML.parse(full_dir("headers/types.hpp")).namespaces("types")
     @types_source.functions("returnConstUserTypeRef").return_type.should be_const
     @types_source.functions("returnConstIntPointer").return_type.should be_const
     @types_source.functions("returnsUserType").return_type.should_not be_const

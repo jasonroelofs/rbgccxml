@@ -1,13 +1,13 @@
 Gem::Specification.new do |s|
   s.name = "rbgccxml"
-  s.version = "1.0.4"
+  s.version = "1.1.0"
   s.summary = 'Ruby interface to GCCXML'
   s.homepage = 'http://rbplusplus.rubyforge.org/rbgccxml'
   s.rubyforge_project = "rbplusplus"
   s.author = 'Jason Roelofs'
   s.email = 'jasongroelofs@gmail.com'
 
-  s.add_dependency "nokogiri", ">= 1.5.0", "< 1.7.0"
+  s.add_dependency "nokogiri", ">= 1.5.0"
 
   s.description = <<-END
 Rbgccxml is a library that parses out GCCXML (http://www.gccxml.org) output

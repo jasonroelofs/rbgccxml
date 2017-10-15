@@ -26,7 +26,7 @@ namespace types {
   void noReturnWithSizeT(std::size_t arg);
 
   // Unsigned types are handled differently.
-  // GCC-XML sees this as "short unsigned int"
+  // CastXML sees this as "short unsigned int"
   //unsigned short returnsUShort();
 
   myLongType returnsLongType();

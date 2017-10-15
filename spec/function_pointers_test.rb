@@ -2,7 +2,7 @@ require "test_helper"
 
 describe "Function pointers" do
   before(:all) do
-    @fp_source = RbGCCXML.parse(full_dir("headers/types.h")).namespaces("types")
+    @fp_source = RbGCCXML.parse(full_dir("headers/types.hpp")).namespaces("types")
   end
 
   specify "have arguments" do

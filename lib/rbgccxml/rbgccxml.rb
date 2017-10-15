@@ -3,11 +3,9 @@ module RbGCCXML
 
   class << self
 
-    # Starting point to any RbGCCXML parsing project. 
+    # Starting point to any RbGCCXML parsing project.
     #
-    # This method must be called *after* any calls to RbGCCXML.gccxml_path= 
-    # or RbGCCXML.add_include_paths.  Files can be one of many formats 
-    # (and should always be full directory paths):
+    # Files can be one of many formats (and should always be full directory paths):
     #
     # <tt>"/path/to/file.h"</tt>
     #
@@ -19,6 +17,11 @@ module RbGCCXML
     #
     #   includes: A single string, or an array of strings of directory includes (-I directives)
     #   cxxflags: A single string, or an array of strings of other command line flags
+    #   castxml_path: An explicit path to your castxml binary
+    #   clangpp_path: An explicit path to your clang++ binary
+    #
+    # RbGCCXML will try to find both the clang++ and castxml binaries automatically,
+    # but if this is not working, these two options are available to give the actual path.
     #
     # Returns the Namespace Node linked to the global namespace "::".
     def parse(files, options = {})
@@ -27,7 +30,7 @@ module RbGCCXML
       @parser.parse
     end
 
-    # Use this call to parse a pregenerated GCC-XML file.
+    # Use this call to parse a pregenerated CastXML file.
     #
     # Returns the Namespace Node linked to the global namespace "::".
     def parse_xml(filename)

@@ -1,5 +1,4 @@
 require 'rdoc/task'
-require 'rake/contrib/sshpublisher'
 
 require 'rspec/core/rake_task'
 
